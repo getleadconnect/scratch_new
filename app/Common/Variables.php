@@ -2,7 +2,6 @@
 
 namespace App\Common;
 
-
 use App\Models\Designation;
 use App\Models\EnquiryFollowup;
 use App\Models\LeadType;
@@ -26,21 +25,7 @@ class Variables
 
     const ACTIVE = 1;
     const DEACTIVE = 0;
-    const SMS_STATUS_QUEUE = 'Submitted';
-    const SMS_STATUS_SENT = 'Sent';
-    const SMS_STATUS_FAIL = 'Fail';
-    const SMS_STATUS_DELIVERED = 'Delivered';
-    const SMS_STATUS_ERROR = 'Error';
-
-
-    const TELEGRAM_TYPE_PRIVATE = 'private';
-    const TELEGRAM_TYPE_GROUP = 'group';
-    const NOT_SUBSCRIBED = 'NOT SUBSCRIBED';
-    const SUBSCRIBED = 'SUBSCRIBED';
-    const EXPIRED = 'EXPIRED';
-    const INACTIVE = 'INACTIVE';
-    const BOT_TOKEN = '737148201:AAH8K-HgqekcYyfOpNZHsfWQvjl633Cq434';
-
+   
     const SERVICE_CRM = 'CRM';
     const SERVICE_GLP = 'GL Promo';
     const SERVICE_GLS = 'GL Scratch';
@@ -52,25 +37,7 @@ class Variables
     const SERVICE_SALES = 'Sales';
     const SERVICE_CAMPAIGNS = 'Campaigns';
 
-    const BULK_SMS = 'Bulk SMS';
-    const DYNAMIC_MESSAGING = 'Dynamic SMS';
-    const MESSAGE_VIA_API = 'API';
-
     const DEF_COUNTRY_INDIA = 29;
-
-    const DYNAMIC_MESSAGE_FIELD_START = 2;
-    const DYNAMIC_MESSAGE_FIELD_END = 10;
-
-    /*------------- Bulk SMS Panel--------------------------*/
-    const ALERT_BOX = "Alertbox";
-    const ALERTBOX = 'AlertBox';
-    const MERABT = "Merabt";
-    const AWSSNS = "AmazonSNS";
-    const TEXT_LOCAL = "TextLocal";
-    /*------------- Bulk SMS Panel--------------------------*/
-
-    const GDEAL_DOMAIN = "http://gdeal.getlead.co.uk/";
-
 
     const MESSAGE_API = 1;
     const BALANCE_API = 2;
