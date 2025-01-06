@@ -111,8 +111,11 @@
        <!--end top header-->
 	@if(Auth::user()->int_role_id==1)
 		@include('layouts.admin_sidebar');
-	@else	
+	@elseif(Auth::user()->int_role_id==2)
        @include('layouts.user_sidebar');
+   @else	
+       @include('layouts.staff_sidebar');
+   
 	@endif
        <!--start content-->
           <main class="page-content">

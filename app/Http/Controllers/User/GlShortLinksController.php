@@ -43,9 +43,10 @@ class GlShortLinksController extends Controller
             $item->save();
         } 
 	
-	 $subscription=$this->checkUserStatus();
+	 $user_id=User::getVendorId();
+	 $subscription=$this->checkUserStatus($user_id);
 	
-	 $offers=ScratchOffer::where('fk_int_user_id',User::getVendorId())->get();
+	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
 	 return view('users.links.gl_short_links',compact('offers','subscription'));
   }	
    

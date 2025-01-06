@@ -20,7 +20,7 @@ class Authware
             return redirect('login');
 		
         $user = Auth::user();
-        if ($user->isAdmin() || $user->isUser()){
+        if ($user->isAdmin() || $user->isUser() || $user->isStaff()){
 		
 			return $next($request);
         }

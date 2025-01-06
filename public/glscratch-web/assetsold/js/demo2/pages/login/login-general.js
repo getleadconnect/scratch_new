@@ -112,6 +112,14 @@ var KTLoginGeneral = function() {
 
     var verify_otp = function($button) {
         var vendor_id = parseInt($("#vendor_id").val(), 10);
+				
+		var otp1=$('#otp1').val();
+		var otp2=$('#otp2').val();
+		var otp3=$('#otp3').val();
+		var otp4=$('#otp4').val();
+		
+		var full_otp=otp1+otp2+otp3+otp4;
+		
         var data = {
 			_token:$('#_csrf_token').val(),
             bill_no: $('#bill_no').val(),
@@ -126,20 +134,20 @@ var KTLoginGeneral = function() {
             user_id:user.pk_int_user_id,
             vendor_id: $("#vendor_id").val()
         }
+		
+		var bypas_ids=bypass_ids.split(',');
+		var status=findValueInArray(vendor_id, bypas_ids);
 
-        if(bypass_ids.includes(vendor_id))
+		//if(bypas_ids.includes(vendor_id))
+		if(status==true)
 		{
             data.otp = null;
             verify_user(data,$button);
         }else{
-            var userOtp = '';
-            $('.otp_submit').each(function () {
-                userOtp += $(this).val();
-            });
-
-            if(userOtp.length > 0)
+			
+            if(otp1!='' && otp2!="" && otp3!="" && otp4!="")
             {
-                data.otp = userOtp;
+				data.otp = full_otp;
                 verify_user(data,$button);
             }else{
                 $.alert({
@@ -147,7 +155,7 @@ var KTLoginGeneral = function() {
                     type: 'red',
                     content: 'Enter otp !!!',
                 });
-                hideSpinner($button,'')
+                hideSpinner($button,'VERIFY')
             }
         }
     }
@@ -173,19 +181,20 @@ var KTLoginGeneral = function() {
                     content: res.msg,
                 });
 
-                $("#kt_login_forgot").html("Verify Mobile");
+                $("#kt_login_forgot").html("VERIFY");
                 $('#kt_login_forgot').attr("disabled", false);
             }
         }).fail(function () {
-            $("#kt_login_forgot").html("Verify Mobile");
+            $("#kt_login_forgot").html("VERIFY");
             $('#kt_login_forgot').attr("disabled", false);
             //$('#countdown-model').modal('hide');
         }).always(function (com) {
-            $("#kt_login_forgot").html("Verify Mobile");
+            $("#kt_login_forgot").html("VERIFY");
             $('#kt_login_forgot').attr("disabled", false);
             hideSpinner($button,'')
         })
     }
+	
 	
     var displaySignUpForm = function() {
         login.removeClass('kt-login--forgot');
@@ -357,10 +366,17 @@ var KTLoginGeneral = function() {
                         if(data.status == true)
                         {
                             var vendor_id = parseInt($("#vendor_id").val(), 10);
-	
-                            if(bypass_ids.includes(vendor_id)){
+
+							var bypas_ids=bypass_ids.split(',');
+							var status=findValueInArray(vendor_id, bypas_ids);
+
+                            //if(bypas_ids.includes(vendor_id))
+							if(status==true)
+							{
+								alert("otp no");
                                 verify_otp($button)
                             }else{
+								alert("otp ok");
                                 displayOtpForm()
                                 $(".user_number").html('Enter the verification code that we sent your <b> Mobile </b>')
                             }
@@ -372,13 +388,30 @@ var KTLoginGeneral = function() {
                             });
                         }
 						
-                        hideSpinner($button,'SUBMIT');
+                        hideSpinner($button,'');
                     }
                 });
 
             }
         });
     }
+	
+	
+function findValueInArray(value, arr){
+  let result = false;
+ 
+  for(let i=0; i<arr.length; i++){
+    let name = arr[i];
+    if(name == value){
+      result = true;
+      break;
+    }
+  }
+  return result;
+}
+	
+	
+	
 	
  var handleSignUpFormSubmit = function() {
         $('#kt_login_signup_submit').click(function(e) {

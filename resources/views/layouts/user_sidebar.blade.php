@@ -42,14 +42,14 @@
               </a>
             </li>
 			
-			<li>
+			<!--<li>
               <a href="{{url('users/redeem-history')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
                 </div>
                 <div class="menu-title">App Customers History</div>
               </a>
-            </li> 
+            </li> -->
 			
 			<li>
               <a href="{{url('users/gl-links')}}" title="Campaigns">

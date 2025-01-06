@@ -120,7 +120,7 @@ input[type="number"]::-ms-reveal {
                         </div>
 						
                         <form class="kt-login__form kt-form" action="" id="details-page">
-
+						@csrf
                             <div class="input-group">
                                 <label for="full_name">Name</label>
                                     <input class="form-control" type="text" placeholder="Full Name" name="full_name" id="full_name">
@@ -151,7 +151,7 @@ input[type="number"]::-ms-reveal {
                                         </select>
                                     </div>
                                     <div class="col-8 pr-0">
-                                        <label for="mobile_number">Mobile number</label>
+                                        <label for="mobile_number">Whatsapp number</label>
                                         <input class="form-control" type="number" placeholder="Mobile Number" name="mobile_number" autocomplete="off" id="mobile_number">
                                     </div>                                    
                             </div>
@@ -222,14 +222,14 @@ input[type="number"]::-ms-reveal {
                         </div>
                         <form class="kt-login__form kt-form" action="">
 						@csrf
+	
                             <div class="input-group" id="ot">
                               <label>OTP</label>
-                              {{-- <input class="form-control" type="password" placeholder="Enter OTP" name="otp_submit" autocomplete="off" id="otp_submit"> --}}
-                              
-                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" autocomplete="on" maxlength="1"> 
-                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" autocomplete="on" maxlength="1"> 
-                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" autocomplete="on" maxlength="1"> 
-                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" autocomplete="on" maxlength="1"> 
+                                                            
+                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" id="otp1" autocomplete="on" maxlength="1"> 
+                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" id="otp2" autocomplete="on" maxlength="1"> 
+                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" id="otp3" autocomplete="on" maxlength="1"> 
+                              <input class="form-control otp_submit" type="number" placeholder="-" name="otp_submit[]" id="otp4" autocomplete="on" maxlength="1"> 
                             </div>               
                             <div class="kt-login__actions">
                             <button id="kt_login_forgot" class="btn btn-pill kt-login__btn-primary">

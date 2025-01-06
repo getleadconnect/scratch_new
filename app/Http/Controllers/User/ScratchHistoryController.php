@@ -68,8 +68,7 @@ class ScratchHistoryController extends Controller
                 //$offer_text=FALSE;
                 //$type_text=FALSE;
             }
-			
-			
+						
             $type_text=ScratchType::where('id',$row->type_id)->pluck('type')->first();
             if($type_text)
                 $row->type_name=$type_text;
@@ -85,48 +84,40 @@ class ScratchHistoryController extends Controller
         }
 		
 
-
         return Datatables::of($customers)
 				->addIndexColumn()
-                ->editColumn('name', function ($customers) {
-                    if ($customers->vchr_name != null) {
-                        return $customers->vchr_name;
+                ->editColumn('name', function ($row) {
+                    if ($row->vchr_name != null) {
+                        return $row->vchr_name;
                     } else {
                         return "No name";
                     }
                     
                 })
-                ->editColumn('mobileno', function ($customers) {
-                    if ($customers->vchr_mobno != null) {
-                        if($customers->email!=null)
-                        {
-                            return $customers->vchr_mobno.'('.$customers->email.')';
-                        }
-                        else
-                        {
-                            return $customers->vchr_mobno; 
-                        }
+                ->editColumn('mobileno', function ($row) {
+                    if ($row->vchr_mobno != null) {
+                        return $row->vchr_mobno; 
                     } else {
                         return "No Mobile";
                     }
                 })
-                ->editColumn('dob', function ($customers) {
-                    if ($customers->vchr_dob != null) {
-                        return $customers->vchr_dob;
+                ->editColumn('dob', function ($row) {
+                    if ($row->vchr_dob != null) {
+                        return $row->vchr_dob;
                     } else {
                         return "No DOB";
                     }
                 })
-                ->editColumn('billno', function ($customers) {
-                    if ($customers->vchr_billno != null) {
-                        return $customers->vchr_billno;
+                ->editColumn('billno', function ($row) {
+                    if ($row->vchr_billno != null) {
+                        return $row->vchr_billno;
                     } else {
                         return "No billno";
                     }
                 })
-                ->editColumn('details', function ($customers) {
-                    if ($customers->extrafield_values != null) {
-                        $someObject = json_decode($customers->extrafield_values);
+                ->editColumn('details', function ($row) {
+                    if ($row->extrafield_values != null) {
+                        $someObject = json_decode($row->extrafield_values);
                         if(!is_array($someObject)){
                             $someObject=array();
                             foreach($someObject as $key=>$someObject1)  
@@ -147,15 +138,15 @@ class ScratchHistoryController extends Controller
                     }
                 })
 				
-                ->editColumn('created_at',function($customers){
-                    return date('d M Y h:i A',strtotime($customers->created_at));
+                ->editColumn('created_at',function($row){
+                    return date('d M Y h:i A',strtotime($row->created_at));
                 })
-                ->addColumn('action', function ($customers) 
+                ->addColumn('action', function ($row) 
                 {
-				if ($customers->int_status == 1) 
+				if ($row->int_status == 1) 
                     return '<button class="btn btn-sm btn-success btn-md-badge" data-toggle="tooltip" title="Redeemed"> <p class="text-white mb-0">Redeemed</p></button>';
                 else
-                    return '<a href="javascript:;" class="btn btn-sm btn-warning btn-md-badge offer-redeem testiminial-act" date-customerid="'.$customers->pk_int_scratch_customers_id.'" data-toggle="tooltip" title="Redeem offer"> Redeem</a>';
+                    return '<a href="javascript:;" class="btn btn-sm btn-warning btn-md-badge offer-redeem testiminial-act" date-customerid="'.$row->pk_int_scratch_customers_id.'" data-toggle="tooltip" title="Redeem offer"> Redeem</a>';
                 })
                 ->rawColumns(['action','details'])
                 ->toJson(true);

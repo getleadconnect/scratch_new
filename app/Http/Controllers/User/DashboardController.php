@@ -62,8 +62,8 @@ class DashboardController extends Controller
 			  ->where('tbl_scratch_offers.fk_int_user_id',$user_id)->where('tbl_scratch_offers.int_status',1)
 			  ->get()->map(function($q)
 			  {
-				  $win1=ScratchWebCustomer::where('status',1)->where('offer_list_id',$q['pk_int_scratch_offers_id'])->count();
-				  $los1=ScratchWebCustomer::where('status',0)->where('offer_list_id',$q['pk_int_scratch_offers_id'])->count();
+				  $win1=ScratchWebCustomer::where('status',1)->where('offer_id',$q['pk_int_scratch_offers_id'])->count();
+				  $los1=ScratchWebCustomer::where('status',0)->where('offer_id',$q['pk_int_scratch_offers_id'])->count();
 				  
 				  $win2=ScratchCustomer::where('int_status',1)->where('fk_int_offer_id',$q['pk_int_scratch_offers_id'])->count();
 				  $los2=ScratchCustomer::where('int_status',0)->where('fk_int_offer_id',$q['pk_int_scratch_offers_id'])->count();

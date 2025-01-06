@@ -39,7 +39,7 @@ class ShortenerController extends Controller
     {
 		$user_id=$id;
 		
-		$result=$this->checkUserStatus();
+		$result=$this->checkUserStatus($id);
 		if($result==false)
 		{
 			$messageText = "This scratch link expired!!!.";

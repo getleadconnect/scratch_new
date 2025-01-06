@@ -11,9 +11,9 @@ use Session;
 trait GeneralTrait
 {
     	
-	public function checkUserStatus()
+	public function checkUserStatus($id)
 	{
-		$user_id=User::getVendorId();
+		$user_id=$id;
 		$scnt=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
 		$user=User::where('pk_int_user_id',$user_id)->first();
 		

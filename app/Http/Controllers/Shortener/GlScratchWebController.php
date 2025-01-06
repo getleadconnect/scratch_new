@@ -48,7 +48,7 @@ use Session;
 
 class GlScratchWebController extends Controller
 {
-    dd('ok');
+
     public function shortenLink($code)
     {
         $shortlink = ShortLink::where('code', $code)->where('status', ShortLink::ACTIVE)->first();
@@ -183,18 +183,20 @@ class GlScratchWebController extends Controller
 			return response()->json(['msg' => "bypass otp", 'status' => true]);
 		}
 		
-		/*        
+	//otp send to whats app --------------------------------------------------
+		        
         try {
-			
-            $number = $mobile;
+
             $otp = rand(1111, 9999);
 
-            if(in_array($request->vendor_id, Variables::getScratchBypass()))
-                return response()->json(['msg' => "Please Wait For Your Otp", 'status' => true]);
+            /*if(in_array($request->vendor_id, Variables::getScratchBypass()))
+                return response()->json(['msg' => "Please Wait For Your Otp", 'status' => true]);*/
 
             $matchThese = ['number' => $request->mobile, 'user_id' => $request->vendor_id,'otp_type' => 'scratch_web'];
             UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
-
+			
+			Session::put('number',$request->mobile);
+			
             try {
                 $dataSend = [
                     'mobile_no' => $mobile,
@@ -212,14 +214,18 @@ class GlScratchWebController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return $e->getMessage();
-        }*/
+        }
 
     }
 		
 	
     public function verifyOTP(Request $request)
     {
+		
+		dd($request->all());
+		
         // return response()->json(['msg' => "Token Expired.!! Try again", 'status' => true]);
+		
         $requestOtp = $request->otp;
         $number = Session::get('number');
         if (!empty($number)) {
@@ -247,31 +253,25 @@ class GlScratchWebController extends Controller
 
     public function scratchCustomer(Request $request)
     {
-
+		
         $mobile = $request->country_code . $request->mobile;
-        $requestOtp = $request->otp;
 		
 		$bypass_ids=explode(",",Variables::getScratchBypass());
 				
         if(in_array($request->vendor_id, $bypass_ids)){
 		//if(in_array($request->vendor_id, Variables::getScratchBypass())){
+			
             $customer = new ScratchWebCustomer();
             $customer->fill($request->all());
             $customer->status = ScratchWebCustomer::NOT_SCRATCHED;
             $customer->redeem = ScratchWebCustomer::NOT_REDEEMED;
             $customer->email = $request->email;
             $customer->branch_id = $request->branch;
-            // if(request('user_id') == 1815){ // For hilite
-            //     $offerListing = $this->fetchHiliteOffers($request);
-            // }else{
-                $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
-                                                ->where('int_scratch_offers_balance', '>', '0')
-                                                ->where('int_status',1)
-                                                ->inRandomOrder()
-                                                ->first();
-				
-            // }          
-			
+
+            $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
+                          ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
+                          ->inRandomOrder()->first();
+						
             if ($offerListing) 
 			{
                 do {
@@ -280,6 +280,7 @@ class GlScratchWebController extends Controller
                 } while ($unique_flag);
 				
                 $customer->unique_id = $uniqueId;
+				$customer->offer_id = $offerListing->fk_int_scratch_offers_id;
                 $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                 $customer->offer_text = $offerListing->txt_description;
                 //$offerListing->int_scratch_offers_balance--;
@@ -301,20 +302,23 @@ class GlScratchWebController extends Controller
         
 		}
 		else{
-            $requestOtp = request('otp');
-            $otpOld = UserOtp::where('number',request('mobile'))->where('user_id',request('user_id'))->where('otp_type','scratch_web')->latest()->first();
+			
+            $requestOtp = $request->otp;
+            $otpOld = UserOtp::where('number',$request->mobile)->where('user_id',$request->user_id)->where('otp_type','scratch_web')->latest()->first();
             
             // Check if an OTP was found and if it has expired by 2 minutes
-            if ($otpOld) {
+            /*if ($otpOld) {
                 $now = Carbon::now();
                 // Check if the OTP is expired by 3 minutes
                 if ($now->diffInMinutes($otpOld->updated_at) > 3) {
                     return response()->json(['message' => "OTP Expired!! Try again", 'status' => false]);
                 }
+				
             } else {
                 // No OTP found
                 return response()->json(['message' => "OTP Expired!! Try again", 'status' => false]);
-            }
+            }*/
+						
 
             if (!empty($otpOld)) {
                 if ($otpOld->otp == $requestOtp) {
@@ -325,16 +329,10 @@ class GlScratchWebController extends Controller
                     $customer->email = $request->email;
                     $customer->branch_id = $request->branch;
 
-                    // if(request('user_id') == 1815){ // For hilite
-                    //     $offerListing = $this->fetchHiliteOffers($request);
-                    // }else{
-                        $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
-                                                        ->where('int_scratch_offers_balance','>', '0')
-                                                        ->where('int_status',1)
-                                                        ->inRandomOrder()
-                                                        ->first();
-                    // } 
-					
+                    $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
+                                    ->where('int_scratch_offers_balance','>', '0')->where('int_status',1)
+                                    ->inRandomOrder()->first();
+ 										
                     if ($offerListing) {
                         do {
                             $uniqueId = 'GW' . strtoupper(substr(uniqid(), 8));
@@ -342,10 +340,11 @@ class GlScratchWebController extends Controller
                         } while ($unique_flag);
 						
                         $customer->unique_id = $uniqueId;
+						$customer->offer_id = $offerListing->fk_int_scratch_offers_id;
                         $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                         $customer->offer_text = $offerListing->txt_description;
                         //$offerListing->int_scratch_offers_balance--;
-                        //$offerListing->save();
+                        $offerListing->save();
                         $customer->save();
                         $offerListing->customer_id = $customer->id;
                         $offerListing->unique_id = $uniqueId;

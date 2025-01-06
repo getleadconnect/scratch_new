@@ -45,7 +45,7 @@ class CampaignController extends Controller
   {
 	 $user_id=User::getVendorId();
 	 	 
-	$result=$this->checkUserStatus();
+	$result=$this->checkUserStatus($user_id);
 	if($result==false)
 	{
 		return Back();

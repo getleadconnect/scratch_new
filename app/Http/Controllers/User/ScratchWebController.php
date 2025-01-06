@@ -47,25 +47,26 @@ class ScratchWebController extends Controller
 			 $cust->where('scratch_web_customers.created_at','<=',$edate);
 		   
 		   
-		 $customers=$cust->orderBy('id', 'Desc')->get();
+		$customers=$cust->orderBy('id', 'Desc')->get();
 		
-        foreach ($customers as $key => $row) {
-            $row->slno = ++$key;
-        }
         return DataTables::of($customers)
 			->addIndexColumn()
-            ->editColumn('created_at', function ($customers) {
-                return date('d M Y h:i A', strtotime($customers->created_at));
+            ->editColumn('created_at', function ($row) {
+                return date('d M Y h:i A', strtotime($row->created_at));
             })
-            ->editColumn('branch', function ($customers) {
-                $branch = ScratchBranch::find($customers->branch_id);
+            ->editColumn('branch', function ($row) {
+                $branch = ScratchBranch::find($row->branch_id);
                 return optional($branch)->branch;
             })
-            ->addColumn('show', function ($customers) {
-                if ($customers->redeem == ScratchWebCustomer::REDEEMED) {
+			->addColumn('mobile', function ($row) {
+                $mob="+".$row->country_code." ".$row->mobile;
+				return $mob;
+            })
+            ->addColumn('show', function ($row) {
+                if ($row->redeem == ScratchWebCustomer::REDEEMED) {
                     return ' <button class="btn btn-sm btn-success btn-md-badge" data-toggle="tooltip" title="Redeemed"> <p class="text-white mb-0">Redeemed</p></button>';
-                } else if ($customers->redeem == ScratchWebCustomer::NOT_REDEEMED) {
-                    return '<a href="javascript:;" class="btn btn-sm btn-warning btn-md-badge scratch-web-redeem" customer-id="'.$customers->id.'" data-toggle="tooltip" title="Redeem offer"> Redeem</a>';
+                } else if ($row->redeem == ScratchWebCustomer::NOT_REDEEMED) {
+                    return '<a href="javascript:;" class="btn btn-sm btn-warning btn-md-badge scratch-web-redeem" customer-id="'.$row->id.'" data-toggle="tooltip" title="Redeem offer"> Redeem</a>';
                 }
             })
             ->rawColumns(['show'])
