@@ -1,0 +1,462 @@
+/*************Responsive Styles*****************/
+/***************iPhone Portrait**************/
+@media only screen and (max-width: 479px) and (min-width: 320px){
+    .setup-teams-sec .setup-col .setup-steps{
+        padding: 15px;
+    }
+    .setup-teams-sec .setup-col .setup-logo img.web-logo{
+        display: none;
+    }
+    .setup-teams-sec .setup-col .setup-logo img.mob-logo{
+        display: block;
+        width: 32px;
+    }
+    .setup-teams-sec .setup-col .setup-logo{
+        padding-bottom: 30px;
+    }
+    .team-dash-sec .plan-col .premium-btn a{
+        padding: 10px;
+        font-size: 11px;
+    }
+    .setup-teams-sec .team-sidebar .single-col,
+    .team-dash-sec .welcome-text,
+    .setup-teams-sec .setup-col .setup-logo p,
+    .setup-teams-sec .bottom-download p,
+    .setup-teams-sec .bill-texts,
+    .team-dash-sec .plan-col p{
+        display: none;
+    }
+    .setup-teams-sec .bottom-download .playstore-links{
+        flex-direction: column;
+    }
+    .setup-teams-sec .bottom-download .playstore-links li img{
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .setup-teams-sec .setup-col{
+        width: fit-content;
+        position: fixed;
+        height: 100%;
+    }
+    .team-dash-sec .welcome-text
+    .team-dash-sec .renew-boxes{
+        grid-template-columns: 1fr;
+        grid-row-gap: 30px;
+    }
+    .setup-teams-sec .team-dash-sec{
+        padding: 30px;
+        height: 100%;
+    }
+    .setup-teams-sec{
+        height: 100%;
+    }
+    .team-dash-sec .add-y-team .y-team-header{
+        padding: 30px 0px;
+    }
+    .team-dash-sec .plan-col .premium-btn{
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .team-dash-sec .renew-boxes{
+        grid-template-columns: 1fr;
+        grid-row-gap: 30px;
+    }
+    .team-dash-sec .renew-single{
+        padding: 20px 10px;
+    }
+    .team-dash-sec .pricing-summary{
+        margin-top: 20px;
+        padding: 20px;
+    }
+    #billing-box{
+        display: none;
+    }
+    br{
+        display: none;
+    }
+    .modal.right.fade .modal-dialog{
+        width: 80% !important   ;
+    }
+    
+    .team-dash-sec .back-btn,
+    .team-dash-sec .renew-select .next-btn{
+        display: block;
+}
+.team-dash-sec .renew-select .next-btn{
+    position: relative;
+    right: 0;
+    text-align: right;
+    margin-top: 25px;
+}
+
+
+/****** Setup Teams ************/
+.team-dash-sec .agent-boxes{
+    grid-template-columns: 1fr;
+    grid-row-gap: 25px;
+}
+.team-dash-sec .bottom-btns{
+    position: relative;
+    padding-top: 30px;
+    right: 0;
+    bottom: 0;
+    justify-content: end;
+}
+.team-dash-sec .bottom-btns-v2{
+    justify-content: space-between;
+    align-items: end;
+}
+.team-dash-sec .bottom-btns-v2 .bottom-btns-v2{
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-end;
+} 
+.team-dash-sec .bottom-btns-v2 .bottom-btns-v2 .back-btn{
+    margin-bottom: 50px;
+    margin-bottom: 30px;
+    margin-right: 0;
+}
+/****** Pricing page ************/
+.team-dash-sec .add-leads .sel-types{
+    margin: 15px 0px;
+}
+.team-dash-sec .upgrade-plans label{
+    margin-top: 20px;
+}
+.team-dash-sec .upgrade-price{
+    margin-bottom: 15px;
+}
+.team-dash-sec .finish-setup .app-img{
+    display: none;
+}
+.team-dash-sec .add-y-team {
+    height: auto;
+}
+}
+/**********************iPhone Landscape*************/
+@media only screen and (max-width: 767px) and (min-width: 480px){
+    .team-dash-sec .add-y-team {
+        height: auto;
+    }
+    .setup-teams-sec .setup-col .setup-steps{
+        padding: 10px;
+    }
+    .setup-teams-sec .bottom-download{
+        bottom: 10px;
+    }
+    #billing-box{
+        display: none;
+    }
+    .setup-teams-sec .setup-col .setup-logo img.web-logo{
+        display: none;
+    }
+    .setup-teams-sec .setup-col .setup-logo img.mob-logo{
+        display: block;
+        width: 32px;
+    }
+    .setup-teams-sec .setup-col .setup-logo{
+        padding-bottom: 30px;
+    }
+    .team-dash-sec .plan-col .premium-btn a{
+        padding: 10px;
+        font-size: 11px;
+    }
+    .setup-teams-sec .team-sidebar .single-col,
+    .team-dash-sec .welcome-text,
+    .setup-teams-sec .setup-col .setup-logo p,
+    .setup-teams-sec .bottom-download p,
+    .setup-teams-sec .bill-texts,
+    .team-dash-sec .plan-col p{
+        display: none;
+    }
+    .setup-teams-sec .bottom-download .playstore-links{
+        flex-direction: column;
+    }
+    .setup-teams-sec .bottom-download .playstore-links li img{
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .setup-teams-sec .setup-col{
+        width: fit-content;
+        position: fixed;
+        height: 100%;
+    }
+    .team-dash-sec .welcome-text
+    .team-dash-sec .renew-boxes{
+        grid-template-columns: 1fr;
+        grid-row-gap: 30px;
+    }
+    .setup-teams-sec .team-dash-sec{
+        padding: 30px;
+        height: 100%;
+        width: 90%;
+    }
+    .setup-teams-sec{
+        height: 100%;
+    }
+    .team-dash-sec .add-y-team .y-team-header{
+        padding: 30px 0px;
+    }
+    .team-dash-sec .plan-col .premium-btn{
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .team-dash-sec .renew-boxes{
+        grid-template-columns: 1fr;
+        grid-row-gap: 30px;
+    }
+    .team-dash-sec .renew-single{
+        padding: 20px 10px;
+    }
+    .team-dash-sec .pricing-summary{
+        margin-top: 20px;
+        padding: 20px;
+    }
+    br{
+        display: none;
+    }
+    .modal.right.fade .modal-dialog{
+        width: 80% !important   ;
+    }
+    .team-dash-sec .back-btn,
+    .team-dash-sec .renew-select .next-btn{
+        display: block;
+}
+.team-dash-sec .renew-select .next-btn{
+    position: relative;
+    right: 0;
+    text-align: right;
+    margin-top: 25px;
+}
+/****** Setup Teams ************/
+.team-dash-sec .agent-boxes{
+    grid-template-columns: 1fr;
+    grid-row-gap: 25px;
+}
+.team-dash-sec .bottom-btns{
+    position: relative;
+    padding-top: 65px;
+    right: 0;
+    bottom: 0;
+    justify-content: end;
+}
+.team-dash-sec .add-leads .sel-types{
+    margin: 15px 0px;
+}
+
+/****** Pricing page ************/
+.team-dash-sec .add-leads .sel-types{
+    margin: 15px 0px;
+}
+.team-dash-sec .upgrade-plans label{
+    margin-top: 20px;
+}
+.team-dash-sec .upgrade-price{
+    margin-bottom: 15px;
+}
+.setup-teams-sec .team-sidebar{
+    width: 10%;
+}
+.team-dash-sec .finish-setup .app-img{
+    display: none;
+}
+}
+/*************************iPad Portrait***************/
+@media only screen and (max-width: 985px) and (min-width: 768px){
+    .setup-teams-sec .setup-col .setup-steps{
+        padding: 15px;
+    }
+    .setup-teams-sec .setup-col .setup-logo img.web-logo{
+        display: none;
+    }
+    .setup-teams-sec .setup-col .setup-logo img.mob-logo{
+        display: block;
+        width: 32px;
+    }
+    .setup-teams-sec .setup-col .setup-logo{
+        padding-bottom: 30px;
+    }
+    .team-dash-sec .plan-col .premium-btn a{
+        padding: 10px;
+        font-size: 11px;
+    }
+    .setup-teams-sec .team-sidebar .single-col,
+    .team-dash-sec .welcome-text,
+    .setup-teams-sec .setup-col .setup-logo p,
+    .setup-teams-sec .bottom-download p,
+    .setup-teams-sec .bill-texts,
+    .team-dash-sec .plan-col p{
+        display: none;
+    }
+    .setup-teams-sec .bottom-download .playstore-links{
+        flex-direction: column;
+    }
+    .setup-teams-sec .bottom-download .playstore-links li img{
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .setup-teams-sec .setup-col{
+        width: fit-content;
+        position: fixed;
+        height: 100%;
+    }
+    .team-dash-sec .welcome-text
+    .team-dash-sec .renew-boxes{
+        grid-template-columns: 1fr;
+        grid-row-gap: 30px;
+    }
+    .setup-teams-sec .team-dash-sec{
+        padding: 30px;
+        height: 100%;
+        width: 90%;
+    }
+    .setup-teams-sec{
+        height: 100%;
+    }
+    .team-dash-sec .add-y-team .y-team-header{
+        padding: 30px 0px;
+    }
+    .team-dash-sec .plan-col .premium-btn{
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .team-dash-sec .renew-boxes{
+        grid-template-columns: 1fr;
+        grid-row-gap: 30px;
+    }
+    .team-dash-sec .renew-single{
+        padding: 20px 10px;
+    }
+    .team-dash-sec .pricing-summary{
+        margin-top: 20px;
+        padding: 20px;
+    }
+    br{
+        display: none;
+    }
+    .modal.right.fade .modal-dialog{
+        width: 80% !important   ;
+    }
+/****** Setup Teams ************/
+.team-dash-sec .agent-boxes{
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 25px;
+}
+.team-dash-sec .bottom-btns{
+    position: relative;
+    padding-top: 65px;
+    right: 0;
+    bottom: 0;
+    justify-content: end;
+}
+.team-dash-sec .add-leads .sel-types{
+    margin: 15px 0px;
+}
+/****** Pricing page ************/
+.team-dash-sec .add-leads .sel-types{
+    margin: 15px 0px;
+}
+.team-dash-sec .upgrade-plans label{
+    margin-top: 20px;
+}
+.team-dash-sec .upgrade-price{
+    margin-bottom: 15px;
+}
+.setup-teams-sec .team-sidebar{
+    width: 10%;
+}
+.team-dash-sec .add-y-team {
+    height: auto;
+}
+}
+
+/**************iPad Landscape***************/
+@media only screen and (max-width: 1026px) and (min-width: 986px){
+.setup-teams-sec .setup-col .setup-logo img{
+    width: 100px;
+}
+.setup-teams-sec .setup-col .setup-steps{
+    padding: 20px;
+}
+.setup-teams-sec .team-sidebar .single-col{
+    padding: 20px 10px;
+}
+.team-dash-sec .renew-single{
+    padding: 15px 25px;
+}
+.team-dash-sec .renew-boxes{
+    grid-column-gap: 20px;
+}
+.team-dash-sec .pricing-summary{
+    padding: 25px;
+    margin-top: 50px;
+}
+br{
+    display: none;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .payment-btn button{
+    font-size: 11px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .final-price p span{
+    font-size: 16px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-2 p span{
+    font-size: 14px;
+}
+.team-dash-sec .pricing-summary .plan-users p.price{
+    font-size: 11px;
+}
+.team-dash-sec .pricing-summary .plan-users .users p{
+    font-size: 10px;
+    margin: 0;
+}
+.team-dash-sec .pricing-summary .plan-users p span/{
+    font-size: 10px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-3{
+    display: flex;
+    flex-direction: column;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-3 button{
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+.setup-teams-sec .team-dash-sec{
+    padding: 35px 20px;
+}
+.modal.right.fade .modal-dialog{
+    width: 40% !important   ;
+}
+.team-dash-sec .upgrade-plans label{
+    min-height: 32px;
+}
+.team-dash-sec .add-y-team {
+    height: auto;
+}
+.team-dash-sec .agent-boxes{
+    grid-template-columns: repeat(3, 1fr);
+}
+}
+/*******************************************/
+
+@media only screen and (max-width: 1182px) and (min-width: 1027px){
+    .modal.right.fade .modal-dialog{
+        width: 40% !important   ;
+    }
+    .setup-teams-sec .setup-col .setup-steps{
+        padding: 20px;
+    }
+    .setup-teams-sec .team-dash-sec{
+        padding: 40px 30px;
+    }
+    .team-dash-sec .upgrade-plans label{
+        min-height: 32px;
+    }
+    .team-dash-sec .agent-boxes{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .team-dash-sec .add-y-team {
+        height: auto;
+    }
+}

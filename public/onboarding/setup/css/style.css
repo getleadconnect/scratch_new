@@ -1,0 +1,1330 @@
+
+.setup-teams-sec{
+    display: flex;
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+}
+.setup-teams-sec .team-sidebar{
+    display: flex;
+    width: 20%;
+}
+.setup-teams-sec .team-sidebar .single-col{
+    background-color: #273045;
+    padding: 40px 20px;
+}
+.setup-teams-sec .setup-col{
+    width: 240px;
+    background-color: #fff;
+    position: relative;
+}
+.setup-teams-sec .setup-col p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 13px;
+    letter-spacing: 0em;
+}
+.setup-teams-sec .setup-col .setup-logo{
+    text-align: center;
+    padding-bottom: 60px;
+    padding-top: 35px;
+}
+.setup-teams-sec .setup-col .setup-logo img{
+    width: 150px;
+    margin: auto;
+}
+.setup-teams-sec .setup-col .setup-logo img.mob-logo{
+    display: none;
+}
+.setup-teams-sec .setup-steps p.s-number{
+    font-family: 'Montserrat', sans-serif;
+    width: 35px;
+    height: 35px;
+    background-color: #E9E9E9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    letter-spacing: 0em;
+    color: #C2C2C2;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+.setup-teams-sec .setup-col .setup-steps{
+    padding-left: 35px;
+    padding-right: 50px;
+}
+.setup-teams-sec .setup-steps h4{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #444444;
+    opacity: 40%;
+}
+.setup-teams-sec .setup-steps p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: -0.04em;
+    color: #8D8D8D;
+    opacity: 60%;
+    margin: 0px;
+}
+.setup-teams-sec .setup-steps{
+    padding-bottom: 50px;
+}
+.setup-teams-sec .bottom-download .playstore-links{
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.setup-teams-sec .bottom-download .playstore-links li img{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+.setup-teams-sec .bottom-download p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    opacity: 100%;
+    color: #4D5459;
+    margin-bottom: 10px;
+}
+.setup-teams-sec .bottom-download{
+    position: absolute;
+    bottom: 20px;
+}
+.setup-teams-sec .team-dash-sec{
+    background-color: #E9E9E9;
+    /* height: 100%; */
+    min-height: 100vh;
+    width: 80%;
+    padding-top: 40px;
+    padding-bottom: 60px;
+    padding-left: 40px;
+    padding-right: 75px;
+    position: relative;
+}
+.team-dash-sec .team-header .welcome-text h3{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #19232B;
+    margin-bottom: 10px;
+}
+.team-dash-sec .team-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.team-dash-sec .team-header .welcome-text p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0.015em;
+    color: #8D8D8D;
+    margin: 0;
+}
+.team-dash-sec .plan-col .premium-btn{
+    margin-left: 35px;
+    margin-right: 30px;
+}
+.team-dash-sec .plan-col .premium-btn a{
+    font-family: 'Montserrat', sans-serif;
+    padding: 12px;
+    background-color: #F9C847;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    width: fit-content;
+    color: #272727;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+.team-dash-sec .plan-col .header-icons{
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0
+}
+.team-dash-sec .plan-col .header-icons li a img{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin: 0 5px;
+}
+.team-dash-sec .plan-col{
+    display: flex;
+    align-items: center;
+}
+.team-dash-sec .plan-col p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    color: #2F3941;
+    margin-bottom: 0;
+}
+.team-dash-sec .plan-col p span{
+    font-family: 'Montserrat', sans-serif;
+    color: #E43958;
+}
+.team-dash-sec .add-y-team .y-team-header{
+    padding-top: 95px;
+    padding-bottom: 75px;
+}
+.team-dash-sec .add-y-team .y-team-header h3{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    margin-bottom: 10px;
+}
+.team-dash-sec .add-y-team .y-team-header p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.015em; 
+    margin-bottom: 0px;   
+}
+/* .team-dash-sec .add-y-team{
+    height:100vh;
+} */
+.team-dash-sec .agent-boxes{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 30px;
+}
+.team-dash-sec .agent-single p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    margin-bottom: 0px;
+}
+.team-dash-sec .agent-single a.agent-email{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 13px;
+    letter-spacing: 0em;
+    color: #8D8D8D;
+    text-decoration: none;
+    
+}
+.team-dash-sec .agent-single .agent-btn-col{
+    margin: 10px 0;
+}
+.team-dash-sec .agent-single a.agent-btn{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 13px;
+    letter-spacing: 0em;
+    color: rgba(68, 68, 68, 0.8);
+    padding: 8px 25px;
+    max-width: 90px;
+    text-align: center;
+    max-height: 28px;
+    background: #E9E9E9;
+    border-radius: 4px;
+}
+.team-dash-sec .agent-single{
+    padding: 40px 35px;
+    background-color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.team-dash-sec .agent-invite{
+    background-color: transparent;
+    border: 1px dashed #C2C2C2;
+}
+.team-dash-sec .agent-invite .invite-btn{
+    padding-top: 16px;
+}
+.setup-btn:hover{
+    color: #fff;
+    text-decoration: none;
+}
+.setup-btn{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #fff;
+    background-color: #E43958;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.team-dash-sec .agent-invite .invite-btn a{
+    width: fit-content;
+    padding: 8px 25px;
+}
+.team-dash-sec .agent-single .agent-img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.team-dash-sec .agent-single .agent-img{
+    top: -18px;
+}
+.team-dash-sec .agent-single .agent-img img{
+    width: 36px;
+    height: 36px;
+}
+.team-dash-sec .agent-single span{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0em;
+    color: rgba(68, 68, 68, 0.8);
+}
+.team-dash-sec .bottom-btns{
+    position: relative;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.team-dash-sec .bottom-btns .back-btn{
+    margin-right: 20px;
+}
+.team-dash-sec .bottom-btns .back-btn a{
+    padding: 12px;
+}
+.team-dash-sec .bottom-btns .next-btn a{
+    padding: 12px 50px;
+}
+/***************   Pricing existing-page   ******************/
+
+.team-dash-sec .renew-single{
+    padding: 30px 50px;
+    background-color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+.team-dash-sec .renew-single.active{
+    border: 1px solid #E43958;
+    box-shadow: 0px 4px 4px rgba(228, 57, 88, 0.1); 
+}
+.team-dash-sec .renew-single .r-single-box h5{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    margin-bottom: 10px;
+}
+.team-dash-sec .renew-single .r-single-box p.box-bundle{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    background-color: #E9E9E9;
+    border-radius: 45px;
+    text-align: center;
+    padding: 2px 10px;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 5px;
+}
+.team-dash-sec .renew-single .r-single-box p.renew-date{
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    line-height: 19px;
+    letter-spacing: 0em;    
+    margin-bottom: 5px;
+    color: #8D8D8D;
+}
+.team-dash-sec .renew-single .r-single-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.team-dash-sec .renew-single .r-single-box p.renew-date span{
+    color: #4D5459;
+}
+.team-dash-sec .renew-single .r-single-box .expiry-date{
+    padding-top: 15px;
+    border-bottom: 1px dashed #B9B9B9;
+    padding-bottom: 10px;
+}
+
+.team-dash-sec .renew-single .r-single-box p.renew-price{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    padding-top: 20px;
+    margin: 0;
+}
+.team-dash-sec .renew-boxes{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 40px;
+}
+.team-dash-sec .renew-single{
+    height: 100%;
+}
+.team-dash-sec .renew-single .upgrade-img{
+    width: 110px;
+    margin-bottom: 10px;
+}
+.team-dash-sec .renew-single input[type=radio]{
+    display: none;
+}
+.team-dash-sec .renew-single input[type=radio]:checked ~ label{
+    background-color: #4D5459;
+}
+.team-dash-sec .pricing-summary{
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-top: 110px;
+}
+.team-dash-sec .pricing-summary h4{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #2F3941;
+    margin-bottom: 0px;
+}
+.team-dash-sec .pricing-summary .plan-users p span{
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #4D5459;
+}
+.team-dash-sec .pricing-summary .plan-users  .users{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.team-dash-sec .pricing-summary .plan-users  .users p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #4D5459;
+}
+.team-dash-sec .pricing-summary .plan-users-2{
+    border-bottom: none !important;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-2 p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #8D8D8D;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-2 p span{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0em;
+    color: #4D5459;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-2 a{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-decoration: underline;
+    color: #E57C00;
+    padding-top: 15px;
+}
+
+.team-dash-sec .pricing-summary .plan-users p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #8D8D8D;
+    margin-bottom: 5px;
+}  
+.team-dash-sec .pricing-summary .plan-users p.price{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #4D5459;
+    margin-bottom: 5px;
+}
+.team-dash-sec .pricing-summary .plan-users{
+    padding-bottom: 15px;
+    padding-top: 15px;
+    border-bottom: 1px dashed #B9B9B9;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-3 input{
+    padding: 12px 15px;
+    background-color: transparent;
+    border: 1px solid #F9C847;
+    width: 100%;
+    outline: none;
+    border-radius: 4px 0px 0px 4px;
+    height: 45px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-3 input::placeholder{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #8D8D8D;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-3 button{
+    font-family: 'Montserrat', sans-serif;
+    background: #F9C847;
+    border-radius: 0px 4px 4px 0px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #fff;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #F9C847;
+    height: 45px;
+    cursor: pointer;
+    outline: none;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .users-3{
+    padding: 10px 0px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .user-saved p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 13px;
+    letter-spacing: 0em;
+    color: #2BA17B;
+    background-color: rgba(41, 204, 151, 0.2);
+    padding: 2px 5px;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    border-radius: 2px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .final-price p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #8D8D8D;
+    text-align: center;
+    padding-top: 35px;
+    padding-bottom: 15px;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .final-price p span{
+    color: #E43958;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+}
+.team-dash-sec .pricing-summary .plan-users-2 .payment-btn button{
+    width: 100%;
+    padding: 12px 15px;
+}
+.team-dash-sec .dashboard-row{
+    height: 100%;
+}
+.setup-teams-sec .billing-col p.s-number{
+    color: #19232B;
+    background-color: #FFD900;
+    opacity: 100%;
+}
+.setup-teams-sec .billing-col h4,
+.setup-teams-sec .billing-col  p{
+    opacity: 100%;
+}
+.modal.right.fade .modal-dialog {
+    position: absolute;
+    height: 100% !important;
+    width: 25% !important;
+    right: 0;
+}
+.modal.right .modal-dialog .modal-content {
+    height: 100%;
+    border-radius: 0px;
+}
+.modal.right .modal-dialog {
+    margin: 0;
+    height: 100%;
+    max-width: 100%;
+}
+.modal.right .modal-body{
+    padding: 20px 40px;
+}
+.modal.right .coupon-inner h3{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0em;
+    color: #2F3941;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+.modal.right .coupon-inner h3 img{
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+.modal.right .modal-body{
+    background-color: #fff;
+}
+.modal.right .coupon-inner .coupon-box{
+    background: #FFFFFF;
+    border: 1px solid #E9E9E9;
+    box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.07);
+    border-radius: 4px;
+    padding: 25px 20px;
+    margin: 20px 0;
+}
+.modal.right .coupon-inner .coupon-box .title-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal.right .coupon-inner .coupon-box .title-btn p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 13px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    margin: 0;
+}
+
+.modal.right .coupon-inner .coupon-box .title-btn a{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 15px;
+    letter-spacing: 0em;
+    background: #E9E9E9;
+    border-radius: 2px;
+    padding: 5px 15px;
+    color: #C2C2C2;
+    text-decoration: none;
+}
+.modal.right .coupon-inner .coupon-box .coupon-title{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #B9B9B9;
+}
+.modal.right .coupon-inner .coupon-box .coupon-cont{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.015em;
+    color: #8D8D8D;
+    margin-bottom: 0;
+}   
+.modal.right .modal-header{
+    border: none;
+    padding: 20px !important;
+    padding-bottom: 0 !important;
+}
+.modal.right .modal-header .close{
+    outline: none;
+    cursor: pointer;
+}
+.modal.right .coupon-inner .coupon-box.active .title-btn p{
+    color: #E43958;
+}
+.modal.right .coupon-inner .coupon-box.active .title-btn a{
+    color: #2F3941;
+    background-color: #F9C847;
+}
+.team-dash-sec .renew-select .next-btn{
+    margin-top: 60px;
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+}
+.team-dash-sec .next-btn a{
+    background-color: #E43958;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px 25px;
+    text-decoration: none;
+}
+.team-dash-sec .back-btn-2,
+.team-dash-sec .renew-select .next-btn{
+    display: none;
+}
+.team-dash-sec .back-btn-2{
+    margin-top: 25px;
+}
+.team-dash-sec .back-btn a{
+    background-color: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #645f5f;
+    border: 1px solid #C2C2C2;
+    border-radius: 4px;
+    padding: 5px 25px;
+    text-decoration: none;  
+}
+.team-dash-sec .renew-boxes{
+    position: relative;
+    padding-bottom: 50px;
+}
+ .inp-counter{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+}
+.team-dash-sec .upgrade-plans select{
+    width: 100%;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    border: none;
+    outline: none;
+}
+.team-dash-sec .upgrade-plans .inp-counter span{
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0.025em;
+    color: rgba(68, 68, 68, 0.5);
+}
+.team-dash-sec .upgrade-plans .inp-counter input{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+}
+.team-dash-sec .upgrade-plans label{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #19232B;
+    margin-bottom: 15px;
+}
+.team-dash-sec .upgrade-price h4 span .user_price{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #4D5459;
+}
+.team-dash-sec .upgrade-price h4{
+    font-family: 'Montserrat', sans-serif;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0em;
+    color: #E43958;
+    margin-bottom: 5px;
+}
+.team-dash-sec .upgrade-price{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.team-dash-sec .upgrade-price p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 0.015em;
+    color: #6D7175; 
+    margin-bottom: 0px;
+}
+.team-dash-sec .currency-convert{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    height: 100%;
+}
+.team-dash-sec .currency-convert a{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #8D8D8D;
+    position: relative;
+    margin-left: 8px;
+}
+.team-dash-sec .currency-convert a.active{
+    color: #4D5459;
+}
+.team-dash-sec .currency-convert a.active:before{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    margin: auto;
+    content: '';
+    width: 3px;
+    height: 3px;
+    background: #E43958;
+    opacity: 0.8;
+}
+/********* Invite Modal ***********/
+.invite-modal .invitation-col{
+    text-align: center;
+    padding: 55px 60px;
+}
+.invite-modal .modal-body{
+    padding: 0;
+}
+.invite-modal .invitation-col h5{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    margin-bottom: 10px;
+}
+.invite-modal .invitation-col p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.015em;
+    text-align: center;
+    color: #4D5459;
+    margin-bottom: 35px;
+}
+.invite-modal .invitation-col form.invite-form input,
+.invite-modal .invitation-col form.invite-form select{
+    width: 100%;
+    padding: 12px 18px;
+    background-color: #E9E9E9;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    border: none;
+    outline: none;
+    margin-bottom: 15px;
+}
+.invite-modal .invitation-col form.invite-form button{
+    margin-top: 15px;
+}
+.invite-modal .invitation-col form.invite-form input::placeholder{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #4D5459;
+}
+.invite-modal  .modal-dialog{
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+/********* Setup teams-2 **********/
+.team-dash-sec .add-y-team .y-team-header .lead-options{
+    padding-top: 25px;
+    padding-bottom: 45px;
+}
+.team-dash-sec .add-y-team .y-team-header .lead-options p span{
+    font-weight: 500;
+} 
+.team-dash-sec .add-y-team .y-team-header .lead-options p{
+    padding: 5px 0px;
+} 
+.team-dash-sec .add-leads .sel-types h5{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    margin-bottom: 15px;
+}
+.add-leads .edit-label-list {
+    position: relative;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    outline: none;
+    flex-wrap: wrap;
+}
+ .add-leads .edit-label-list .todo-edit{
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 0px 4px 4px 0px;
+    /* padding-right: 15px; */
+    position: absolute;
+    right: 4px;
+    top: 0;
+    bottom: 0;
+    width: fit-content;
+    margin: auto;
+}
+ .add-leads .edit-label-list .todo-edit img{
+    margin-right: 15px;
+}
+ .add-leads .edit-label-list select{
+    border-radius: 4px;
+}
+ .add-leads .edit-label-list label,
+ .add-leads .edit-label-list select{
+    width: 100%;
+    color: #4D5459;
+    background-color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    border-radius: 4px 0px 0px 4px;
+    margin: 0;
+}
+ .add-leads .lead-listing,
+ .add-leads .lead-listing-2{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.add-leads .todo-add-btn{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0em;
+    color: #444444;
+    border: 1px dashed #C2C2C2;
+    border-radius: 6px;
+    background: transparent;
+    width: 100%;
+    text-align: center;
+    padding: 10px 15px;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.team-dash-sec .add-leads .edit-label-list .addi-field{
+    width: 56%;
+    display: flex;
+    position: relative;
+}
+.team-dash-sec .add-leads .edit-label-list .fields-type{
+    width: 40%;
+}
+.team-dash-sec .add-leads .todo-add-btn img{
+    margin-left: 5px;
+}
+.team-dash-sec .finish-setup{
+    align-items: center;
+}
+.team-dash-sec .finish-setup .link-phone .phone-col select,
+.team-dash-sec .finish-setup .link-phone .phone-col input{
+    padding: 10px 15px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    color: #222222;
+    -webkit-appearance: none;
+}
+.team-dash-sec .finish-setup .link-phone .phone-col {
+    display: flex;
+    justify-content: space-between;
+}
+.team-dash-sec .finish-setup .link-phone .phone-col input{
+    width: 100%;
+    margin-left: 15px;
+}
+.team-dash-sec .finish-setup .app-img{
+    width: 100%;
+    height: 100%;
+}
+.team-dash-sec .finish-setup .login-col{
+    text-align: center;
+}
+.team-dash-sec .finish-setup .login-col p span{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #4D5459; 
+    margin-bottom: 0px;
+}
+.team-dash-sec .finish-setup .login-col .link-phone p{
+    margin-top: 30px;
+    margin-bottom: 25px !important;
+}
+.team-dash-sec .finish-setup .login-col .link-phone p,
+.team-dash-sec .finish-setup .login-col p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    margin-bottom: 0;
+}
+.team-dash-sec .finish-setup .qr-code-img{
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.team-dash-sec .bottom-btns-v2{
+    position: relative;
+    right: 0;
+    bottom: 0;
+    padding-top: 70px;
+    justify-content: space-between;
+}
+.add-leads.invitation-col{
+    background: #E9E9E9;
+}
+.add-leads.invitation-col .setup-btn{
+    margin-top: 15px;
+    outline: none;
+}
+
+
+/***** CRM *****/
+.activity-lists ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.activity-lists ul li{
+    padding: 15px;
+    background-color: #fff;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+.activity-lists ul li.active{
+    background-color: #48B3E8;
+}
+.activity-lists ul li.active p,
+.activity-lists ul li.active p span{
+    color: #fff;
+}
+.activity-lists ul li p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0.015em;
+    color: #8D8D8D;
+    margin: 0;
+}
+.activity-lists ul li p span{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    padding-right: 15px;
+}
+.team-dash-sec .add-y-team .y-team-header-V2{
+    padding-top: 65px;
+    padding-bottom: 30px;
+}   
+.sidebar-V2 .setup-steps{
+    padding-bottom: 30px;
+}
+.sidebar-V2 .setup-col .setup-steps.active h4{
+    color: #E43958;
+}
+
+
+/* Attendance report */
+
+.filter-report{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 25px;
+}
+.filter-report .filter-col{
+    display: flex;
+    align-items: center;
+}
+.filter-report .filter-col h4{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    color: #4D5459;
+    margin-bottom: 0;
+}
+.filter-report .filter-col .filter-drop select{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    min-width: 200px;
+    margin-left: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+
+}
+.filter-report .filter-col .filter-drop select span{
+    font-size: 11px;
+    line-height: 13px;
+}
+.filter-report .export-col button{
+    background-color: #E43958;
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.att-card{
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+.lead-listing-v2 .edit-label-list{
+    border: 1px solid #00000030;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 0px #c4c4c4;
+}
+
+/* Additional Fields */
+.add-leads .edit-label-list .filter-div{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.add-leads .edit-label-list .filter-div .filter{
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    padding-right: 15px;
+}
+.add-leads .edit-label-list .filter-div label{
+    background: transparent;
+    padding: 0;
+    /* padding-bottom: 5px; */
+    width: fit-content;
+}
+.add-leads .edit-label-list .filter-div input{
+    margin-left: 5px;
+}
+
+
+/* popup */
+
+.complete-popup{
+    text-align: center;
+    padding: 50px 70px;
+}
+.complete-popup h3{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #2F3941;
+    padding-top: 25px;
+}
+.complete-popup p.subhead{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+.complete-popup p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    line-height: 24px;
+    font-weight: 400;
+    text-align: center;
+    color: #4D5459;
+    
+
+}
+.complete-popup p span{
+    font-weight: 600;
+}
+.complete-popup .setup-btn{
+    width: 300px;
+}
+.trial-btn button{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    color: #4D5459;
+    border: 1px solid #C2C2C2;
+    border-radius: 4px;
+    background-color: transparent;
+    margin-top: 10px;
+    width: 300px;
+}
+.trial-btn button:hover{
+    color: initial;
+}
+
+
+@media only screen and (max-width: 767px) and (min-width: 320px){
+    .complete-popup{
+        padding: 50px 30px;
+    }
+    .complete-popup button{
+        width: 100% !important;
+    }
+
+}
+
+
+/* dropdown header */
+
+.team-dash-sec .plan-col .header-icons li .dropdown-toggle:after{
+    content: none;
+}
+.team-dash-sec .plan-col .header-icons li .dropdown-menu{
+    left: unset;
+    right: 0;
+    width: fit-content;
+}
+.team-dash-sec .plan-col .header-icons li .dropdown-menu a{
+    font-size: 12px;
+}
