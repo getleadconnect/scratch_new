@@ -373,10 +373,8 @@ var KTLoginGeneral = function() {
                             //if(bypas_ids.includes(vendor_id))
 							if(status==true)
 							{
-								alert("otp no");
                                 verify_otp($button)
                             }else{
-								alert("otp ok");
                                 displayOtpForm()
                                 $(".user_number").html('Enter the verification code that we sent your <b> Mobile </b>')
                             }

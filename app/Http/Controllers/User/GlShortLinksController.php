@@ -37,11 +37,12 @@ class GlShortLinksController extends Controller
   
   public function index()
   {
-	 $short_links = ShortLink::where('link', 'NOT LIKE', 'http://' . '%')->get();
+	    /*$short_links = ShortLink::where('link', 'NOT LIKE', 'http://' . '%')->get();
         foreach ($short_links as $item) {
             $item->link = 'http://' . $item->link;
             $item->save();
         } 
+		*/
 	
 	 $user_id=User::getVendorId();
 	 $subscription=$this->checkUserStatus($user_id);
