@@ -5,41 +5,41 @@
   <!-- ONDASH Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+  <link rel="icon" href="{{url('assets/images/favicon-32x32.png')}}" type="image/png" />
   <!--plugins-->
-  <link href="{{asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet"/>
-  <link href="{{asset('assets/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/plugins/toastr/css/toastr.min.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet"/>
+  <link href="{{url('assets/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/plugins/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/plugins/toastr/css/toastr.min.css')}}" rel="stylesheet" />
   
-  <link href="{{asset('assets/fontawesome-free-5.15-web/css/all.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/fontawesome-free-5.15-web/css/all.css')}}" rel="stylesheet" />
 
    
   <!-- Bootstrap CSS -->
-  <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/css/bootstrap-extended.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet">
+  <link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/bootstrap-extended.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/style.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/icons.css')}}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-  <link href="{{asset('assets/flaticon2/flaticon.css')}}" rel="stylesheet">
+  <link href="{{url('assets/flaticon2/flaticon.css')}}" rel="stylesheet">
   
   <!-- loader-->
-  <link href="{{asset('assets/css/pace.min.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/pace.min.css')}}" rel="stylesheet" />
 
   <!--Theme Styles-->
-  <link href="{{asset('assets/css/dark-theme.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/css/light-theme.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/css/semi-dark.css')}}" rel="stylesheet" />
-  <link href="{{asset('assets/css/header-colors.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/dark-theme.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/light-theme.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/semi-dark.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/css/header-colors.css')}}" rel="stylesheet" />
  
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
-<link href="{{ asset('assets/intl-tel-input17.0.3/intlTelInput.min.css')}}" rel="stylesheet"/>
+<link href="{{ url('assets/intl-tel-input17.0.3/intlTelInput.min.css')}}" rel="stylesheet"/>
 
   <title>GL-Scratch</title>
 </head>
@@ -74,7 +74,7 @@
               <div class="dropdown dropdown-user-setting">
                 <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                   <div class="user-setting d-flex align-items-center gap-2">
-                    <img src="{{asset('assets/images/logos/gl-logo.svg')}}" class="user-img" alt="" >
+                    <img src="{{url('assets/images/logos/gl-logo.svg')}}" class="user-img" alt="" >
                     <div class="d-none d-sm-block">
                        <p class="user-name mb-0">{{Auth::user()->vchr_user_name}}</p>
                     </div>
@@ -178,29 +178,29 @@
   
   <!--end wrapper-->
 
-<script src="{{asset('assets/js/jquery.min.js')}}"></script>
+<script src="{{url('assets/js/jquery.min.js')}}"></script>
 
   <!-- Bootstrap bundle JS -->
-  <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url('assets/js/bootstrap.bundle.min.js')}}"></script>
   <!--plugins-->
   
-  <script src="{{asset('assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
-  <script src="{{asset('assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
-  <script src="{{asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>
-  <script src="{{asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
-  <script src="{{asset('assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+  <script src="{{url('assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
+  <script src="{{url('assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
+  <script src="{{url('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>
+  <script src="{{url('assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
+  <script src="{{url('assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
   
-  <script src="{{asset('assets/js/pace.min.js')}}"></script>
+  <script src="{{url('assets/js/pace.min.js')}}"></script>
 
-  <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
-  <script src="{{asset('assets/plugins/toastr/js/toastr.min.js')}}"></script>
-  <script src="{{asset('assets/plugins/jquery-form/jquery.form.min.js')}}"></script>
+  <script src="{{url('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+  <script src="{{url('assets/plugins/toastr/js/toastr.min.js')}}"></script>
+  <script src="{{url('assets/plugins/jquery-form/jquery.form.min.js')}}"></script>
     
-  <script src="{{asset('assets/js/jquery.validation.min.js')}}"></script>
-  <script src="{{asset('assets/js/moment.js')}}"></script>
+  <script src="{{url('assets/js/jquery.validation.min.js')}}"></script>
+  <script src="{{url('assets/js/moment.js')}}"></script>
   
   <!--app-->
-  <script src="{{asset('assets/js/app.js')}}"></script>
+  <script src="{{url('assets/js/app.js')}}"></script>
   
   <script src="{{url('assets/plugins/chartjs/js/Chart.min.js')}}"></script>
   <script src="{{url('assets/plugins/chartjs/js/Chart.extension.js')}}"></script>
@@ -210,14 +210,14 @@
    <script src="{{url('assets/plugins/chartjs/js/chartjs-custom.js')}}"></script>
    @endif
   
-  <script src="{{asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
-  <script src="{{asset('assets/plugins/datatable/js/dataTables.bootstrap5.min.js')}}"></script>
-  <script src="{{asset('assets/js/table-datatable.js')}}"></script>
+  <script src="{{url('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+  <script src="{{url('assets/plugins/datatable/js/dataTables.bootstrap5.min.js')}}"></script>
+  <script src="{{url('assets/js/table-datatable.js')}}"></script>
   
   <!--<script src="assets/plugins/summernote/summernote-bs4.min.js"></script>-->
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
    
-   <script src="{{asset('assets/intl-tel-input17.0.3/intlTelInput.min.js')}}"></script>
+   <script src="{{url('assets/intl-tel-input17.0.3/intlTelInput.min.js')}}"></script>
  <!--<script>
     new PerfectScrollbar(".best-product")
  </script>-->
