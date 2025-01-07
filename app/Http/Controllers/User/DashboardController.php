@@ -38,23 +38,28 @@ class DashboardController extends Controller
 
 	$user=User::where('pk_int_user_id',$user_id)->first();
 	
-	$sub['subscription']='Active';
-	$sub['start_date']="";
-	$sub['end_date']="";
-	if($user && ($user->subscription_start_date=='' || $user->subscription_end_date=='') )
-	{
-		$sub['subscription']='No Subscription';
+		$sub['subscription']='Active';
+		$sub['start_date']="";
+		$sub['end_date']="";
 		
-	}
-	else 
-	{
-	
-		if($user->subscription_end_date<date('Y-m-d'))
-			$sub['subscription']="Expired";
+		$date = Carbon::create($user->subscription_end_date);
+		$now = Carbon::now();
+		$sub_diff_days= round($now->diffInDays($date),0);
 
-		$sub['start_date']=$user->subscription_start_date?Carbon::createFromFormat('Y-m-d',$user->subscription_start_date)->format('d-m-Y'):'';
-		$sub['end_date']=$user->subscription_end_date?Carbon::createFromFormat('Y-m-d',$user->subscription_end_date)->format('d-m-Y'):'';
-	}
+		if($user && ($user->subscription_start_date=='' || $user->subscription_end_date=='') )
+		{
+			$sub['subscription']='No Subscription';
+		}
+		else 
+		{
+		
+			$subscription_date = Carbon::create($user->subscription_end_date)->addDays(1)->format('Y-m-d');
+			if($subscription_date<=date('Y-m-d'))
+				$sub['subscription']="Expired";
+
+			$sub['start_date']=$user->subscription_start_date?Carbon::createFromFormat('Y-m-d',$user->subscription_start_date)->format('d-m-Y'):'';
+			$sub['end_date']=$user->subscription_end_date?Carbon::createFromFormat('Y-m-d',$user->subscription_end_date)->format('d-m-Y'):'';
+		}
 	
 
 // BAR chart data------------------------------
@@ -112,7 +117,7 @@ class DashboardController extends Controller
 	$chart['user_year']=implode(",",$ur_year);
 	$chart['user_count']=implode(",",$ur_cnt);
 	//---------------------------------------------------
-	return view('users.dashboard',compact('tot_count','used_count','bal_count','sub','chart'));
+	return view('users.dashboard',compact('tot_count','used_count','bal_count','sub','chart','sub_diff_days'));
 	
   }	
    

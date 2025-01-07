@@ -45,7 +45,11 @@
                   <h6 class="mb-0 pt5">&nbsp;</h6>
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
+				  @if($subscription)
 				     <a href="{{url('users/add-campaign')}}" id="btn-add-campaign" class="btn btn-gl-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
+				  @else
+					 <a href="javascript:;" id="btn-add-camp" class="btn btn-gl-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
+				  @endif
 				  </div>
 
 				  </div>
@@ -153,17 +157,18 @@
 	</script>
 @endif
 
-@if (Session::get('msg_swal'))
-	<script>
-	 Swal.fire({
+
+<script>
+
+$(document).on('click','#btn-add-camp',function()
+{
+	Swal.fire({
 		  title: "{{Session::get('msg_title')}}",
 		  text: "{{Session::get('msg_swal')}}",
 		  icon: "info"
 		});
-	</script>
-@endif
+});
 
-<script>
 
 BASE_URL ={!! json_encode(url('/')) !!}
 

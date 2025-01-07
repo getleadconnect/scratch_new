@@ -33,8 +33,7 @@ class User extends Authenticatable implements JWTSubject
     const ADMIN = 1;
     const USERS = 2;
     const STAFF = 3;
-
-
+	
 	protected $table = 'tbl_users';
     protected $primaryKey = 'pk_int_user_id';
 	

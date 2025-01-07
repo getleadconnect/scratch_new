@@ -2,7 +2,7 @@
 <html lang="en" class="light-theme">
 
 <head>
-  <!-- Required meta tags -->
+  <!-- ONDASH Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
@@ -191,8 +191,7 @@
   <script src="{{asset('assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
   
   <script src="{{asset('assets/js/pace.min.js')}}"></script>
-  
-  <!--<script src="assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>-->
+
   <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
   <script src="{{asset('assets/plugins/toastr/js/toastr.min.js')}}"></script>
   <script src="{{asset('assets/plugins/jquery-form/jquery.form.min.js')}}"></script>
@@ -210,9 +209,6 @@
    @else
    <script src="{{url('assets/plugins/chartjs/js/chartjs-custom.js')}}"></script>
    @endif
-  
-  <!--<script src="{{url('assets/plugins/apexcharts-bundle/js/apexcharts.min.js')}}"></script>
-  <script src="{{asset('assets/js/index2.js')}}"></script> -->
   
   <script src="{{asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('assets/plugins/datatable/js/dataTables.bootstrap5.min.js')}}"></script>

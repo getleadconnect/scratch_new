@@ -81,11 +81,11 @@
                                  <tr>
 									<th>SlNo</th>
 									<th>Name</th>
-									<th>Country_Code</th>
 									<th>Mobile</th>
 									<th>Email</th>
 									<th>Address</th>
 									<th>Location</th>
+									<th>Created At</th>
 									<th>Status</th>
 									<th class="no-content" style="width:50px;">Action</th>
 								</tr>
@@ -290,12 +290,13 @@ var table = $('#datatable').DataTable({
 
         columns: [
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
+			
 			{"data": "name" },
-			{"data": "countrycode" },
 			{"data": "mobile" },
 			{"data": "email" },
 			{"data": "address" },
 			{"data": "location" },
+			{"data": "cdate" },
 			{"data": "status" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],

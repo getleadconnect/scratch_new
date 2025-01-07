@@ -35,21 +35,18 @@ class CampaignController extends Controller
   public function index()
   {
 	 $user_id=User::getVendorId();
+	 
+	 $subscription=$this->checkUserStatus($user_id);
+	 	 
 	 $type=ScratchType::where('status',1)->get(); 
 	 $sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
-	 return view('users.campaign.campaign_list',compact('type','sbal_count'));
+	 return view('users.campaign.campaign_list',compact('type','sbal_count','subscription'));
   }	
   
     
   public function addCampaign()
   {
 	 $user_id=User::getVendorId();
-	 	 
-	$result=$this->checkUserStatus($user_id);
-	if($result==false)
-	{
-		return Back();
-	}
 	 	  
 	 $type=ScratchType::where('status',1)->get();
 	 $sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();

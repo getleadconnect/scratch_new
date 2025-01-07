@@ -18,6 +18,7 @@ use Session;
 use Auth;
 use Log;
 use DB;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -28,6 +29,8 @@ class UserController extends Controller
   
   public function index()
   {
+	  
+			
 	 return view('admin.users.users_list');
   }	
 
@@ -91,7 +94,7 @@ class UserController extends Controller
         return Datatables::of($users)
 		->addIndexColumn()
 		->addColumn('name', function ($row) {
-			return '<a href="'.route('admin.user-profile',$row->pk_int_user_id).'">'.strtoupper($row->vchr_user_name).'</a>';
+			return '<a href="'.route('admin.user-profile',$row->pk_int_user_id).'" style="font-weight:500;">'.strtoupper($row->vchr_user_name).'</a>';
         })
 		->addColumn('status', function ($row) {
             if ($row->int_status==1) {
@@ -99,7 +102,23 @@ class UserController extends Controller
             } else {
                 $status='<span class="badge rounded-pill bg-danger">Inactive</span>';
             }
+			
+			$subscription_date = Carbon::create($row->subscription_end_date)->addDays(1)->format('Y-m-d');
+			if($subscription_date<=date('Y-m-d'))
+			{
+				$status='<span class="badge rounded-pill bg-danger">Expired</span>';
+			}
+			
 			return $status;
+        })
+		->addColumn('mobile', function ($row) {
+            
+			$mob="+".$row->countrycode." ".$row->mobile;
+			return $mob;
+        })
+		->addColumn('cdate', function ($row) {
+            
+			return date_create($row->created_at)->format('d-m-Y');
         })
 				
         ->addColumn('action', function ($row)
@@ -112,12 +131,13 @@ class UserController extends Controller
 			{
 				$btn='<li><a class="dropdown-item btn-act-deact" href="javascript:void(0)" id="'.$row->pk_int_user_id.'" data-option="1"><i class="lni lni-checkmark"></i> Activate</a></li>';
 			}
-
+			
 			$action='<div class="fs-5 ms-auto dropdown">
                           <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="fadeIn animated bx bx-dots-vertical"></i></div>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item edit-user" href="javascript:void(0)" id="'.$row->pk_int_user_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-user"  ><i class="lni lni-pencil-alt"></i> Edit</a></li>
-                              <li><a class="dropdown-item delete-user" href="javascript:void(0)" id="'.$row->pk_int_user_id.'"><i class="lni lni-trash"></i> Delete</a></li>'
+                              <li><a class="dropdown-item delete-user" href="javascript:void(0)" id="'.$row->pk_int_user_id.'"><i class="lni lni-trash"></i> Delete</a></li>
+							  <li><a class="dropdown-item view-user" href="'.route('admin.user-profile',$row->pk_int_user_id).'" id="'.$row->pk_int_user_id.'"><i class="lni lni-eye"></i> View</a></li>'
 							  .$btn.
 							  '</ul>
                         </div>';
