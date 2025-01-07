@@ -16,11 +16,9 @@ use App\Models\ScratchOffer;
 use App\Models\ScratchOffersListing;
 use App\Models\ScratchWebCustomer;
 use App\Models\ShortLinkHistory;
-//use App\Models\EnquiryType;
-//use App\Models\Enquiry;
 use App\Models\ScratchBranch;
 use App\Models\User;
-//use App\Models\EnquiryFollowup;
+
 use App\Models\GlApiTokens;
 use App\Models\UserOtp;
 
@@ -35,6 +33,7 @@ use App\Services\WhatsappService;
 //use App\Jobs\SendEmailJob;
 
 //use App\Core\CustomClass;
+
 use App\SmsPanel;
 
 use Carbon\Carbon;
@@ -128,7 +127,7 @@ class GlScratchWebController extends Controller
                 if ($offer) {
 
                     return view('gl-scratch-web.short-link.scratch', compact(['shortlink', 'user', 'offer']));
-                    // return view('gl-scratch-web.short-link.scratch-common',compact(['shortlink','user','offer']));
+
                 }
             }
         }
@@ -160,16 +159,7 @@ class GlScratchWebController extends Controller
 					->whereDate('scratch_web_customers.created_at',now())
                     ->first();
 	   
-        /*if($check_num && $request->mobile != '9048333535')
-		{
-            if($request->user_id == 1815) // for hilite
-                return response()->json(['msg' => "Your chance for today is done, Kindly visit us again tomorrow to win exciting prizes", 'status' => false]);
-            else
-                return response()->json(['msg' => "You have already used up your chance. Please try with a different number", 'status' => false]);
-        }
-		*/
-
-		
+ 		
 		if($check_num)
 		{
             return response()->json(['msg' => "Your chance for today is done, Kindly visit us again tomorrow to win exciting prizes", 'status' => false]);
@@ -221,9 +211,7 @@ class GlScratchWebController extends Controller
 	
     public function verifyOTP(Request $request)
     {
-		
-		dd($request->all());
-		
+
         // return response()->json(['msg' => "Token Expired.!! Try again", 'status' => true]);
 		
         $requestOtp = $request->otp;
@@ -259,8 +247,7 @@ class GlScratchWebController extends Controller
 		$bypass_ids=explode(",",Variables::getScratchBypass());
 				
         if(in_array($request->vendor_id, $bypass_ids)){
-		//if(in_array($request->vendor_id, Variables::getScratchBypass())){
-			
+					
             $customer = new ScratchWebCustomer();
             $customer->fill($request->all());
             $customer->status = ScratchWebCustomer::NOT_SCRATCHED;
@@ -284,7 +271,7 @@ class GlScratchWebController extends Controller
                 $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                 $customer->offer_text = $offerListing->txt_description;
                 //$offerListing->int_scratch_offers_balance--;
-                $offerListing->save();
+                //$offerListing->save();
                 $customer->save();
 
                 $offerListing->customer_id = $customer->id;
@@ -344,7 +331,7 @@ class GlScratchWebController extends Controller
                         $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                         $customer->offer_text = $offerListing->txt_description;
                         //$offerListing->int_scratch_offers_balance--;
-                        $offerListing->save();
+                        //$offerListing->save();
                         $customer->save();
                         $offerListing->customer_id = $customer->id;
                         $offerListing->unique_id = $uniqueId;
@@ -370,6 +357,7 @@ class GlScratchWebController extends Controller
     }
 
 
+
     public function glScratched($id,$web_api=null)
     {
 
@@ -380,6 +368,7 @@ class GlScratchWebController extends Controller
         }else{
             $company = '';
         }
+		
         $offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->select('int_winning_status')->first();
         $customer->status = ScratchWebCustomer::SCRATCHED;
         $uniqueId = $customer->unique_id;
@@ -392,6 +381,7 @@ class GlScratchWebController extends Controller
        // }
         //$enq_id = Enquiry::getCRMWebsiteUsers(EnquiryType::GLSCRATCH_WEB, $customer->mobile, $vendor_id, $customer->name, '', '', $customer->country_code,$company ,request());
         /** ......End Leads .... */
+
 
         $offetText = $customer->offer_text;
         /** .... Send SMS ...*/
@@ -419,79 +409,12 @@ class GlScratchWebController extends Controller
                 }catch(\Exception $e){
                     \Log::info($e->getMessage());
                 }
-            } else {
-                /** .... Send SMS Getlead  ...*/
-                /*$mobile = $customer->country_code . $customer->mobile;
-                $template = User::getModuleSmsTemplate($vendor_id, 2, 1);
-                if ($template)
-                    $message = str_replace(['{offer}', '{redeem_id}'], [$offetText, $uniqueId], $template->template);
-                else
-                    $message = ('Congratulations!! You have won ' . $offetText . '.And Your Redeem Id is ' . $uniqueId . '. Getlead');
-                // $message = ('Congratulations!! You have won ' . $offetText . '.And Your Redeem Id is ' . $uniqueId);
-                //Send API Call to a Specific Customer
-                if($customer->user_id==1012 || $customer->user_id==631){
-                    try{
-                        $client = new Client();
-                        $params = [
-                            'couponCode' => $uniqueId,
-                            'mobile_number' => $customer->mobile,
-                            'amountLabel' => $offetText
-                        ];
-                        $data=[
-                            'json'=>$params,
-                            'headers' => [
-                                'Content-Type' => 'application/json',
-                                'Authorization' => 'Bearer l738h8acwp5jylb4pbohcii3gobb9iam',
-                                'Cookie' => 'PHPSESSID=vjh9fvg7iospf0ndfd32894g9o'
-                            ]
-                        ];
-                        $client->post('https://oxygen-new.webc.in/rest/V1/scratch_coupon/save', $data);
-                    }catch(\Exception $exp){
-                        \Log::error($exp->getMessage());
-                    }
-                }*/
-                //
-               /*$defaultSenderId = SingleSMS:: getSenderid($vendor_id, EnquiryType::GLSCRATCH);
-                $defaultRoute = SingleSMS:: getRoute($vendor_id, EnquiryType::GLSCRATCH);
-                $apitemplate = CustomClass::userDefaultApiTemplate($vendor_id);
-
-                if (!empty($apitemplate)) {
-                    // $input['template_id']=$apitemplate->pk_int_api_template_id;
-                    $msg_template = $apitemplate->text_api_template_description;
-                    $response = CustomClass::urlReplacement($msg_template, $message, $mobile, $defaultSenderId);
-
-                } else {
-                    $send = new SingleSMS();
-                    $smsPanel = $send->getSmsPanel($defaultRoute, $vendor_id);
-                    $balanceSms = $send->getSMSBalance($vendor_id, $defaultRoute, $smsPanel);
-
-                    if ($balanceSms > 0) {
-                        if ($smsPanel->title == SmsPanel::ALERTBOX) {
-                            $routeCode = $send->getRouteDetails($defaultRoute)->int_sms_route_code;
-                            $smsUrl = $send->getSmsUrl($defaultSenderId, $mobile, $message, $defaultRoute, $routeCode, $vendor_id, '0');
-                            $smsCount = $send->getInputSMSCount($message, '0');
-                            $templateId = $send->getSmsTemplateId($defaultRoute, $vendor_id);
-                            $routeName = $send->getRouteDetails($defaultRoute)->vchr_sms_route;
-                            $insertSms = $send->storeSmsData($vendor_id, $templateId, $mobile, $defaultSenderId, '0', $routeName, $message, EnquiryType::GLSCRATCH, $routeCode, $defaultRoute, '1', $smsCount);
-                            $response = $send->sendSms($defaultSenderId, $mobile, $message, $routeCode, $balanceSms, $templateId, $defaultRoute, '0', $vendor_id, $smsUrl);
-                            $response = $send->getResponse($insertSms, $response, $templateId, $defaultRoute, $vendor_id, $smsCount);
-                        } else {
-                            $routeCode = $send->getRouteDetails($defaultRoute)->short_code;
-                            $smsUrl = $send->getSmsMerabtUrl($defaultSenderId, $mobile, $message, $defaultRoute, $routeCode, $vendor_id, '0');
-                            $smsCount = $send->getInputSMSCount($message, '0');
-                            $templateId = $send->getSmsTemplateId($defaultRoute, $vendor_id);
-
-                            $routeName = $send->getRouteDetails($defaultRoute)->vchr_sms_route;
-                            $insertSms = $send->storeSmsData($vendor_id, $templateId, $mobile, $defaultSenderId, '0', $routeName, $message, EnquiryType::GLSCRATCH, $routeCode, $defaultRoute, '1', $smsCount);
-                            //$response = $send->sendSms($defaultSenderId, $mobile, $message, $routeCode, $balanceSms, $templateId, $defaultRoute, '0', $vendor_id, $smsUrl);
-                            $response = $send->sendSmsPost($defaultSenderId, $mobile, $message, $routeCode, $balanceSms, $templateId, $defaultRoute, '0', $vendor_id);
-                            $response = $send->getMetabtResponse($insertSms, $response, $templateId, $defaultRoute, $vendor_id, $smsCount);
-                        }
-                    }
-                }*/
-                /** ....End Getlead SMS ...*/
-            }
-            // }
+            } 
+			else
+			{
+				
+			}
+			
         }else{
             try {
                 $message = "Sorry $customer->name !! You have lost scratch card. Better luck next time";
@@ -550,6 +473,7 @@ class GlScratchWebController extends Controller
         /** .... End Notification ... */
 
         // if($web_api == "scratch_api"){
+			
         $offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->where('int_scratch_offers_balance','>', '0')->first();
         if($offerListing){
             $offerListing->int_scratch_offers_balance--;
@@ -608,6 +532,7 @@ class GlScratchWebController extends Controller
     }
 	*/
 	
+	
 	public function getBranchAutocomplete($user_id)
     {
         $vendor_id = User::getVendorIdApi($user_id);
@@ -625,135 +550,5 @@ class GlScratchWebController extends Controller
     }
 
 
-
-    public function fetchHiliteOffers($request)
-    {
-        \Log::info($request->all());
-        $today = now();
-        $date = "2023-04-13";
-        $expiryNow = Carbon::parse($date);
-        $expiry = $expiryNow->addDays(15);
-        $limit_days =  $today->diffInDays($expiry);
-        
-        if($today->toDateString() == $expiry->toDateString()){
-            $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
-                                    ->where('int_scratch_offers_balance', '>', '0')
-                                    ->where('int_status',1)
-                                    ->inRandomOrder()
-                                    ->get();
-
-            return $offerListing->first();
-        }
-        $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
-                                            ->where('int_scratch_offers_balance', '>', '0')
-                                            ->where('int_status',1)
-                                            ->inRandomOrder()
-                                            ->get();
-
-        $offerListing->map(function($offer,$key) use($limit_days,$offerListing){
-            $count_limit = $offer->int_scratch_offers_balance / $limit_days +2;
-            $getScrtach = ScratchWebCustomer::where('offer_list_id',$offer->pk_int_scratch_offers_listing_id)
-                                            ->whereDate('created_at',Carbon::today())
-                                            ->count();
-
-            if($getScrtach == (int) $count_limit){
-                return $offerListing->forget($key);
-            }else{
-                return $offer;
-            }  
-        });
-
-        return $offerListing->first();
-    }
-
-
-    function resendOtp(){
-        /** .... Send SMS Getlead  ...*/
-        $mobile = $request->country_code . $request->mobile;
-        $input = $request->all();
-        $number = $mobile;
-        Session::put('number', $number);
-        $otp = rand(1111, 9999);
-        $user = User::where('pk_int_user_id', $request->user_id)->first();
-        $vendor_id = User::getVendorIdApi($user->pk_int_user_id);
-        $template = User::getModuleSmsTemplate($vendor_id, 2, 2);
-        if ($template){
-            $message = str_replace('{otp}', $otp, $template->template);
-        } else{
-            if($user->pk_int_user_id == 1815){  // for hilite
-                $url = 'https://app.getlead.co.uk/api/pushsms?username=917561086668&token=gl_64584620ae5fcbda186d&sender=HTMALL&to='.$mobile.'&message=Your%20HiLITE%20Login%20OTP%20No%20:%20'.$otp.'&priority=11&message_type=0';
-                $client = new \GuzzleHttp\Client();
-                $client_request = $client->get($url); 
-                goto label;
-            }if($user->pk_int_user_id == 832){  // for vismaya
-                $url = 'https://app.getlead.co.uk/api/pushsms?username=919048506041&token=gl_0e3aebf369da45359dad&sender=VSMYAA&to='.$mobile.'&message='.$otp.' is your OTP from Vismaya Park.&priority=11&message_type=0';
-                $client = new \GuzzleHttp\Client();
-                $client_request = $client->get($url); 
-                goto label;
-            }if($user->pk_int_user_id == 1265){  // futura labs
-                $url = 'https://app.getlead.co.uk/api/pushsms?username=917994420040&token=gl_a6654d895ab52769f4dc&sender=TRNPVT&to='.$mobile.'&message=Dear Customer Your One Time Password Is '.$otp.' TRNPVT&priority=4&message_type=0';
-                $client = new \GuzzleHttp\Client();
-                $client_request = $client->get($url); 
-                goto label;
-            }elseif($user->pk_int_user_id == 4164){ //teammates academy
-                $url = 'https://app.getlead.co.uk/api/pushsms?username=917994420040&token=gl_a6654d895ab52769f4dc&sender=TRNPVT&to='.$mobile.'&message=Dear Customer Your One Time Password Is '.$otp.' TRNPVT&priority=4&message_type=0';
-                $client = new \GuzzleHttp\Client();
-                $client_request = $client->get($url); 
-                goto label;
-            }elseif($user->pk_int_user_id == 4216){ // muhammed irfan
-                $url = 'https://app.getlead.co.uk/api/pushsms?username=918606498065&token=gl_9b677c6bf232a77fda81&sender=TRNPVT&to='.$mobile.'&message=Dear Customer Your One Time Password Is '.$otp.' TRNPVT&priority=4&message_type=0';
-                $client = new \GuzzleHttp\Client();
-                $client_request = $client->get($url); 
-                goto label;
-            }else{
-                try {
-                    $message = ('Hello, '.$otp.' is the OTP for your request for Scratch through Getlead');
-                    // $message = ('Dear Customer Your One Time Password Is '.$otp.' TRNPVT');
-                } catch (\Exception $e) {
-                    \Log::info($e->getMessage());
-                }
-                
-            }
-        }
-
-        $defaultSenderId = 'GLTCKT';
-        $defaultRoute = '2';
-        $apitemplate = CustomClass::userDefaultApiTemplate($vendor_id);
-
-        if (!empty($apitemplate)) {
-            $msg_template = $apitemplate->text_api_template_description;
-            $response = CustomClass::urlReplacement($msg_template, $message, $mobile, $defaultSenderId);
-
-        } else {
-            $send = new SingleSMS();
-            $smsPanel = $send->getSmsPanel($defaultRoute, $vendor_id);
-            $balanceSms = $send->getSMSBalance($vendor_id, $defaultRoute, $smsPanel);
-            if ($balanceSms > 0) {
-                if ($smsPanel->title == SmsPanel::ALERTBOX) {
-                    $routeCode = $send->getRouteDetails($defaultRoute)->int_sms_route_code;
-                    $smsUrl = $send->getSmsUrl($defaultSenderId, $mobile, $message, $defaultRoute, $routeCode, $vendor_id, '0');
-                    $smsCount = $send->getInputSMSCount($message, '0');
-                    $templateId = $send->getSmsTemplateId($defaultRoute, $vendor_id);
-                    $routeName = $send->getRouteDetails($defaultRoute)->vchr_sms_route;
-                    $insertSms = $send->storeSmsData($vendor_id, $templateId, $mobile, $defaultSenderId, '0', $routeName, $message, EnquiryType::GLSCRATCH, $routeCode, $defaultRoute, '1', $smsCount);
-                    $response = $send->sendSms($defaultSenderId, $mobile, $message, $routeCode, $balanceSms, $templateId, $defaultRoute, '0', $vendor_id, $smsUrl);
-
-                    $response = $send->getResponse($insertSms, $response, $templateId, $defaultRoute, $vendor_id, $smsCount);
-                } else {
-                    $routeCode = $send->getRouteDetails($defaultRoute)->short_code == 'OTP' ? 'TL' : $send->getRouteDetails($defaultRoute)->short_code;
-                    $check_token = GlApiTokens::where('fk_int_user_id',$vendor_id)->first();
-                    $smsUrl = 'https://smschub.com/api/sms/format/json/key/327f07a76e38f94a2c0484d22968bb02/method/MT/mobile/'.$mobile.'/sender/GLTCKT/route/TL/pe_id/1201159196247518420/pe_template_id/1207170029991290303/text/Hello, '.$otp.' is the OTP for your request for Scratch through Getlead';
-                    // $smsUrl = $send->getSmsMerabtUrl($defaultSenderId, $mobile, $message, $defaultRoute, $routeCode, $vendor_id, '0');
-                    $smsCount = $send->getInputSMSCount($message, '0');
-                    $templateId = $send->getSmsTemplateId($defaultRoute, $vendor_id);
-                    $routeName = $send->getRouteDetails($defaultRoute)->vchr_sms_route;
-                    $insertSms = $send->storeSmsData($vendor_id, $templateId, $mobile, $defaultSenderId, '0', $routeName, $message, EnquiryType::GLSCRATCH, $routeCode, $defaultRoute, '1', $smsCount);
-                    $response = $send->sendSms($defaultSenderId, $mobile, $message, $routeCode, $balanceSms, $templateId, $defaultRoute, '0', $vendor_id, $smsUrl);
-                    // $response = $send->sendSmsPost($defaultSenderId, $mobile, $message, $routeCode, $balanceSms, $templateId, $defaultRoute, '0',$vendor_id);
-                    $response = $send->getMetabtResponse($insertSms, $response, $templateId, $defaultRoute, $vendor_id, $smsCount);
-                }
-            }
-        }
-        label:    /** ....End Getlead SMS ...*/
-    }
+    
 }
