@@ -279,37 +279,6 @@ $('#datatable tbody').on('click','.offer-edit',function()
 });
 
 
-$(document).on('click','#btn-add-gift-close',function()
-{
-	$("#campaign-gift").removeClass('show');
-	$("#campaign-gift").addClass('hide');
-	$("#campaign-gift .prd-body").html('');
-});
-
-$(document).on('click','.add-gifts',function()
-{
-
-	var id=$(this).attr('id');
-	
-	$("#campaign-gift").removeClass('hide');
-	$("#campaign-gift").addClass('show');
-	
-	var Result=$("#campaign-gift .gift-modal-body");
-
-			jQuery.ajax({
-			type: "GET",
-			url: "{{url('users/add-gifts')}}"+"/"+id,
-			dataType: 'html',
-			//data: {vid: vid},
-			success: function(res)
-			{
-			   Result.html(res);
-			}
-		});
-
-});
-
-
 $("#datatable tbody").on('click','.btn-act-deact',function()
 {
 	var opt=$(this).data('option');

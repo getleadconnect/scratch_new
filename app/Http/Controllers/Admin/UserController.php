@@ -164,8 +164,7 @@ public function addSubscription(Request $request)
 			$sc->used_count=0;
 			$sc->balance_count=0;
 			$sc->save();
-		
-		
+				
 		if($result)
 		{   
 			return response()->json(['msg'=>'User subscription updated.','status'=>true]);

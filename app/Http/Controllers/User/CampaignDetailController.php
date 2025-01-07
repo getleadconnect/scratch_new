@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Facades\FileUpload;
 
 use App\Models\ScratchOffer;
+use App\Models\ScratchWebCustomer;
+use App\Models\ScratchBranch;
+
 use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
 use App\Models\ScratchCount;
@@ -21,9 +24,10 @@ use Session;
 use Auth;
 use Log;
 use DB;
+use Carbon\Carbon;
 
 
-class CampaignController extends Controller
+class CampaignDetailController extends Controller
 {
   use GeneralTrait;
   
@@ -34,145 +38,40 @@ class CampaignController extends Controller
   
   public function index()
   {
-	 $user_id=User::getVendorId();
-	 
-	 $subscription=$this->checkUserStatus($user_id);
-	 	 
-	 $type=ScratchType::where('status',1)->get(); 
-	 $sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
-	 return view('users.campaign.campaign_list',compact('type','sbal_count','subscription'));
-  }	
+  }
   
-    
-  public function addCampaign()
-  {
-	 $user_id=User::getVendorId();
-	 	  
-	 $type=ScratchType::where('status',1)->get();
-	 $sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
-	 return view('users.campaign.add_campaign',compact('type','sbal_count'));
-  }	
-
-  
-  public function getCampaignDetails($id)
+  public function getCampaign($id)
   {
 	  $offer = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 	  ->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
 	  ->where('tbl_scratch_offers.pk_int_scratch_offers_id',$id)->first();
-	 return view('users.campaign.view_campaign_gifts_list',compact('offer'));
-  }	
-  
- 
-    
-  public function store(Request $request)
-    {
-        // return $request;
-
-        $validator=validator::make($request->all(), ScratchOffer::$rule, ScratchOffer::$message);
-        if ($validator->fails()) 
-		{
-			Session::flash('fail',$validator->messages());
-			return back()->withInput();
-		}
-		else
-		{
-			
-			DB::beginTransaction();
-			
-            try
-			{
-            	$user_id=User::getVendorId();
-            	
-				$path = 'campaign/';
-
-				// Desktop banner
-                    $image = $request->file('offer_image');
-                    $name = rand(10, 100). date_timestamp_get(date_create()). '.' . $image->getClientOriginalExtension();
-                    FileUpload::uploadFile($image, $path,$name,'local');
-
-                // Mobile banner
-                    $imageMobile = $request->file('mobile_image');
-                    $nameMobile = rand(10, 100). date_timestamp_get(date_create()). '.' . $imageMobile->getClientOriginalExtension();
-                    FileUpload::uploadFile($imageMobile, $path,$nameMobile,'local');
-				
-				$data=[
-					'fk_int_user_id'=>$user_id,
-					'vchr_scratch_offers_name'=>$request->offer_name,
-					'vchr_scratch_offers_image'=>$path.$name,
-					'mobile_image'=>$path.$nameMobile,
-					'type_id'=>$request->offer_type,
-					'int_status'=>1,
-				];
-								
-				$offers=ScratchOffer::create($data);
-				
-            	$offerId=$offers->pk_int_scratch_offers_id;
-				$typeId=$request->offer_type;
-				
-            	$offerCounts=$request->offers_count;
-            	$description=$request->description;
-            	$winningstatus=$request->winning_status;
-				$gift_images= $request->file('image_list') ;  
-				
-                $count=count($offerCounts);
-				if($count>0)
-				{
-					for($i=0;$i<$count;$i++)
-					{
-						$file_image=$gift_images[$i];
-						$nameOffer = uniqid(). '.' . $file_image->getClientOriginalExtension();
-						$filePath = 'offersListing/';
-						FileUpload::uploadFile($file_image, $filePath,$nameOffer,'local');
-						
-						
-						$lst=new ScratchOffersListing();
-						$lst->fk_int_user_id=$user_id;
-						$lst->created_by=$user_id;
-						$lst->fk_int_scratch_offers_id=$offerId;
-						$lst->int_scratch_offers_count=$offerCounts[$i];
-						$lst->int_scratch_offers_balance=$offerCounts[$i];
-						$lst->txt_description=$description[$i];
-						$lst->type_id=$typeId;
-						$lst->int_winning_status=$winningstatus[$i];
-						$lst->int_status="1";
-              
-						//$lst->gift_image=$filePath.$nameOffer;
-						$lst->image=$filePath.$nameOffer;      						
-						$flag=$lst->save();
-						
-					}
-				
-				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
-				$cbal=$request->scratch_balance;
-				$ucount=$sc->total_count-$request->scratch_balance;
-				
-				$sc->used_count=$ucount;
-				$sc->balance_count=$request->scratch_balance;
-				$sc->save();
-                }
-
-				if($offers)
-        		{   
-					Session::flash('success',"Campaign successfully added.");
-					DB::commit();
-					return redirect('users/campaigns');
-        		}
-        		else
-        		{
-					Session::flash('fail',"Something wrong, Try again.");
-					DB::rollback();
-					return back()->withInput();
-        		}
+	  
+	  $diff_days=0;
+	  if($offer)
+	  {
+		$date = Carbon::create($offer->end_date);
+		$now = Carbon::now();
+		$diff_days= round($now->diffInDays($date),0);
+	  }
+	  
+	  
+	  $counts['total_count']=0;
+	  $counts['used_count']=0;
+	  $counts['bal_count']=0;
+	  $cnt = ScratchOffersListing::select(DB::raw("SUM(int_scratch_offers_count) as total_count"),DB::raw("SUM(int_scratch_offers_balance) as balance_count"))
+	  ->where('fk_int_scratch_offers_id',$id)->first();	  
+	  
+	  $counts['total_count']=$cnt->total_count;
+	  $counts['bal_count']=$cnt->balance_count;
+	  
+	  $usd_cnt = ScratchWebCustomer::select(DB::raw("COUNT(*) as used_count"))
+	  ->where('offer_id',$id)->first();	 
+	  
+	  $counts['used_count']=$usd_cnt->used_count;
 	
-           }
-            catch(\Exception $e)
-            {
-				DB::rollback();
-			    Session::flash('fail',$e->getMessage());
-        		return back()->withInput();
-            }
-        } 
-    }
+	  
+	 return view('users.campaign.view_campaign_details',compact('offer','diff_days','counts',));
+  }	
   
   
 public function addGifts($id)
@@ -267,6 +166,73 @@ public function addGifts($id)
     } 
 
 
+	public function getCustomers(Request $request)
+	{
+			
+        $user_id = User::getVendorId();
+		
+		$camp_id=$request->campaign_id;
+		
+        $customers = ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
+		->leftJoin('scratch_branches','scratch_web_customers.branch_id','=','scratch_branches.id')
+		->where('user_id', $user_id)->where('offer_id',$camp_id)->orderBy('id', 'Desc')->get();	
+		   
+        return DataTables::of($customers)
+			->addIndexColumn()
+			
+			->addColumn('name', function ($row) {
+                return $row->name;
+            })
+			->addColumn('offer', function ($row) {
+                return $row->offer_text;
+            })
+			
+			->addColumn('email', function ($row) {
+                return $row->email??"--";
+            })
+			
+			->addColumn('branch', function ($row) {
+                return $row->branch_name??"--";
+            })
+			
+			->addColumn('status', function ($row) {
+                if($row->status==1)
+					$win="<span class='text-green'>Win</span>";
+				else
+					$win="<span class='text-danger'>loss</span>";
+				return $win;
+            })
+			
+            ->addColumn('created', function ($row) {
+                return date('d M Y h:i A', strtotime($row->created_at));
+            })
+			
+			->editColumn('redeem', function ($row) {
+                if($row->redeem==1)
+				$red="<span class='text-green'>Redeemed</span>";
+				else
+				$red="<span class='text-danger'>Pending</span>";
+			return $red;
+			
+            })
+									
+           /* ->editColumn('branch', function ($row) {
+                $branch = ScratchBranch::find($row->branch_id);
+                return optional($branch)->branch;
+            })*/
+			
+			->addColumn('mobile', function ($row) {
+                $mob="+".$row->country_code." ".$row->mobile;
+				return $mob;
+            })
+            ->rawColumns(['redeem','status'])
+            ->tojson(true);
+    }
+	
+	
+	
+	
+	
 	
  public function viewOffers()
     {
@@ -280,7 +246,7 @@ public function addGifts($id)
 		->addIndexColumn()
         ->editColumn('name', function ($row) {
             if ($row->vchr_scratch_offers_name != null) {
-				return '<a class="view-gifts" href="'.route('users.get-campaign',$row->pk_int_scratch_offers_id).'" >'.ucwords($row->vchr_scratch_offers_name).'</a>';
+				return '<a class="view-gifts" href="'.route('users.view-campaign-details',$row->pk_int_scratch_offers_id).'" >'.ucwords($row->vchr_scratch_offers_name).'</a>';
             } else {
                 return "--Nil--";
             }
@@ -325,8 +291,7 @@ public function addGifts($id)
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item offer-edit" href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-campaign" aria-controls="offcanvasScrolling" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
                               <li><a class="dropdown-item offer-delete" href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'"><i class="lni lni-trash"></i> Delete</a></li>
-							  <li><a class="dropdown-item "  href="'.route('users.add-gifts',$row->pk_int_scratch_offers_id).'" ><i class="lni lni-save"></i> Add Gifts</a></li>'
-							  .$btn.
+							  <li><a class="dropdown-item add-gifts"  href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'" data-typeid="'.$row->type_id.'" data-bs-toggle="offcanvas" data-bs-target="#add-campaign-gifts" ><i class="lni lni-save"></i> Add Gifts</a></li>'.$btn.
 							  '</ul>
                         </div>';
 			return $action;

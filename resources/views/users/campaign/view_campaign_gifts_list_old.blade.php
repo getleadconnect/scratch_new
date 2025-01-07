@@ -29,6 +29,8 @@
 				<div class="col-lg-9 col-xl-9 col-xxl-9 col-9">
 				  <h5 >{{$offer->vchr_scratch_offers_name}}</h5>
 				  <h6 class="card-title">Type: {{$offer->type}}</h6>
+				  
+				  <h6 class="card-title">Expiring in 15 days</h6>
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
 				  @php
