@@ -21,7 +21,7 @@
 	  
 	  @if($sub['subscription']=="Active" and $sub_diff_days<=5)
 	  	<div class="text-danger">Your subscription expiring in <b>@if($sub_diff_days==0) Today! @elseif($sub_diff_days==1) Tomorrow! @else {{$sub_diff_days}} days! @endif</b></div>
-	  @elseif($sub['subscription']!="Expired")
+	  @elseif($sub['subscription']=="Expired")
 	  <div class="text-danger">Your subscription has been <b>expired</b>. Please contact administrator. Thank You!</div>
 	  @else
 	  <div class="text-danger">You have no subscription, Please contact administrator and subscribe now!</div>
