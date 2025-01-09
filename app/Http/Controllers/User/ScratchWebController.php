@@ -260,7 +260,7 @@ public function getAppCustomers(Request $request)
 		{
 			$cust=ScratchWebCustomer::select('scratch_web_customers.*','tbl_scratch_offers.vchr_scratch_offers_name','scratch_branches.branch_name')
 			->leftJoin('tbl_scratch_offers','scratch_web_customers.offer_id','tbl_scratch_offers.pk_int_scratch_offers_id')
-			->leftJoin('scratch_branches','scratch_web_customers.branch_id','Scratch_branches.id')
+			->leftJoin('scratch_branches','scratch_web_customers.branch_id','scratch_branches.id')
 			->where('unique_id', 'like', "%".$code_mob."%")
 			->orWhere('mobile', 'like', "%".$code_mob."%")->first();
 		}
