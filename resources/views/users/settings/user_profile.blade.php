@@ -110,7 +110,7 @@
                   <div class="card-body">
 						<div class="row">
 							<h5 class="col-8 col-lg-8 col-xl-8 col-xxl-8 mb-2 mt-2">My Account</h5>
-							<div class="col-4 col-lg-4 col-xl-4 col-xxl-4 mb-2 mt-2 text-right"><a class="btn btn-primary btn-sm" href="{{url()->previous()}}">
+							<div class="col-4 col-lg-4 col-xl-4 col-xxl-4 mb-2 mt-2 text-right"><a class="btn btn-primary btn-sm" href="{{url('users/dashboard')}}">
 							<i class="fa fa-arrow-left"></i> Back</a></div>
 					  </div>
 					  <hr>
