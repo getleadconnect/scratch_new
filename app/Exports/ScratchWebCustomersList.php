@@ -16,11 +16,15 @@ class ScratchWebCustomersList implements FromCollection,WithHeadings
 	
 	protected $sDate=null;
 	protected $eDate=null;
-
-	function __construct($sdate,$edate)
+	protected $branch=null;
+	protected $campaign=null;
+	
+	function __construct($sdate,$edate,$branch,$campaign)
 	{
 		$this->sDate=$sdate;
 		$this->eDate=$edate;
+		$this->branch=$branch;
+		$this->campaign=$campaign;
 	}
 
     /**
@@ -40,29 +44,38 @@ class ScratchWebCustomersList implements FromCollection,WithHeadings
         ];
     } 
 	
+	
     public function collection()
     {
 		
 		$user_id=User::getVendorId();
+		
 		$sdate=$this->sDate;
 		$edate=$this->eDate;
+		$branch=$this->branch;
+		$campaign=$this->campaign;
 				
-		$scdt=ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch')
+		$scdt=ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
 		->leftJoin('scratch_branches','scratch_web_customers.branch_id','=','scratch_branches.id')
 		->where('user_id',$user_id);
 		
-		if($sdate!="")
-		{
+		if($sdate!=""){
 			$scdt->whereDate('scratch_web_customers.created_at','>=',$sdate);
 		}
 		
-		if($edate!="")
-		{
+		if($edate!=""){
 			$scdt->whereDate('scratch_web_customers.created_at','<=',$edate);
 		}
 		
+		if($branch!=""){
+			$scdt->whereDate('scratch_web_customers.branch_id',$branch);
+		}
+		
+		if($campaign!=""){
+			$scdt->whereDate('scratch_web_customers.offer_id',$campaign);
+		}
+		
 		$scdats=$scdt->orderBy('scratch_web_customers.id','ASC')->get();
-			
 
 		$data = array();
 		$uData = array();
@@ -76,7 +89,7 @@ class ScratchWebCustomersList implements FromCollection,WithHeadings
 					$uData['ccode'] =$r->country_code;
 					$uData['mobile'] =$r->mobile;
 					$uData['email'] =$r->email;
-					$uData['branch'] =$r->branch??"--";
+					$uData['branch'] =$r->branch_name??"--";
 					$uData['offer'] =$r->offer_text??"--";
 					$uData['redeem'] =$r->redeem==1?"Redeemed":"Pending";
 			    $data[] = $uData;

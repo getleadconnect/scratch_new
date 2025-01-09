@@ -46,9 +46,9 @@
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
 				  @if($subscription)
-				     <a href="{{url('users/add-campaign')}}" id="btn-add-campaign" class="btn btn-gl-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
+				     <a href="{{url('users/add-campaign')}}" id="btn-add-campaign" class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
 				  @else
-					 <a href="javascript:;" id="btn-add-camp" class="btn btn-gl-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
+					 <a href="javascript:;" id="btn-add-camp" class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
 				  @endif
 				  </div>
 
@@ -91,10 +91,12 @@
                                <thead class="table-semi-dark">
                                  <tr>
 									<th>SlNo</th>
+									<th>Created At</th>
 									<th>Campaign Name</th>
 									<th>Type</th>
 									<th>Offer Image</th>
 									<th>Mobile Image</th>
+									<th>Expiry</th>
 									<th>Status</th>
 									<th class="no-content" style="width:50px;">Action</th>
 								</tr>
@@ -209,10 +211,12 @@ var table = $('#datatable').DataTable({
 
         columns: [
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
+			{"data": "created" },
 			{"data": "name" },
 			{"data": "type" },
 			{"data": "offer_image" },
 			{"data": "mobile_image" },
+			{"data": "enddate" },
 			{"data": "status" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],

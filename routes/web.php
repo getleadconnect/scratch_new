@@ -61,7 +61,7 @@ Route::controller(CampaignController::class)->group(function() {
 	Route::get('/deleted-gifts-list', 'deleteGiftsList')->name('deleted-gifts-listings');
 	Route::get('/view-deleted-gifts-listings', 'viewDeletedGiftListings')->name('view-deleted-gifts-listings');
 	
-	Route::get('/delete-gift/{id}', 'deleteGift')->name('delete-gift');
+	
 	Route::get('/offer-activate-deactivate/{opt}/{id}', 'offerActivateDeactivate')->name('offer-activate-deactivate');
 	Route::post('/update-image', 'uploadOfferGiftImage')->name('update-image');
 
@@ -76,8 +76,8 @@ Route::controller(CampaignController::class)->group(function() {
 Route::controller(CampaignDetailController::class)->group(function() {
 	
 	Route::get('//get-campaign/{id}', 'getCampaign')->name('get-campaign');
-	Route::get('/view-campaign-customers', 'getCustomers')->name('view-campaign-customers');
-	
+	Route::get('/view-campaign-customers', 'viewWebCustomers')->name('view-campaign-customers');
+	Route::get('/view-campaign-app-customers', 'viewAppCustomers')->name('view-campaign-app-customers');
 	
 	/*Route::get('/add-campaign', 'addCampaign')->name('add-campaign');
 	Route::post('/save-campaign', 'store')->name('save-campaign');
@@ -107,6 +107,7 @@ Route::controller(CampaignGiftController::class)->group(function() {
 	Route::get('/add-gifts/{id}', 'addGifts')->name('add-gifts');
 	Route::post('/save-gift', 'saveGifts')->name('save-gift');
 	Route::get('/view-campaign-gifts', 'viewCampaignGifts')->name('view-campaign-gifts');
+	Route::get('/delete-gift/{id}', 'deleteGift')->name('delete-gift');
 	
 });
 
@@ -138,12 +139,16 @@ Route::controller(GlShortLinksController::class)->group(function() {
 Route::controller(ScratchWebController::class)->group(function() {
 
 	Route::get('/scratch-web-customers', 'index')->name('scratch-web-customers');
-	Route::get('/get-scratch-web-customers', 'getCustomers')->name('get-scratch-web-customers');
+	Route::get('/get-scratch-web-customers', 'getWebCustomers')->name('get-scratch-web-customers');
+	Route::get('/get-scratch-app-customers', 'getAppCustomers')->name('get-scratch-app-customers');
 	Route::get('/scratch-web-redeem/{id}', 'redeem')->name('scratch-web-redeem');
 	Route::post('/sractch-web-history-download', 'downloadHistory')->name('sractch-web-history-download');	
+	
 	//Route::get('/export-web-customers-list/{sdate}/{edate}', 'export_web_customers_list')->name('export-web-customers-list');
 	
 	Route::post('/export-web-customers-list', 'exportWebCustomersList')->name('export-web-customers-list');
+	Route::get('/redeem-scratch', 'redeemScratch')->name('redeem-scratch');
+	Route::post('/redeem-scratch-now', 'redeemScratchNow')->name('redeem-scratch-now');
 });
 
 

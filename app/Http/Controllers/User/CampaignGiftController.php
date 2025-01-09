@@ -52,10 +52,15 @@ public function addGifts($id)
  public function saveGifts(Request $request)  //additional gifts
     {
 
-		if($request->offers_count=="")
+		$validate=Validator::make($request->all(),
+			['offer_count'=>'required',
+			'gift_image'=>'required|mimes:jpeg,png,jpg,gif,svg|max:524288',    //500kb
+			'description'=>'required',
+			'winning_status'=>'required']);
+		
+		if($validate->fails())
 		{
-			Session::flash('fail',"Scratch gift details missing.");
-        	return back()->withInput();
+			return response()->json(['msg'=>'Gift  details missing!','status'=>false]);
 		}
 				
 		DB::beginTransaction();
@@ -65,39 +70,38 @@ public function addGifts($id)
             	$user_id=User::getVendorId();
 
             	$offerId=$request->campaign_id;
-				$typeId=$request->offer_type_id;
 				
-            	$offerCounts=$request->offers_count;
-            	$description=$request->description;
-            	$winningstatus=$request->winning_status;
-				
-						$file_image=$request->image_list;  
-						$nameOffer = uniqid(). '.' . $file_image->getClientOriginalExtension();
+					$offer_image='';
+					if($request->gift_image)
+					{
+						$file_image=$request->gift_image;  
+						$offer_image = uniqid(). '.' . $file_image->getClientOriginalExtension();
 						$filePath = 'offersListing/';
-						FileUpload::uploadFile($file_image, $filePath,$nameOffer,'local');
+						FileUpload::uploadFile($file_image, $filePath,$offer_image,'local');
+					}
 												
 						$lst=new ScratchOffersListing();
 						$lst->fk_int_user_id=$user_id;
 						$lst->created_by=$user_id;
 						$lst->fk_int_scratch_offers_id=$offerId;
-						$lst->int_scratch_offers_count=$offerCounts;
-						$lst->int_scratch_offers_balance=$offerCounts;
-						$lst->txt_description=$description;
-						$lst->type_id=$typeId;
-						$lst->int_winning_status=$winningstatus;
+						$lst->int_scratch_offers_count=$request->offer_count;
+						$lst->int_scratch_offers_balance=$request->offer_count;
+						$lst->txt_description=$request->description;
+						$lst->type_id=$request->offer_type_id;
+						$lst->int_winning_status=$request->winning_status;
 						$lst->int_status="1";
               
 						//$lst->gift_image=$filePath.$nameOffer;
-						$lst->image=$filePath.$nameOffer;      						
+						$lst->image=$filePath.$offer_image;      						
 						$flag=$lst->save();
 
 				
 				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
-				$cbal=$request->scratch_balance;
-				$ucount=$sc->total_count-$request->scratch_balance;
+				$offer_count=$request->offer_count;
+				$ucount=$sc->total_count-($sc->used_count+$request->offer_count);
 				
-				$sc->used_count=$ucount;
-				$sc->balance_count=$request->scratch_balance;
+				$sc->used_count=$sc->used_count+$offer_count;
+				$sc->balance_count=$sc->balance_count-$offer_count;
 				$sc->save();
 
 				if($flag)
@@ -240,7 +244,6 @@ public function addGifts($id)
     }
 
 
-
 public function deleteGift($id)
     {
 		
@@ -261,11 +264,11 @@ public function deleteGift($id)
 				$sc->balance_count=($sc->balance_count+$scount);
 				$sc->save();
 				
-				return response()->json(['msg' => 'Gift details successfully removed.', 'status' =>true]);
+				return response()->json(['msg' => 'Gift details successfully removed.','offer_count'=>$scount,'status' =>true]);
             }
             else
             {
-                return response()->json(['msg' => 'Something Went Wrong', 'status' => false]);
+                return response()->json(['msg' => 'Something Went Wrong','status' => false]);
             }
         }
         catch (\Exception $ex) {

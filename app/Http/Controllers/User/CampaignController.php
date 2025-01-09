@@ -101,6 +101,7 @@ class CampaignController extends Controller
 					'vchr_scratch_offers_image'=>$path.$name,
 					'mobile_image'=>$path.$nameMobile,
 					'type_id'=>$request->offer_type,
+					'end_date'=>$request->campaign_end_date,
 					'int_status'=>1,
 				];
 								
@@ -175,6 +176,7 @@ class CampaignController extends Controller
     }
   
   
+ /*
 public function addGifts($id)
 {
 	$user_id=User::getVendorId();
@@ -266,6 +268,7 @@ public function addGifts($id)
             }
     } 
 
+*/
 
 	
  public function viewOffers()
@@ -308,6 +311,19 @@ public function addGifts($id)
             }
 			return $status;
         })
+		
+		->addColumn('enddate', function ($row) {
+            if($row->end_date!="")
+				return date_create($row->end_date)->format('d-m-Y');
+			
+			return  "--";
+        })
+				
+		->addColumn('created', function ($row) {
+            if ($row->created_at!="")
+				return date_create($row->created_at)->format('d-m-Y');
+			return "--";
+        })
 				
         ->addColumn('action', function ($row)
         {
@@ -325,7 +341,8 @@ public function addGifts($id)
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item offer-edit" href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-campaign" aria-controls="offcanvasScrolling" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
                               <li><a class="dropdown-item offer-delete" href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'"><i class="lni lni-trash"></i> Delete</a></li>
-							  <li><a class="dropdown-item "  href="'.route('users.add-gifts',$row->pk_int_scratch_offers_id).'" ><i class="lni lni-save"></i> Add Gifts</a></li>'
+							  <li><a class="dropdown-item "  href="'.route('users.add-gifts',$row->pk_int_scratch_offers_id).'" ><i class="lni lni-save"></i> Add Gifts</a></li>
+							  <li><a class="dropdown-item "  href="'.route('users.get-campaign',$row->pk_int_scratch_offers_id).'" ><i class="lni lni-eye"></i> View Campaign</a></li>'
 							  .$btn.
 							  '</ul>
                         </div>';
@@ -431,7 +448,7 @@ public function destroy($id)
 			
 			foreach($offerListing as $row)
 			{
-				FileUpload::deleteFile($row->image,'local');
+				//FileUpload::deleteFile($row->image,'local');
 				$row->delete();
 			}
 			
@@ -450,6 +467,7 @@ public function destroy($id)
 		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
 	}
 }
+
 	
  public function viewCampaignGiftListings()
     {
@@ -515,7 +533,7 @@ public function deleteGift($id)
 				$scount=$data->int_scratch_offers_balance;
 				
 				$lst_id=$data->id;
-				FileUpload::deleteFile($data->image,'local');
+				//FileUpload::deleteFile($data->image,'local');
 				$res=$data->delete();
 								
 				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count

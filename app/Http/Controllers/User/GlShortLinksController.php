@@ -115,11 +115,15 @@ class GlShortLinksController extends Controller
    }
 
 
-public function addLink()
+public function addLink(Request $request)
 {
+	$offer_id='';
+	if($request->has('offer_id'))
+		$offer_id=$request->offer_id;
+	
 	$user_id=User::getVendorId();
 	$offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
-	return view('users.links.add_short_link',compact('offers'));
+	return view('users.links.add_short_link',compact('offers','offer_id'));
 }
 
 

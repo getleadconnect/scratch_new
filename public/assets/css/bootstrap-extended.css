@@ -264,6 +264,10 @@
     color: #c1cfff;
 }
 
+.text-light-blue
+{
+	color:#2150f7;
+}
 
 /* Borders */
 
@@ -341,8 +345,8 @@
 
 .btn-primary {
 	color: #fff;
-	background-color: #3461ff;
-	border-color: #3461ff
+	background-color: #5779f1;
+	border-color: #5779f1
 }
 .btn-primary:hover {
 	color: #fff;

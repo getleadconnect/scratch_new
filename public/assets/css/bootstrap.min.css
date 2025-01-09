@@ -1775,14 +1775,13 @@ progress {
 	border-color: var(--bs-table-border-color)
 }
 
-.table-semi-dark {
+.thead-semi-dark {
 	--bs-table-color: #000;
 	--bs-table-bg: #e4e4e4;
 	--bs-table-border-color: #e4e4e4;
 	color: var(--bs-table-color);
 	border-color: var(--bs-table-border-color)
 }
-
 
 
 .table-responsive {

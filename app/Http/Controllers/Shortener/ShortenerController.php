@@ -11,14 +11,11 @@ use Carbon\Carbon;
 use App\Common\Common;
 use App\Common\Variables;
 use Jenssegers\Agent\Agent;
-use App\Models\BillingSubscription;
 
 use App\Models\ShortLink;
 use App\Models\ScratchBranch;
 use App\Models\ScratchOffer;
 
-use App\Models\ScratchWebCustomer;
-use App\Models\ScratchOffersListing;
 use App\Models\ShortLinkHistory;
 use App\Models\User;
 
@@ -42,71 +39,47 @@ class ShortenerController extends Controller
 		$result=$this->checkUserStatus($id);
 		if($result==false)
 		{
-			$messageText = "This scratch link expired!!!.";
+			$messageText = "Oops!! This link is expired!!!.";
 			return view('gl-scratch-web.short-link.invalid',compact('messageText'));
 		}
+		
 
-        /*switch ($code) {
-            case 'lead':
-                return view('form-pages.rbs-registration');
-                break;
-            case 'leadform':
-                return view('form-pages.hti-registration');
-                break;
-            case 'ktx-crm':
-                return view('form-pages.ktx-stall-landing');
-                break;
-            case 'inc':
-                $filePath = public_path('form-registration/getlead-crm.pdf');
-                $headers = ['Content-Type: application/pdf'];
-
-                return Response::download($filePath, 'getlead-crm.pdf', $headers);
-                return 'CRM LANDING PAGE';
-                break;
-            
-            default:
-                # code...
-                break;
-			}*/
-
-
-      $messageText = "Oops this link is Invalid";
-	  	  
-      $shortlink=ShortLink::where('vendor_id',$user_id)->where('code',$code);
-	  	  
+		$messageText = "Oops this link is Invalid";
+		$shortlink=ShortLink::where('vendor_id',$user_id)->where('code',$code);
         if((clone $shortlink)->first()){
            
                 $shortlink = $shortlink->where('vendor_id',$user_id)->where('status',ShortLink::ACTIVE)->first();
-                $userSubscription = BillingSubscription::where('vendor_id',$user_id)
-                ->orderBy('expiry_date','DESC')
-                ->first();
-				
-				 if(!$shortlink){
-                    $messageText = "Oops !! This campaign is inactive.";
+
+				if(!$shortlink){
+                    $messageText = "Oops!! This link is inactive.";
                     return view('gl-scratch-web.short-link.invalid',compact('messageText'));
                 }
-				else
+
+				$offer=ScratchOffer::where('pk_int_scratch_offers_id',$shortlink->offer_id)->first();	
+				if($offer)
 				{
-					$offer=ScratchOffer::where('pk_int_scratch_offers_id',$shortlink->offer_id)->where('int_status',1)->first();
-					if(!$offer)
-					{	
+					if( $offer->int_status!=1)
+					{
+						//$offer=ScratchOffer::where('pk_int_scratch_offers_id',$shortlink->offer_id)->where('int_status',1)->first();
 						$messageText = "Oops!! This campaign is inactive.";
 						return view('gl-scratch-web.short-link.invalid',compact('messageText')); 
 					}
+					else
+					{
+						$result=$this->checkCampaignExpired($offer->pk_int_scratch_offers_id);
+						if($result==false)
+						{
+							$messageText = "Oops!! This link is expired!!!.";
+							return view('gl-scratch-web.short-link.invalid',compact('messageText'));
+						}
+					}
 				}
-			   			   
-			    /*if(!$userSubscription)
+				else
 				{
-					$messageText = "You are not subscribed to GL Scratch or plan expired. please contact your administrator.";
-                    return view('gl-scratch-web.short-link.invalid',compact('messageText'));
+					$messageText = "Oops!! This link is Invalid.";
+					return view('gl-scratch-web.short-link.invalid',compact('messageText')); 
 				}
-			    else if($userSubscription->expiry_date < now())
-				{
-					$messageText = "You are not subscribed to GL Scratch or plan expired. please contact your administrator.";
-					return view('gl-scratch-web.short-link.invalid',compact('messageText'));
-				}*/
-							   
-               
+
 				
                 $agent = new Agent();        
                 $device = $agent->device();

@@ -54,7 +54,7 @@ class ScratchOfferBranchController extends Controller
               
               $userId=User::getVendorId();
               $offers=new ScratchBranch();
-              $offers->branch=$request->branch;
+              $offers->branch_name=$request->branch;
               $offers->vendor_id=$userId;
               $offers->status="1";
               $flag=$offers->save();
@@ -136,7 +136,7 @@ class ScratchOfferBranchController extends Controller
             {
 				
                 $sbra=ScratchBranch::find($id);
-                $sbra->branch=$request->branch_edit;
+                $sbra->branch_name=$request->branch_edit;
                 $flag=$sbra->save();
                 if($flag)
                 {
@@ -195,8 +195,8 @@ class ScratchOfferBranchController extends Controller
         return Datatables::of($data)
 		->addIndexColumn()
         ->editColumn('name', function ($row) {
-            if ($row->branch != null) {
-                return $row->branch;
+            if ($row->branch_name != null) {
+                return $row->branch_name;
             } else {
                 return "No Branch";
             }

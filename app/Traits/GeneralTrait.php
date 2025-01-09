@@ -5,6 +5,7 @@ namespace App\Traits;
 
 use App\Models\User;
 use App\Models\ScratchCount;
+use App\Models\ScratchOffer;
 
 use Session;
 use Carbon\Carbon;
@@ -39,14 +40,34 @@ trait GeneralTrait
 			Session::flash('msg_swal',"Purchase scratches now.");
 			$result=false;
 		 }
-		 
+		
 		 return $result;
-		 
 	}
 	
 	
-	
-	
+	public function checkCampaignExpired($campaign_id)
+	{
+		$sof=ScratchOffer::where('pk_int_scratch_offers_id',$campaign_id)->first();
+		if($sof->end_date=='' || $sof->end_date==null)
+		{
+			$result=false;
+		}
+		else
+		{
+			$end_date = Carbon::create($sof->end_date)->addDays(1)->format('Y-m-d');
+			
+			 if($end_date<=date('Y-m-d'))	 
+			 {
+				$result=false;
+			 }
+			 else 
+			 {
+				 $result=true;
+			 }
+		}
+		
+		return  $result;
+	}
 	
 	
 	

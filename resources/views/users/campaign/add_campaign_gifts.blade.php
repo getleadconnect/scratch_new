@@ -46,9 +46,9 @@
 					<h6 class="mb-2" style="color:#623737;">Type:&nbsp;<span id="add_gift_type_name">{{$sof->type}}</span></h6>
 					</div>
 					<div class="col-lg-6 col-xl-6 col-xxl-6 text-end">
-					<h6 >Scratch Balance: <label class="text-blue">
-					<input type="text" name="scratch_balance" id="scratch_balance" style="width:80px;border:none;text-align:right;" readonly value="{{$sbal_count}}">
-					/<span>{{$sbal_count}}</span></label> </h6>
+					<h6 style="color:#623737;">Available Scratch Count: <label class="text-blue">
+					<input type="text" name="scratch_balance" id="scratch_balance" style="width:80px;border:none;color:#623737;font-size:20px;" readonly  value="{{$sbal_count??0}}">
+					</label> </h6>
 				</div>
 				</div>
                 </div>
@@ -59,21 +59,20 @@
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 				<h6 class="mb-2">Add Gift :</h6>
 									
-				<input type="hidden" id="initial_tr_value" name="initial_tr_value" value="False">
+				
 				<form id="formAddGifts"  enctype="multipart/form-data">
 				@csrf
-				
-				
+								
 				<input type="hidden" name="campaign_id" id="campaign_id" value="{{$sof->pk_int_scratch_offers_id}}">
 				<input type="hidden" name="offer_type_id" id="offer_type_id" value="{{$sof->type_id}}">
-			
+							
 				<div class="table-responsive">
 						<table id="giftTable" class="table mb-0">
 							<thead class="thead-light">
 							<tr>
 								<th>Gift_Count</th>
 								<th>Description</th>
-								<th>Image</th>
+								<th>Image(Max :500kb)</th>
 								<th></th>
 								<th>Status</th>
 								<th>Action</th>
@@ -82,10 +81,10 @@
 							<tbody>
 						
 							<tr>
-								<td class="td-count"><input type="text" pattern="[0-9]*" class="form-control offer_count" name="offers_count" required  onkeypress="return /[0-9]/i.test(event.key)"/></td>
+								<td class="td-count"><input type="text" pattern="[0-9]*" class="form-control" id="offer_count" name="offer_count" required  onkeypress="return /[0-9]/i.test(event.key)"/></td>
 								<td class="td-desc"><textarea class="form-control" name="description" required></textarea></td>
-								<td><input class="form-control gift-image-file" type="file" name="image_list" required>	</td>
-								<td><img class="gift-image" src="{{url('assets/images/no-image.png')}}" style="width:70px;height:50px;"></td>
+								<td><input class="form-control" type="file" id="gift_image" name="gift_image" required>	</td>
+								<td><img class="gift-image_ouput" src="{{url('assets/images/no-image.png')}}" style="width:70px;height:50px;"></td>
 								<td>
 									<select name="winning_status" id="winning_status" class="form-control wstatus" required>
 									<option value="">--select--</option>
@@ -115,7 +114,7 @@
 					  
 							<div class="table-responsive mt-2">
 								<table class="table" id="datatable" style="width:100% !important;">
-									<thead class="table-semi-dark">
+									<thead class="thead-semi-dark">
 									  <tr>
 										<th>SlNo</th>
 										<th>Image</th>
@@ -220,34 +219,86 @@ var addValidator=$('#formAddGifts').validate({
 	},
 });
 
+function clearData()
+{
+	$("#offer_count").val('');
+	$("#description").val('');
+	$("gift_image").val('');
+	$("winning_status").val('');
+}
 
 $('#formAddGifts').submit(function(e) 
 	{
-		e.preventDefault();
+	
+	e.preventDefault();
+	
+	var formData = new FormData(this);
+		
+	if(parseInt($("#offer_count").val())>0)
+	{
+		
+		var sbal=parseInt($("#scratch_balance").val());
+		var scount=parseInt($('#offer_count').val());
 
-		var formData = new FormData(this);
-
-		$.ajax({
-		url: "{{ url('users/save-gift')}}",
-		method: 'post',
-		data: formData,
-		contentType: false,
-		processData: false,
-		success: function(result){
-			if(result.status == 1)
+		if(sbal<scount)
+		{
+			alert("Insufficient scratch balance, Balance "+sbal+" only."); 
+			$('#offer_count').focus();
+		}
+		else
+		{
+			
+			var inputVal=$('#giftTable tbody').children('tr:first').find('input').val();
+			var inputFile=$('#giftTable tbody').children('tr:first').find('input[type=file]').get(0).files.length;
+			var inputSel=$('#giftTable tbody').children('tr:first').find('select.wstatus').find(':selected').val();
+			
+			if(inputVal!='' && inputFile!=0 && inputSel!='')
 			{
-				//$('#datatable').DataTable().ajax.reload(null,false);
-				toastr.success(result.msg);
+							
+				var bal=sbal-scount;
+				$("#scratch_balance").val(bal);
+				$("#current_balance").html(bal);
+
+
+				$.ajax({
+				url: "{{ url('users/save-gift')}}",
+				method: 'post',
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function(result){
+					if(result.status == 1)
+					{
+						
+						var bal=sbal-scount;
+						$("#scratch_balance").val(bal);
+						$("#current_balance").html(bal);
+				
+						$('#datatable').DataTable().ajax.reload(null,false);
+						toastr.success(result.msg);
+						$("#formAddGifts")[0].reset();
+					}
+					else
+					{
+						toastr.error(result.msg);
+					}
+				}
+				
+				});
 			}
 			else
-			{
-				toastr.error(result.msg);
+			{	
+				alert('Gift details missing');
+				$("#offer_count").val('');
 			}
 		}
-		
-		});
-	});
-
+	}
+	else
+	{
+		alert('Invalid offer count value!');
+		$("#offer_count").val('');
+	}
+});
 
 $('#datatable tbody').on('click','.delete-gift',function()
 {
@@ -274,7 +325,11 @@ $('#datatable tbody').on('click','.delete-gift',function()
 			if(res.status==1)
 			{
 				 toastr.success(res.msg);
-				 table.draw();
+				 $('#datatable').DataTable().ajax.reload(null,false);
+				 
+				 var sbal=parseInt($("#scratch_balance").val());
+				 var cnt=sbal+res.offer_count;
+				 $("#scratch_balance").val(cnt);
 			}
 			else
 			{
@@ -289,32 +344,44 @@ $('#datatable tbody').on('click','.delete-gift',function()
 });
  
 
-$("#giftTable tbody").on('change','.gift-image-file',function()
+$("#giftTable tbody").on('change','#gift_image',function()
 {
-	var img=$(this).closest('tr').find('img.gift-image');
-	
-	var file=this.files[0];
-		var allowedExtensions="";
-	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
-	    var filePath = file.name;
-		console.log(file);
-	
-		if (!allowedExtensions.exec(filePath)) { 
-			alert('Invalid file type, Try again.'); 
-			$(this).val('');
-			img.attr('src','');
-		}
-		else
-		{
-			if (file) {
-				var reader = new FileReader();
-					reader.onload = function (e) {
-						img.attr('src',e.target.result);
-					}
-					reader.readAsDataURL(file);
-			  }
-		}  
+	var size=$("#gift_image")[0].files[0].size;
+	if(size>524288)
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
+		var img=$(this).closest('tr').find('img.gift-image_ouput');
+		
+		var file=this.files[0];
+			var allowedExtensions="";
+			allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
+			var filePath = file.name;
+			console.log(file);
+		
+			if (!allowedExtensions.exec(filePath)) { 
+				alert('Invalid file type, Try again.'); 
+				$(this).val('');
+				img.attr('src','');
+			}
+			else
+			{
+				if (file) {
+					var reader = new FileReader();
+						reader.onload = function (e) {
+							img.attr('src',e.target.result);
+						}
+						reader.readAsDataURL(file);
+				  }
+			}  
+	}
 });
+
+
+
 </script>
 @endpush
 @endsection

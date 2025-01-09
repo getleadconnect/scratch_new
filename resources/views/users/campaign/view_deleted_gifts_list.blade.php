@@ -71,7 +71,7 @@
 					  
 							<div class="table-responsive">
 								<table class="table" id="datatable" style="width:100% !important;">
-									<thead class="thead-light">
+									<thead class="thead-semi-dark">
 									  <tr>
 										<th>SlNo</th>
 										<th>Campaign Name</th>

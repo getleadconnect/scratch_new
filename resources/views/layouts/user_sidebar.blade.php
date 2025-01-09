@@ -32,6 +32,17 @@
               </a>
             </li>
 			
+			
+			<li>
+              <a href="{{url('users/redeem-scratch')}}" title="Campaigns">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/scratch.png')}}" style="width:18px;">
+				
+                </div>
+                <div class="menu-title">Redeem</div>
+              </a>
+            </li>
+			
 			<li>
               <a href="{{url('users/deleted-gifts-list')}}" title="Campaigns">
                 <div class="parent-icon">
@@ -56,7 +67,7 @@
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/link.png')}}" style="width:20px;">
                 </div>
-                <div class="menu-title">Web Links</div>
+                <div class="menu-title">Web Scratch Links</div>
               </a>
             </li>
 			
@@ -65,7 +76,7 @@
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
                 </div>
-                <div class="menu-title">Web Customers History</div>
+                <div class="menu-title">Customers List</div>
               </a>
             </li>
 			

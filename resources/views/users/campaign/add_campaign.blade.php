@@ -69,7 +69,7 @@
 							</div>
 
 							<div class="mt-3 col-lg-9 col-xl-9 col-xxl-9">
-								<label for="example-text-input" class="col-form-label">Offer Image</label>
+								<label for="example-text-input" class="col-form-label">Offer Image(<span class="text-light-blue">Max:500kb</span>)</label>
 								<input class="form-control" type="file" name="offer_image" id="offer_image" required>
 								</div>
 							<div class="mt-3 col-lg-2 col-xl-2 col-xxl-2">
@@ -77,7 +77,7 @@
 							</div>
 	
 							<div class="mt-3 col-lg-9 col-xl-9 col-xxl-9">
-								<label for="example-text-input" class="col-form-label">Mobile Image</label>
+								<label for="example-text-input" class="col-form-label">Mobile Image(<span class="text-light-blue">Max:500kb</span>)</label>
 								<input class="form-control" type="file" name="mobile_image" id="mobile_image" required>
 							</div>
 							<div class="mt-3 col-lg-2 col-xl-2 col-xxl-2">
@@ -92,6 +92,12 @@
 										<option value="{{$row->id}}">{{$row->type}}</option>
 										@endforeach
 									  </select>
+							</div>
+							
+							
+							<div class="mt-3 col-lg-6 col-xl-6 col-xxl-6">
+									<label for="example-text-input" class="col-form-label">Campaign End Date</label>
+									<input class="form-control" type="date" name="campaign_end_date" id="campaign_end_date" required>
 							</div>
 
 						</div>
@@ -132,7 +138,7 @@
 									<tr>
 										<th>Gift_Count</th>
 										<th>Description</th>
-										<th>Image</th>
+										<th>Image (<span class="text-light-blue">Max:500kb</span>)</th>
 										<th></th>
 										<th>Status</th>
 										<th>Action</th>
@@ -318,6 +324,15 @@ $("#giftTable tbody").on('change','.gift-image-file',function()
 	var img=$(this).closest('tr').find('img.gift-image');
 	
 	var file=this.files[0];
+	var size=this.files[0].size;
+	if(size>524288)
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
+	
 		var allowedExtensions="";
 	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
 	    var filePath = file.name;
@@ -338,10 +353,23 @@ $("#giftTable tbody").on('change','.gift-image-file',function()
 					reader.readAsDataURL(file);
 			  }
 		}  
+	}
 });
 
+//500kb images
+
 offer_image.onchange = evt => {
-  const [file] = offer_image.files
+	
+	const [file] = offer_image.files
+	  
+	var size=file.size;
+	if(size>524288)
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
 
         var allowedExtensions="";
 	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
@@ -359,11 +387,21 @@ offer_image.onchange = evt => {
 				img_offer_output.src = URL.createObjectURL(file)
 			  }
 		}  
+	}
 }
+
 
 mobile_image.onchange = evt => {
   const [file] = mobile_image.files
 
+	var size=file.size;
+	if(size>524288)  
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
         var allowedExtensions="";
 	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
 	    var filePath = file.name;
@@ -380,6 +418,7 @@ mobile_image.onchange = evt => {
 				img_mobile_output.src = URL.createObjectURL(file)
 			  }
 		}  
+	}
 }
 
 </script>

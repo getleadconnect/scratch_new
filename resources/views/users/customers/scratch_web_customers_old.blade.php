@@ -16,7 +16,7 @@
 </style>
 
 		<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-              <div class="breadcrumb-title pe-3">Scratch Web Customers</div>
+            <div class="breadcrumb-title pe-3">Scratch Web Customers</div>
  
              <!-- <div class="ms-auto">
                 <div class="btn-group">
@@ -40,7 +40,7 @@
 				   <h6 class="mb-0 pt5 mt-2"><i class="fa fa-users"></i> Customers List</h6>
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
-				     <a href="javascript:;" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" ><i class="lni lni-funnel"></i></a>
+				     <a href="javascript:;" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" ><i class="lni lni-funnel"></i>&nbsp;Filter</a>
 				  </div>
 				  </div>
                 </div>
@@ -48,72 +48,51 @@
 				
 					<div class="accordion-item accordion-item-bm" >
                         <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" >
-                         <div class="accordion-body">
-						  <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>
-						  
-						  
-						  <form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
+                          <div class="accordion-body">
+						   <label style="font-weight:500;padding:5px 10px;" > Filter Data By: </label>
+
+						 <form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
 							@csrf 
-						  
+						 
 						   <div class="row" style="padding:3px 10px 10px 10px;" >
-							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+							<div class="col-3 col-lg-3">
 								<label>Start Date</label>
-								<input type="date" id="start_date" name="start_date" style="content:attr(placeholder)! important;" class="form-control" placeholder="strting date" required>
+								<input type="date" id="start_date" name="start_date" style="content:attr(placeholder) !important;" class="form-control" placeholder="strting date" required>
 							</div>
 							
-							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+							<div class="col-3 col-lg-3">
 								<label>End Date</label>
-								<input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date" required>
-							</div>
-							
-							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
-								<label>Branch</label>
-								<select id="branch" name="branch" class="form-control" >
-                                 <option value="">Select Branch</option>
-                                 @foreach($branches as $branche)
-                                 <option value="{{ $branche->id }}">{{ $branche->branch_name }}</option>
-                                 @endforeach
-								</select>
-							</div>
-							
-							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
-								<label>Campaign</label>
-								<select id="campaign" name="campaign" class="form-control" >
-                                 <option value="">Select Campaign</option>
-                                 @foreach($offers as $campaign)
-                                 <option value="{{ $campaign->pk_int_scratch_offers_id }}">{{ $campaign->vchr_scratch_offers_name }}</option>
-                                 @endforeach
-                              </select>
-							</div>
-							
-							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:18px;">
-							<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
-							<button type="button" class="btn btn-secondary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
-							<button type="submit" class="btn btn-secondary btn-xs"  > <i class="lni lni-download"></i> Download</button>
+								<input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date" >
 							</div>
 
+							<div class="col-lg-6 col-xl-6 col-xxl-6 ">
+								<button type="button" class="btn btn-secondary btn-xs" id="btn-filter" style="margin-top:18px;" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
+							 	<button type="submit" class="btn btn-secondary btn-xs" id="export-to-excel" style="margin-top:18px;" > <i class="lni lni-download"></i> Download</button>
+							</div>
 						   </div>
-
-						   </form>
-						   
+						</form>
+						
 						</div>
 					  </div>
-				</div>
+					</div>
 
 				
 				<!---  filer end ----------------------------------------->
 				<div class="row mt-3">
-                     <div class="col-12 col-lg-12  text-right">
-					 <label>Web Total : <span style="font-weight:600;" id="web_count"></span></label>
-					 &nbsp;|&nbsp;<label class="ms-1">App Total : <span style="font-weight:600;" id="app_count"></span></label>
+                     <div class="col-12 col-lg-12 d-flex">
+					 
+					 
+					 
+					 
 					 </div>
 				</div>
-	
-                <div class="row">
+								
+			
+                   <div class="row mt-3">
                      <div class="col-12 col-lg-12 d-flex">
-                      <div class="card  shadow-none w-100">
+                      <div class="card  shadow-none w-100 mt-2">
 					  
-						<ul class="nav nav-tabs nav-primary mt-2" role="tablist">
+						<ul class="nav nav-tabs nav-primary mt-3" role="tablist">
 							<li class="nav-item" role="presentation">
 								<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="false" tabindex="-1">
 									<div class="d-flex align-items-center">
@@ -143,16 +122,15 @@
                                <thead class="thead-semi-dark">
 								<tr>
 									<th>Sl No</th>
-									<th>Created At</th>
 									<th>Unique Id</th>
 									<th>Name</th>
 									<th>Mobile No</th>
 									<th>Email</th>
 									<th>Bill No</th>
 									<th>Branch</th>
-									<th>Redeemed By</th>
+									<th>Redeemed Agent</th>
+									<th>Date</th>
 									<th>Offer</th>
-									<th>Status</th>
 									<th>Redeem</th>
 								</tr>
                                </thead>
@@ -161,7 +139,8 @@
                                </tbody>
                              </table>
                           </div>
-												
+						
+						
 						</div>
 					  <!-- TAB Pane 2 --------------->
 						  <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
@@ -169,19 +148,18 @@
 						  <div class="table-responsive">
 	
                              <table id="datatable_app" class="table align-middle" style="width:100% !important;" >
-                               <thead class="thead-semi-dark" >
+                               <thead class="table-semi-dark" >
 								<tr>
 									<th>Sl No</th>
-									<th>Created At</th>
 									<th>Unique Id</th>
 									<th>Name</th>
 									<th>Mobile No</th>
 									<th>Email</th>
 									<th>Bill No</th>
 									<th>Branch</th>
-									<th>Redeemed By</th>
+									<th>Redeemed Agent</th>
+									<th>Date</th>
 									<th>Offer</th>
-									<th>Status</th>
 									<th>Redeem</th>
 								</tr>
                                </thead>
@@ -241,15 +219,13 @@ var table1 = $('#datatable').DataTable({
 			url:BASE_URL+"/users/get-scratch-web-customers",
 			data: function (data) 
 		    {
-               data.start_date = $('#start_date').val();
-               data.end_date = $('#end_date').val();
-               data.branch = $('#branch').val();
-               data.campaign = $('#campaign').val();
+               //data.search = $('input[type="search"]').val();
+			   data.start_date = $('#start_date').val();
+			   data.end_date = $('#end_date').val();
 		    },
         },
 		columns: [
 		   {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
-		   {data: 'created_at', name: 'created_at'},
 		   {data: 'unique_id', name: 'unique_id'},
 		   {data: 'name', name: 'name'},
 		   {data: 'mobile', name: 'mobile'},
@@ -257,16 +233,10 @@ var table1 = $('#datatable').DataTable({
 		   {data: 'billno', name: 'bill_no'},
 		   {data: 'branch', name: 'branch'},
 		   {data: 'agent', name: 'agent'},
+		   {data: 'created_at', name: 'created_at'},
 		   {data: 'offer_text', name: 'offer_text'},
-		   {data: 'status', name: 'status'},
 		   {data: 'show', name: 'show', orderable: false, searchable: false}
 	   ],
-	   
-	   initComplete: function (settings, json) {
-        var total=table1.page.info().recordsTotal;
-		$("#web_count").html(total);
-		
-    }
 
 });
 
@@ -286,15 +256,13 @@ var table2 = $('#datatable_app').DataTable({
 			url:BASE_URL+"/users/get-scratch-app-customers",
 			data: function (data) 
 		    {
-               data.start_date = $('#start_date').val();
-               data.end_date = $('#end_date').val();
-               data.branch = $('#branch').val();
-               data.campaign = $('#campaign').val();
+               //data.search = $('input[type="search"]').val();
+			   data.start_date = $('#start_date').val();
+			   data.end_date = $('#end_date').val();
 		    },
         },
 		columns: [
 		   {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
-		   {data: 'created_at', name: 'created_at'},
 		   {data: 'unique_id', name: 'unique_id'},
 		   {data: 'name', name: 'name'},
 		   {data: 'mobile', name: 'mobile'},
@@ -302,16 +270,10 @@ var table2 = $('#datatable_app').DataTable({
 		   {data: 'billno', name: 'bill_no'},
 		   {data: 'branch', name: 'branch'},
 		   {data: 'agent', name: 'agent'},
+		   {data: 'created_at', name: 'created_at'},
 		   {data: 'offer_text', name: 'offer_text'},
-		   {data: 'status', name: 'status'},
 		   {data: 'show', name: 'show', orderable: false, searchable: false}
 	   ],
-	   
-	   initComplete: function (settings, json) {
-        var total=table2.page.info().recordsTotal;
-		$("#app_count").html(total);
-		
-    }
 
 });
 
@@ -319,16 +281,8 @@ var table2 = $('#datatable_app').DataTable({
 
 $("#btn-filter").click(function()
 {
-	$('#datatable').DataTable().ajax.reload(function (json) {
-		$("#web_count").html(json.recordsTotal);
-	});
-	
-	$('#datatable_app').DataTable().ajax.reload(function (json) {
-		$("#app_count").html(json.recordsTotal);
-	});
-
+	$('#datatable').DataTable().ajax.reload(null,false);
 });
-
 
 $('#datatable').on('click', '.scratch-web-redeem', function (event) {
            event.preventDefault();
@@ -372,10 +326,11 @@ $('#datatable').on('click', '.scratch-web-redeem', function (event) {
 				});
        });
 
-/*
 
+/*
 $("#export-to-excel").click(function()
 {
+	alert("ok");
 	var sdt=new Date($("#start_date").val());
 	var edt=new Date($("#end_date").val());
 		
@@ -383,7 +338,9 @@ $("#export-to-excel").click(function()
 	{
 		
 		var sDate = [sdt.getFullYear(), sdt.getMonth() + 1,sdt.getDate()].join('-');
-		var eDate = [edt.getFullYear(), edt.getMonth() + 1,edt.getDate()].join('-');
+	var eDate = [edt.getFullYear(), edt.getMonth() + 1,edt.getDate()].join('-');
+	alert(sDate);
+	alert(eDate)
 		
 		var lnk="{{url('users/export-web-customers-list')}}"+"/"+sDate+"/"+eDate;
 	    $("#export-to-excel").attr('href',lnk);	

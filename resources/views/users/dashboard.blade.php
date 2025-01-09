@@ -11,15 +11,14 @@
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
     <div class="breadcrumb-title pe-3">Dashboard</div>
  </div>
- 
- 
-@if($sub['subscription']=="Active" and $sub_diff_days<=3)
+  
+@if($sub['subscription']=="Active" and $sub_diff_days<=5)
 <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
 	<div class="d-flex align-items-center">
 	  <div class="fs-3 text-danger"><i class="bi bi-x-circle-fill"></i>
 	  </div>
 	  <div class="ms-3">
-		<div class="text-danger">Your subscription expired in <b>@if($sub_diff_days==0) Today @else {{$sub_diff_days}} days! @endif</b></div>
+	  	<div class="text-danger">Your subscription expiring in <b>@if($sub_diff_days==0) Today! @elseif($sub_diff_days==1) Tomorrow! @else {{$sub_diff_days}} days! @endif</b></div>
 	  </div>
 	</div>
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

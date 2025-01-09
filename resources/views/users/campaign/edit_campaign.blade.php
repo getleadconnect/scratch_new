@@ -14,7 +14,7 @@
 			
 			<div class="mb-2 row">
 				<div class="col-lg-8 col-xl-8 col-xxl-8">
-					<label for="example-text-input" class="col-form-label">Image</label>
+					<label for="example-text-input" class="col-form-label">Web Banner (<span class="text-light-blue">Max:500kb</span>)</label>
 					<input class="form-control" type="file" name="offer_image_edit" id="offer_image_edit" >
 					</div>
 				<div class="col-lg-3 col-xl-3 col-xxl-3">
@@ -24,7 +24,7 @@
 				
 			<div class="mb-2 row">		
 				<div class="col-lg-8 col-xl-8 col-xxl-8">
-					<label for="example-text-input" class="col-form-label">Mobile Image</label>
+					<label for="example-text-input" class="col-form-label">Mobile Banner (<span class="text-light-blue">Max:500kb</span>)</label>
 					<input class="form-control" type="file" name="mobile_image_edit" id="mobile_image_edit" >
 				</div>
 				<div class="col-lg-3 col-xl-3 col-xxl-3">
@@ -62,6 +62,15 @@ $(document).on('click','#btn-reset-offcanvas',function()
 offer_image_edit.onchange = evt => {
   const [file] = offer_image_edit.files
 
+	var size=file.size;
+	if(size>524288)
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
+
         var allowedExtensions="";
 	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
 	    var filePath = file.name;
@@ -78,11 +87,20 @@ offer_image_edit.onchange = evt => {
 				img_offer_output_edit.src = URL.createObjectURL(file)
 			  }
 		}  
+	}
 }
 
 mobile_image_edit.onchange = evt => {
   const [file] = mobile_image_edit.files
 
+	var size=file.size;
+	if(size>524288)
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
         var allowedExtensions="";
 	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
 	    var filePath = file.name;
@@ -98,7 +116,8 @@ mobile_image_edit.onchange = evt => {
 			if (file) {
 				img_mobile_output_edit.src = URL.createObjectURL(file)
 			  }
-		}  
+		} 
+	}		
 }
 
 </script>

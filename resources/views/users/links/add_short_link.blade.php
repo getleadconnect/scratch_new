@@ -27,15 +27,20 @@
 						  @endif
 					</div>
 				</div>
-				
-				
+								
 				<div class=" mb-2 row">				
 					<div class="col-lg-12 col-xl-12 col-xxl-12">
 							<label for="example-text-input" class="col-form-label">Scratch Your Offer<span class="text-danger">*</span></label>
 							<select class="form-select" name="offer_id" id="offer_id" required>
 								<option value="" >select</option>
 								@foreach($offers as $row)
-								<option value="{{$row->pk_int_scratch_offers_id}}" >{{$row->vchr_scratch_offers_name}}</option>
+								
+									@if($offer_id!="" and ($row->pk_int_scratch_offers_id==$offer_id))
+										<option value="{{$row->pk_int_scratch_offers_id}}" @if($row->pk_int_scratch_offers_id==$offer_id) selected @endif >{{$row->vchr_scratch_offers_name}}</option>
+									@else
+										<option value="{{$row->pk_int_scratch_offers_id}}" >{{$row->vchr_scratch_offers_name}}</option>
+									@endif
+								
 								@endforeach
 							  </select>
 					</div>

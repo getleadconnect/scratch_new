@@ -106,7 +106,7 @@
                           <div class="table-responsive">
 	
                              <table id="datatable" class="table align-middle" style="width:100% !important;" >
-                               <thead class="table-semi-dark">
+                               <thead class="thead-semi-dark">
                                  <tr>
 									<th>SlNo</th>
 									<th>Name</th>
