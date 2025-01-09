@@ -24,7 +24,7 @@
 	  @elseif($sub['subscription']=="Expired")
 	  <div class="text-danger">Your subscription has been <b>expired</b>. Please contact administrator. Thank You!</div>
 	  @else
-	  <div class="text-danger">You have no subscription, Please contact administrator and subscribe now!</div>
+	  <div class="text-danger">You have <b>no subscription</b>, Please contact administrator and subscribe now!</div>
 	  @endif
 	  </div>
 	</div>
