@@ -206,26 +206,6 @@ public function getAppCustomers(Request $request)
         return response()->json(['msg' => "Something Went Wrong !! Try Again Later", 'status' =>false]);
     }
 
-
-    /*public function downloadHistory(Request $request)
-    {
-
-        $fromdate = $request->start_date;
-        $todate = $request->end_date;
-
-        $userid = User::getVendorId();
-        $customers = ScratchWebCustomer::leftjoin('tbl_users', 'redeemed_agent', 'tbl_users.pk_int_user_id')
-					->where('user_id', $userid)
-					// ->where('status', ScratchWebCustomer::SCRATCHED)
-					->whereDate('scratch_web_customers.created_at', '>=', $fromdate)
-					->whereDate('scratch_web_customers.created_at', '<=', $todate)
-					->select('scratch_web_customers.name', 'scratch_web_customers.mobile', 'scratch_web_customers.short_link', 'scratch_web_customers.offer_text', 'scratch_web_customers.created_at', 'scratch_web_customers.redeem')
-					->orderBy('scratch_web_customers.id', 'DESC')
-					->get();
-
-        return View('users.history.history_download', compact('customers', 'fromdate', 'todate'));
-    }
-	*/
 		
 	public function exportWebCustomersList(Request $request)
 	{
@@ -243,8 +223,7 @@ public function getAppCustomers(Request $request)
 		 //return Excel::download($export, 'test.xlsx');
         return Excel::download(new ScratchWebCustomersList($sdate,$edate,$branch,$campaign), 'scratch_web_customers_list'.'_'.date('Y-m-d').'.'.'xlsx');
     }
-	
-	
+		
 		
 	public function redeemScratch()
 	{

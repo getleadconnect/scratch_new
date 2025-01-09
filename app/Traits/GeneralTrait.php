@@ -19,9 +19,17 @@ trait GeneralTrait
 		$scnt=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
 		$user=User::where('pk_int_user_id',$user_id)->first();
 		
-		$subscription_date = Carbon::create($user->subscription_end_date)->addDays(1)->format('Y-m-d');
+		if($user->subscription_end_date!='')
+		{
+			$subscription_date = Carbon::create($user->subscription_end_date)->addDays(1)->format('Y-m-d');
+		}
+		else
+		{
+			$subscription_date='';
+		}
 		
 		$result=true;
+		
 		if($user->subscription_start_date=='' || $user->subscription_end_date=='')	 
 		 {
 			Session::put('msg_title','You have no Subscription');
