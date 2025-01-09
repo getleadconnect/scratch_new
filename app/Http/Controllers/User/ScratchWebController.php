@@ -227,7 +227,7 @@ public function getAppCustomers(Request $request)
     }
 	*/
 		
-	 public function exportWebCustomersList(Request $request)
+	public function exportWebCustomersList(Request $request)
 	{
 		$sdate="";
 		$edt="";
@@ -261,8 +261,8 @@ public function getAppCustomers(Request $request)
 			$cust=ScratchWebCustomer::select('scratch_web_customers.*','tbl_scratch_offers.vchr_scratch_offers_name','scratch_branches.branch_name')
 			->leftJoin('tbl_scratch_offers','scratch_web_customers.offer_id','tbl_scratch_offers.pk_int_scratch_offers_id')
 			->leftJoin('scratch_branches','scratch_web_customers.branch_id','scratch_branches.id')
-			->where('unique_id', 'like', "%".$code_mob."%")
-			->orWhere('mobile', 'like', "%".$code_mob."%")->first();
+			->where('unique_id', 'like', "%".$code_mob)
+			->orWhere('mobile', 'like', "%".$code_mob)->first();
 		}
 		return View('users.customers.redeem_customer_detail',compact('cust'));
 		

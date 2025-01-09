@@ -60,14 +60,12 @@
 			  </div>
 			  
 	</div>
-	
 	@else
 	<script>
-					Swal.fire({
-							  
-							  text: "Customer details not found.!",
-							  icon: "info"
-						  });
-				</script>
+		Swal.fire({
+				text: "Invalid Code, Details not found.!",
+				icon: "info"
+			  });
+	</script>
 			
 	@endif
