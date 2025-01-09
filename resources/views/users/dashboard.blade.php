@@ -12,29 +12,26 @@
     <div class="breadcrumb-title pe-3">Dashboard</div>
  </div>
   
-@if($sub['subscription']=="Active" and $sub_diff_days<=5)
+
 <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
 	<div class="d-flex align-items-center">
 	  <div class="fs-3 text-danger"><i class="bi bi-x-circle-fill"></i>
 	  </div>
 	  <div class="ms-3">
+	  
+	  @if($sub['subscription']=="Active" and $sub_diff_days<=5)
 	  	<div class="text-danger">Your subscription expiring in <b>@if($sub_diff_days==0) Today! @elseif($sub_diff_days==1) Tomorrow! @else {{$sub_diff_days}} days! @endif</b></div>
+	  @elseif($sub['subscription']!="Expired")
+	  <div class="text-danger">Your subscription has been <b>expired</b>. Please contact administrator. Thank You!</div>
+	  @else
+	  <div class="text-danger">You have no subscription, Please contact administrator and subscribe now!</div>
+	  @endif
 	  </div>
 	</div>
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-@elseif($sub['subscription']!="Active")
-<div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
-	<div class="d-flex align-items-center">
-	  <div class="fs-3 text-danger"><i class="bi bi-x-circle-fill"></i>
-	  </div>
-	  <div class="ms-3">
-		<div class="text-danger">Your subscription has been <b>expired</b>. Please contact administrator. Thank You!</div>
-	  </div>
-	</div>
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
+
+
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-4">
 
