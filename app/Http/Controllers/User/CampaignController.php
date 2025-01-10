@@ -293,7 +293,9 @@ public function destroy($id)
 			
 			foreach($offerListing as $row)
 			{
-				FileUpload::deleteFile($row->image,'local');
+				if($row->int_winning_status==1)
+					FileUpload::deleteFile($row->image,'local');
+				
 				$row->delete();
 			}
 			
