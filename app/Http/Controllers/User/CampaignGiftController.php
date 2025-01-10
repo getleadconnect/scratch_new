@@ -217,11 +217,11 @@ public function addGifts($id)
         {
             if ($offers->int_winning_status== 1) 
 			{
-                $wst='<i class="fa fa-trophy text-success  fa-2x" aria-hidden="true"></i>';
+                $wst='<i class="fa fa-trophy text-success" style="font-size:20px;" aria-hidden="true"></i>';
             }
             else
             {
-                $wst= '<i class="fa fa-frown fa-2x" style="color:#ff9f43"></i>';
+                $wst= '<i class="fa fa-frown " style="color:#ff9f43;font-size:20px;"></i>';
 			}
             return $wst;
         })
