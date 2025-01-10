@@ -27,7 +27,7 @@ trait GeneralTrait
 		{
 			$subscription_date='';
 		}
-		
+				
 		$result=true;
 		
 		if($user->subscription_start_date=='' || $user->subscription_end_date=='')	 
