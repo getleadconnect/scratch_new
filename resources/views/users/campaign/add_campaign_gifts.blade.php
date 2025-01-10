@@ -58,7 +58,6 @@
 			<div class="row mt-3">
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 				<h6 class="mb-2">Add Gift :</h6>
-									
 				
 				<form id="formAddGifts"  enctype="multipart/form-data">
 				@csrf
@@ -66,15 +65,15 @@
 				<input type="hidden" name="campaign_id" id="campaign_id" value="{{$sof->pk_int_scratch_offers_id}}">
 				<input type="hidden" name="offer_type_id" id="offer_type_id" value="{{$sof->type_id}}">
 							
-				<div class="table-responsive">
+				    <div class="table-responsive">
 						<table id="giftTable" class="table mb-0">
 							<thead class="thead-light">
 							<tr>
 								<th>Gift_Count</th>
 								<th>Description</th>
+								<th>Status</th>
 								<th>Image(Max :500kb)</th>
 								<th></th>
-								<th>Status</th>
 								<th>Action</th>
 							</tr>
 							</thead>
@@ -83,17 +82,23 @@
 							<tr>
 								<td class="td-count"><input type="text" pattern="[0-9]*" class="form-control" id="offer_count" name="offer_count" required  onkeypress="return /[0-9]/i.test(event.key)"/></td>
 								<td class="td-desc"><textarea class="form-control" name="description" required></textarea></td>
-								<td><input class="form-control" type="file" id="gift_image" name="gift_image" required>	</td>
-								<td><img class="gift-image_ouput" src="{{url('assets/images/no-image.png')}}" style="width:70px;height:50px;"></td>
+								
 								<td>
 									<select name="winning_status" id="winning_status" class="form-control wstatus" required>
 									<option value="">--select--</option>
 									<option value="1">Win</option>
 									<option value="0">Loss</option>
 								</td>
+								
+								<td>
+								<input type="hidden" name="better_luck_image" id="better_luck_image">
+								
+								<input class="form-control" type="file" id="gift_image" name="gift_image" required>	</td>
+								<td><img class="gift-image-output" src="{{url('assets/images/no-image.png')}}" style="width:70px;height:50px;"></td>
+								
 								<td>
 								
-								<button class="btn btn-primary btn-xs " id="btn_save_gift"  type="submit" >Add Gift</button>
+								<button class="btn btn-primary btn-xs " id="btn_save_gift"  type="submit" > Add </button>
 								&nbsp;</td>
 							</tr>
 																
@@ -227,6 +232,27 @@ function clearData()
 	$("winning_status").val('');
 }
 
+$("#winning_status").change(function()
+{
+	var val=$(this).val();
+	if(val==0)
+	{
+		$(".gift-image-output").attr("src","{{url('uploads/offers_listing/better-luck.png')}}");
+		$("#better_luck_image").val("better-luck.png");
+		$("#gift_image").prop('disabled',true);
+		$("#gift_image").prop('required',false);
+	}
+	else
+	{
+		$(".gift-image-output").attr("src","{{url('assets/images/no-image.png')}}");
+		$("#better_luck_image").val('');
+		$("#gift_image").prop('disabled',false);
+		$("#gift_image").prop('required',true);	
+	}
+		
+});
+
+
 $('#formAddGifts').submit(function(e) 
 	{
 	
@@ -249,48 +275,54 @@ $('#formAddGifts').submit(function(e)
 		{
 			
 			var inputVal=$('#giftTable tbody').children('tr:first').find('input').val();
-			var inputFile=$('#giftTable tbody').children('tr:first').find('input[type=file]').get(0).files.length;
 			var inputSel=$('#giftTable tbody').children('tr:first').find('select.wstatus').find(':selected').val();
 			
-			if(inputVal!='' && inputFile!=0 && inputSel!='')
+			var inputFile=1;
+			
+			if($("#winning_status").val()==1)
 			{
+				inputFile=$('#giftTable tbody').children('tr:first').find('input[type=file]').get(0).files.length;
+			}
+
+				if(inputVal!='' && inputFile!=0 && inputSel!='') 
+				{
+								
+					var bal=sbal-scount;
+					$("#scratch_balance").val(bal);
+					$("#current_balance").html(bal);
+
+
+					$.ajax({
+					url: "{{ url('users/save-gift')}}",
+					method: 'post',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function(result){
+						if(result.status == 1)
+						{
 							
-				var bal=sbal-scount;
-				$("#scratch_balance").val(bal);
-				$("#current_balance").html(bal);
-
-
-				$.ajax({
-				url: "{{ url('users/save-gift')}}",
-				method: 'post',
-				data: formData,
-				contentType: false,
-				processData: false,
-				success: function(result){
-					if(result.status == 1)
-					{
-						
-						var bal=sbal-scount;
-						$("#scratch_balance").val(bal);
-						$("#current_balance").html(bal);
-				
-						$('#datatable').DataTable().ajax.reload(null,false);
-						toastr.success(result.msg);
-						$("#formAddGifts")[0].reset();
+							var bal=sbal-scount;
+							$("#scratch_balance").val(bal);
+							$("#current_balance").html(bal);
+					
+							$('#datatable').DataTable().ajax.reload(null,false);
+							toastr.success(result.msg);
+							$("#formAddGifts")[0].reset();
+							$(".gift-image-output").attr("src","{{url('assets/images/no-image.png')}}");
+						}
+						else
+						{
+							toastr.error(result.msg);
+						}
 					}
-					else
-					{
-						toastr.error(result.msg);
-					}
+					
+					});
 				}
-				
-				});
-			}
-			else
-			{	
-				alert('Gift details missing');
-				$("#offer_count").val('');
-			}
+				else
+				{	
+					alert('Gift details missing');
+				}
 		}
 	}
 	else
@@ -354,7 +386,7 @@ $("#giftTable tbody").on('change','#gift_image',function()
 	}
 	else
 	{
-		var img=$(this).closest('tr').find('img.gift-image_ouput');
+		var img=$(this).closest('tr').find('img.gift-image-output');
 		
 		var file=this.files[0];
 			var allowedExtensions="";

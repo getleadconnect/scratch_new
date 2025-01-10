@@ -53,8 +53,9 @@ public function addGifts($id)
     {
 
 		$validate=Validator::make($request->all(),
-			['offer_count'=>'required',
-			'gift_image'=>'required|mimes:jpeg,png,jpg,gif,svg|max:524288',    //500kb
+			[
+			'offer_count'=>'required',
+			//'gift_image'=>'required|mimes:jpeg,png,jpg,gif,svg|max:524288',    //500kb
 			'description'=>'required',
 			'winning_status'=>'required']);
 		
@@ -69,17 +70,18 @@ public function addGifts($id)
 			{
             	$user_id=User::getVendorId();
 
-            	$offerId=$request->campaign_id;
-				
-					$offer_image='';
+					$offerId=$request->campaign_id;
+					$gift_image=$request->better_luck_image;
+					$filePath = 'offers_listing/';
+					
 					if($request->gift_image)
 					{
 						$file_image=$request->gift_image;  
-						$offer_image = uniqid(). '.' . $file_image->getClientOriginalExtension();
-						$filePath = 'offersListing/';
-						FileUpload::uploadFile($file_image, $filePath,$offer_image,'local');
+						$gift_image = uniqid(). '.' . $file_image->getClientOriginalExtension();
+						
+						FileUpload::uploadFile($file_image, $filePath,$gift_image,'local');
 					}
-												
+											
 						$lst=new ScratchOffersListing();
 						$lst->fk_int_user_id=$user_id;
 						$lst->created_by=$user_id;
@@ -92,7 +94,7 @@ public function addGifts($id)
 						$lst->int_status="1";
               
 						//$lst->gift_image=$filePath.$nameOffer;
-						$lst->image=$filePath.$offer_image;      						
+						$lst->image=$filePath.$gift_image;      						
 						$flag=$lst->save();
 
 				
@@ -122,8 +124,6 @@ public function addGifts($id)
 	       		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
             }
     } 
-
-
 
 
 	public function getCustomers(Request $request)
@@ -189,6 +189,7 @@ public function addGifts($id)
             ->tojson(true);
     }
 
+
 	
  public function viewCampaignGifts(Request $request)
     {
@@ -227,15 +228,6 @@ public function addGifts($id)
 		
         ->addColumn('action', function ($row)
         {
-			if ($row->int_status == 1)
-			{
-				$btn='<a class="dropdown-item" href="#">Deactivate</a>';
-			}
-			else
-			{
-				$btn='<a class="dropdown-item" href="#">Activate</a>';
-			}
-
 			return '<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>';
             
         })
@@ -243,27 +235,35 @@ public function addGifts($id)
         ->make(true);
     }
 
-
 public function deleteGift($id)
     {
 		
 		$user_id=User::getVendorId();
          try {
+			 
+			$cnt=ScratchWebCustomer::where('offer_list_id',$id)->count();
+			if($cnt>0)
+			{
+				return response()->json(['msg' => "Customer already scratched, Can't remove this gift!.",'status' =>false]);
+			}	
+
+			 
             $data = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $id)->first();
             if ($data) 
 			{
-                
-				$scount=$data->int_scratch_offers_balance;
 				
+				$scount=$data->int_scratch_offers_balance;
 				$lst_id=$data->id;
-				FileUpload::deleteFile($data->image,'local');
+				if($data->winning_status==1)
+					FileUpload::deleteFile($data->image,'local');
+				
 				$res=$data->delete();
 								
 				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
 				$sc->used_count=($sc->used_count-$scount);
 				$sc->balance_count=($sc->balance_count+$scount);
 				$sc->save();
-				
+
 				return response()->json(['msg' => 'Gift details successfully removed.','offer_count'=>$scount,'status' =>true]);
             }
             else
@@ -277,7 +277,7 @@ public function deleteGift($id)
     }
 	
 	
-public function uploadOfferGiftImage(Request $request)
+/*public function uploadOfferGiftImage(Request $request)
 {
 		$file_image= $request->picField;  
         $offer =  ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$request->scrId)->first();
@@ -291,57 +291,28 @@ public function uploadOfferGiftImage(Request $request)
 
         return redirect()->back()->with('success', 'Image update successfully!');
 
-}
+}*/
 
 
-public function offerActivateDeactivate($op,$id)
-	{
-		if($op==1)
-		{
-		   $new=['int_status'=>1];
-		}
-		else
-		{	
-		   $new=['int_status'=>0];
-		}
-
-		$result=ScratchOffer::where('pk_int_scratch_offers_id',$id)->update($new);
-		
-			if($result)
-			{
-				if($op==1)
-					return response()->json(['msg' =>'Campaign successfully activated!' , 'status' => true]);
-				else
-				    return response()->json(['msg' =>'Campaign successfully deactivated!' , 'status' => true]);
-			}
-			else
-			{
-				return response()->json(['msg' =>'Something wrong, try again!' , 'status' => false]);
-			}				
-
-	}
+//--------------------------------------------------------------------------------------------------------
 
 
-//View deleted gifts details 
-
-
- public function deleteGiftsList()
+  public function giftsList()
   {
-	 $offers=ScratchOffer::where('fk_int_user_id',User::getVendorId())->get();
-	 return view('users.campaign.view_deleted_gifts_list',compact('offers'));
+	 $user_id=User::getVendorId();
+	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
+	 return view('users.campaign.view_gifts_list',compact('offers'));
   }	
   
-  
-public function viewDeletedGiftListings(Request $request)
+	
+ public function viewGiftListings(Request $request)
     {
-		
 	  $user_id=User::getVendorId();
-	  
-	  $offer = ScratchOffersListing::onlyTrashed()->select('tbl_scratch_offers_listing.*','scratch_type.type as type_name','tbl_scratch_offers.vchr_scratch_offers_name')
-	 ->leftJoin('tbl_scratch_offers','tbl_scratch_offers_listing.fk_int_scratch_offers_id','=','tbl_scratch_offers.pk_int_scratch_offers_id')
-	 ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
-	  ->where('tbl_scratch_offers_listing.fk_int_user_id',$user_id)->where('tbl_scratch_offers_listing.deleted_at','<>',NULL);
-		  
+      $offer = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name','tbl_users.vchr_user_name','tbl_scratch_offers.vchr_scratch_offers_name')
+	  ->leftJoin('tbl_scratch_offers','tbl_scratch_offers_listing.fk_int_scratch_offers_id','=','tbl_scratch_offers.pk_int_scratch_offers_id')
+	  ->leftJoin('tbl_users','tbl_scratch_offers_listing.fk_int_user_id','=','tbl_users.pk_int_user_id')
+	  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
+	  ->where('tbl_scratch_offers_listing.fk_int_user_id',$user_id);
 	  
 	  if($request->offer_id!="")
 	  {
@@ -349,26 +320,37 @@ public function viewDeletedGiftListings(Request $request)
 	  }
 	  
 	  $offers=$offer->orderby('pk_int_scratch_offers_listing_id','Desc')->get();
-	  
-		 
+	
         return Datatables::of($offers)
 		->addIndexColumn()
         		
 		->editColumn('image', function ($row) {
             if ($row->image !='') {
 				return  '<img src='.FileUpload::viewFile($row->image,'local').' width="50" height="50" >';
+                //return  '<img src='.FileUpload::viewFile($row->image,'local').' width="50" height="50" data-id='.$row->pk_int_scratch_offers_listing_id.'" id="imgUpload" style="cursor:pointer" title="Click to change image"> </img>';
             } else {
                 return "--Nil--";
             }
         })
+		
+		 ->addColumn('username', function ($row) 
+        {
+            return $row->vchr_user_name;
+        })
+		
 		 ->addColumn('campaign', function ($row) 
         {
             return $row->vchr_scratch_offers_name;
         })
-				
-		 ->addColumn('status', function ($offers) 
+		
+		 ->addColumn('gift_count', function ($row) 
         {
-            if ($offers->int_winning_status== 1) 
+            return $row->int_scratch_offers_balance."/".$row->int_scratch_offers_count;
+        })
+				
+		 ->addColumn('status', function ($row) 
+        {
+            if ($row->int_winning_status== 1) 
 			{
                 $wst='<i class="fa fa-trophy text-success  fa-2x" aria-hidden="true"></i>';
             }
@@ -379,9 +361,91 @@ public function viewDeletedGiftListings(Request $request)
             return $wst;
         })
 		
-        ->rawColumns(['action','image','status'])
+		->addColumn('action', function ($row)
+        {
+			$action='<div class="fs-5 ms-auto dropdown">
+                          <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="fadeIn animated bx bx-dots-vertical"></i></div>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item edit-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-gift" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
+                              <li><a class="dropdown-item delete-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-trash"></i> Delete</a></li>
+							  </ul>
+                        </div>';
+			return $action;
+        })
+
+        ->rawColumns(['image','action','status'])
         ->make(true);
     }
+	
+	
+public function edit($id)
+{
+	$gft=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$id)->first();
+	return view('users.campaign.edit_gift',compact('gft'));
+}
+
+
+public function updateGift(Request $request)
+{
+
+		DB::beginTransaction();
+        
+		try
+			{
+            	$user_id=User::getVendorId();
+
+				$gift_id=$request->gift_id;
+				$file_name=$request->gimage;
+
+				$lst=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$gift_id)->first();
+				$old_cnt=$lst->int_scratch_offers_count;
+				
+				$filePath='offers_listing/';
+				if($request->gift_image_edit)
+				{
+					$file_image=$request->gift_image_edit;  
+					$gift_image = uniqid(). '.' . $file_image->getClientOriginalExtension();
+					FileUpload::uploadFile($file_image, $filePath,$gift_image,'local');
+					FileUpload::deleteFile($lst->image,'local');
+					$file_name=$filePath.$gift_image;
+				}
+
+				$lst->int_scratch_offers_count=$request->offer_count_edit;
+				$lst->int_scratch_offers_balance=$request->offer_count_edit;
+				$lst->txt_description=$request->description_edit;
+				$lst->int_winning_status=$request->winning_status_edit;
+				$lst->image=$file_name;    						
+				$flag=$lst->save();
+				
+				
+				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
+				$dif=$old_cnt-$request->offer_count_edit;
+				
+				$sc->used_count=($sc->total_count-($sc->balance_count+$dif));
+				$sc->balance_count=($sc->balance_count+$dif);
+				$sc->save();
+
+				if($flag)
+        		{   
+					DB::commit();
+					Session::flash('success',"Campaign successfully updated.");
+					return redirect('users/gifts-list');
+        		}
+        		else
+        		{
+					DB::rollback();
+					Session::flash('fail',"Something wrong, Try again.");
+					return redirect()->back();
+        		}
+	
+           }
+            catch(\Exception $e)
+            {
+				DB::rollback();
+				Session::flash('fail',$e->getMessage());
+				return redirect()->back();
+            }
+    } 
 
 
 

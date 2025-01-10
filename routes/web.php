@@ -56,19 +56,11 @@ Route::controller(CampaignController::class)->group(function() {
 	Route::get('/delete-campaign/{id}', 'destroy')->name('delete-campaign');
 	Route::get('/view-offers', 'viewOffers')->name('view-offers');
 	
-	//Route::get('/view-campaign-details/{id}', 'getCampaignDetails')->name('view-campaign-details');
 	Route::get('/view-campaign-gifts-listings', 'viewCampaignGiftListings')->name('view-campaign-gifts-listings');
-	Route::get('/deleted-gifts-list', 'deleteGiftsList')->name('deleted-gifts-listings');
-	Route::get('/view-deleted-gifts-listings', 'viewDeletedGiftListings')->name('view-deleted-gifts-listings');
-	
-	
+
 	Route::get('/offer-activate-deactivate/{opt}/{id}', 'offerActivateDeactivate')->name('offer-activate-deactivate');
 	Route::post('/update-image', 'uploadOfferGiftImage')->name('update-image');
-
-	//Route::get('/add-gifts/{id}', 'addGifts')->name('add-gifts');
-	//Route::post('/save-gifts', 'saveGifts')->name('save-gifts');
 	
-	//Route::get('/check-user-scratch-count', 'checkUserScratchCount')->name('check-user-scratch-count');
 });
 
 
@@ -78,28 +70,7 @@ Route::controller(CampaignDetailController::class)->group(function() {
 	Route::get('//get-campaign/{id}', 'getCampaign')->name('get-campaign');
 	Route::get('/view-campaign-customers', 'viewWebCustomers')->name('view-campaign-customers');
 	Route::get('/view-campaign-app-customers', 'viewAppCustomers')->name('view-campaign-app-customers');
-	
-	/*Route::get('/add-campaign', 'addCampaign')->name('add-campaign');
-	Route::post('/save-campaign', 'store')->name('save-campaign');
-	Route::get('/edit-campaign/{id}', 'edit')->name('edit-campaign');
-	Route::post('/update-campaign', 'update')->name('update-campaign');
-	Route::get('/delete-campaign/{id}', 'destroy')->name('delete-campaign');
-	Route::get('/view-offers', 'viewOffers')->name('view-offers');
-	
-	Route::get('/view-campaign-details/{id}', 'getCampaignDetails')->name('view-campaign-details');
-	Route::get('/view-campaign-gifts-listings', 'viewCampaignGiftListings')->name('view-campaign-gifts-listings');
-	Route::get('/deleted-gifts-list', 'deleteGiftsList')->name('deleted-gifts-listings');
-	Route::get('/view-deleted-gifts-listings', 'viewDeletedGiftListings')->name('view-deleted-gifts-listings');
-	
-	Route::get('/delete-gift/{id}', 'deleteGift')->name('delete-gift');
-	Route::get('/offer-activate-deactivate/{opt}/{id}', 'offerActivateDeactivate')->name('offer-activate-deactivate');
-	Route::post('/update-image', 'uploadOfferGiftImage')->name('update-image');
 
-	Route::get('/add-gifts/{id}', 'addGifts')->name('add-gifts');
-	Route::post('/save-gifts', 'saveGifts')->name('save-gifts');
-	
-	//Route::get('/check-user-scratch-count', 'checkUserScratchCount')->name('check-user-scratch-count');*/
-	
 });
 
 Route::controller(CampaignGiftController::class)->group(function() {
@@ -109,7 +80,13 @@ Route::controller(CampaignGiftController::class)->group(function() {
 	Route::get('/view-campaign-gifts', 'viewCampaignGifts')->name('view-campaign-gifts');
 	Route::get('/delete-gift/{id}', 'deleteGift')->name('delete-gift');
 	
+	Route::get('/gifts-list', 'giftsList')->name('gifts-list');
+	Route::get('/view-gifts-list', 'viewGiftListings')->name('view-gifts-list');
+	Route::get('/edit-gift/{id}', 'edit')->name('edit-gift');
+	Route::post('/update-gift', 'updateGift')->name('update-gift');
+		
 });
+
 
 
 Route::controller(ScratchHistoryController::class)->group(function() {

@@ -25,23 +25,20 @@ class ScratchOffer extends Model
         'fk_int_user_id', 
         'int_status',
         'vchr_scratch_offers_image',
-		'mobile_image',
+		'end_date',
         'type_id',
 	];
 
     public static $rule = [
     	'offer_name' => 'required',
-        'offer_image'=> 'mimes:jpeg,png,jpg,svg',
+        'offer_image'=> 'required|mimes:jpeg,png,jpg,svg',
 		'offer_type'=>'required',
-		'mobile_image'=>'required'
     ];
 
     public static $message = [
     	'offer_name.required' => 'Offer Name is required',
         'offer_image.required' => 'Image is required',
         'offer_type.required'=>'Offer type required',
-		'mobile_image.required'=>'Mobile image required.',
-		'mobile_image.mimes'=>'Unsupported files, Try again.',
 		'offer_image.mimes'=>'Unsupported files, Try again.',
     ];
 
@@ -49,18 +46,14 @@ class ScratchOffer extends Model
         'offer_name_edit' => 'required',
         'offer_image_edit'=> 'mimes:jpeg,png,jpg,svg',
 		'offer_type_edit'=>'required',
-		'mobile_image_edit'=>'mimes:jpeg,png,jpg,svg',
      ];
 
     public static $messageUpdate = [
         'offer_name_edit.required' => 'Offer Name is required',
         'offer_image_edit.required' => 'Image is required',
         'offer_type_edit.required'=>'Campaign type required',
-		'mobile_image_edit.required'=>'Mobile image required.',
-		'mobile_image_edit.mimes'=>'Unsupported files, Try again.',
 		'offer_image_edit.mimes'=>'Unsupported files, Try again.',
     ];
-	
 	
 	
    /* public function offerListing(){

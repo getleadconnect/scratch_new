@@ -4,11 +4,9 @@ namespace App\Models;
 
 use App\Facades\FileUpload;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ScratchOffersListing extends Model
 {
-	use SoftDeletes;
 	
 	const ACTIVATE = 1;
 	const DEACTIVATE = 0; 
@@ -41,15 +39,5 @@ class ScratchOffersListing extends Model
         'description.required' => 'Description is required',
     ];
 
-	
-	/*public function offer(){
-		$this->belongTo('App\BackendModel\ScratchOffers','fk_int_scratch_offers_id');
-	}
-   
-	public function getGiftImageAttribute()
-	{
-		return  FileUpload::viewFile($this->image,'s3');
-	}
-	*/
 	
 }

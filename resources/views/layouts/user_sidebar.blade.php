@@ -32,35 +32,24 @@
               </a>
             </li>
 			
-			
+			<li>
+              <a href="{{url('users/gifts-list')}}" title="Campaigns">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/trophy-star.png')}}" style="width:18px;">
+                </div>
+                <div class="menu-title">Gifts List</div>
+              </a>
+            </li>
+						
 			<li>
               <a href="{{url('users/redeem-scratch')}}" title="Campaigns">
                 <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/scratch.png')}}" style="width:18px;">
+				<img src="{{asset('assets/images/icons/win.png')}}" style="width:18px;">
 				
                 </div>
                 <div class="menu-title">Redeem</div>
               </a>
             </li>
-			
-			<li>
-              <a href="{{url('users/deleted-gifts-list')}}" title="Campaigns">
-                <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/trash.png')}}" style="width:18px;">
-				
-                </div>
-                <div class="menu-title">Removed Gifts List</div>
-              </a>
-            </li>
-			
-			<!--<li>
-              <a href="{{url('users/redeem-history')}}" title="Campaigns">
-                <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
-                </div>
-                <div class="menu-title">App Customers History</div>
-              </a>
-            </li> -->
 			
 			<li>
               <a href="{{url('users/gl-links')}}" title="Campaigns">

@@ -46,7 +46,8 @@
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
 				  @if($subscription)
-				     <a href="{{url('users/add-campaign')}}" id="btn-add-campaign" class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
+				  {{--<a href="{{url('users/add-campaign')}}"  class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>--}}
+				  <a href="javascript:;" id="btn-add-campaign" class="btn btn-primary btn-xs" data-bs-toggle="offcanvas" data-bs-target="#add-campaign" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
 				  @else
 					 <a href="javascript:;" id="btn-add-camp" class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
 				  @endif
@@ -94,10 +95,10 @@
 									<th>Created At</th>
 									<th>Campaign Name</th>
 									<th>Type</th>
-									<th>Offer Image</th>
-									<th>Mobile Image</th>
+									<th>Banner</th>
 									<th>Expiry</th>
 									<th>Status</th>
+									<th style="width:50px;">Gifts</th>
 									<th class="no-content" style="width:50px;">Action</th>
 								</tr>
                                </thead>
@@ -113,7 +114,18 @@
                    </div><!--end row-->
                 </div>
               </div>
-			  
+	<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="add-campaign" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
+          <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Add Campaign</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+          </div>
+			<div class="offcanvas-body">
+  
+  
+  
+  
+            </div>
+    </div>
 			
 	<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="edit-campaign" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
           <div class="offcanvas-header border-bottom">
@@ -122,8 +134,13 @@
           </div>
 			<div class="offcanvas-body">
   
+  
+  
+  
             </div>
     </div>
+	
+	
 	
 	
 	<div class="gift-modal shadow hide" id="campaign-gift">
@@ -215,9 +232,9 @@ var table = $('#datatable').DataTable({
 			{"data": "name" },
 			{"data": "type" },
 			{"data": "offer_image" },
-			{"data": "mobile_image" },
 			{"data": "enddate" },
 			{"data": "status" },
+			{"data": "add-gift" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],
 
@@ -272,6 +289,26 @@ $('#datatable tbody').on('click','.offer-edit',function()
 			jQuery.ajax({
 			type: "GET",
 			url: "{{url('users/edit-campaign')}}"+"/"+id,
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(res)
+			{
+			   Result.html(res);
+			}
+		});
+
+});
+
+
+$(document).on('click','#btn-add-campaign',function()
+{
+
+	var id=$(this).attr('id');
+	var Result=$("#add-campaign .offcanvas-body");
+
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('users/add-campaign')}}",
 			dataType: 'html',
 			//data: {vid: vid},
 			success: function(res)

@@ -14,7 +14,7 @@
 			
 			<div class="mb-2 row">
 				<div class="col-lg-8 col-xl-8 col-xxl-8">
-					<label for="example-text-input" class="col-form-label">Web Banner (<span class="text-light-blue">Max:500kb</span>)</label>
+					<label for="example-text-input" class="col-form-label">Banner (<span class="text-light-blue">Max:500kb</span>)</label>
 					<input class="form-control" type="file" name="offer_image_edit" id="offer_image_edit" >
 					</div>
 				<div class="col-lg-3 col-xl-3 col-xxl-3">
@@ -22,15 +22,7 @@
 				</div>
 			</div>
 				
-			<div class="mb-2 row">		
-				<div class="col-lg-8 col-xl-8 col-xxl-8">
-					<label for="example-text-input" class="col-form-label">Mobile Banner (<span class="text-light-blue">Max:500kb</span>)</label>
-					<input class="form-control" type="file" name="mobile_image_edit" id="mobile_image_edit" >
-				</div>
-				<div class="col-lg-3 col-xl-3 col-xxl-3">
-				<img id="img_mobile_output_edit" src="{{ \App\Facades\FileUpload::viewFile($sdt->mobile_image,'local')}}" value="{{$sdt->offer_name}}" style="width:75px;height:70px;">
-				</div>
-			</div>
+			
 			<div class=" mb-2 row">				
 				<div class="col-lg-6 col-xl-6 col-xxl-6">
 						<label for="example-text-input" class="col-form-label">Campaign Type</label>
@@ -42,6 +34,15 @@
 						  </select>
 				</div>
 			</div>
+			
+			
+			<div class=" mb-3 mt-2 row">	
+			<div class="col-lg-6 col-xl-6 col-xxl-6">
+					<label for="example-text-input" class="col-form-label">Campaign End Date</label>
+					<input class="form-control" type="date" name="campaign_end_date" id="campaign_end_date" value="{{$sdt->end_date}}" required>
+			</div>
+			</div>
+			
 			<hr>
 			<div class="mb-2 row">	
 				<div class="col-lg-12 col-xl-12 col-xxl-12 " style="text-align:right;">
@@ -57,6 +58,7 @@ $(document).on('click','#btn-reset-offcanvas',function()
 {
 	$("#edit-campaign .offcanvas-body").html('');
 });
+
 
 
 offer_image_edit.onchange = evt => {
@@ -90,35 +92,6 @@ offer_image_edit.onchange = evt => {
 	}
 }
 
-mobile_image_edit.onchange = evt => {
-  const [file] = mobile_image_edit.files
-
-	var size=file.size;
-	if(size>524288)
-	{
-		alert("Image size too large. Maximum 500Kb only");
-		$(this).val('');
-	}
-	else
-	{
-        var allowedExtensions="";
-	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
-	    var filePath = file.name;
-		console.log(file);
-	
-		if (!allowedExtensions.exec(filePath)) { 
-			alert('Invalid file type, Try again.'); 
-			$("#mobile_image_edit").val('');
-			$("#img_mobile_output_edit").prop('src','');
-		}
-		else
-		{
-			if (file) {
-				img_mobile_output_edit.src = URL.createObjectURL(file)
-			  }
-		} 
-	}		
-}
 
 </script>
 

@@ -30,7 +30,8 @@ use App\Common\SingleSMS;
 use App\Services\WhatsappService;
 
 //use App\Jobs\SendNotification;
-//use App\Jobs\SendEmailJob;
+
+use App\Jobs\SendEmailJob;
 
 //use App\Core\CustomClass;
 
@@ -192,6 +193,7 @@ class GlScratchWebController extends Controller
                     'mobile_no' => $mobile,
                     'otp' => $otp
                 ];
+				
                 //(new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
 				
             } catch (\Exception $e) {
@@ -270,6 +272,7 @@ class GlScratchWebController extends Controller
 				$customer->offer_id = $offerListing->fk_int_scratch_offers_id;
                 $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                 $customer->offer_text = $offerListing->txt_description;
+				$customer->redeem_source='web';
                 //$offerListing->int_scratch_offers_balance--;
                 //$offerListing->save();
                 $customer->save();
@@ -293,20 +296,6 @@ class GlScratchWebController extends Controller
             $requestOtp = $request->otp;
             $otpOld = UserOtp::where('number',$request->mobile)->where('user_id',$request->user_id)->where('otp_type','scratch_web')->latest()->first();
             
-            // Check if an OTP was found and if it has expired by 2 minutes
-            /*if ($otpOld) {
-                $now = Carbon::now();
-                // Check if the OTP is expired by 3 minutes
-                if ($now->diffInMinutes($otpOld->updated_at) > 3) {
-                    return response()->json(['message' => "OTP Expired!! Try again", 'status' => false]);
-                }
-				
-            } else {
-                // No OTP found
-                return response()->json(['message' => "OTP Expired!! Try again", 'status' => false]);
-            }*/
-						
-
             if (!empty($otpOld)) {
                 if ($otpOld->otp == $requestOtp) {
                     $customer = new ScratchWebCustomer();
@@ -330,6 +319,7 @@ class GlScratchWebController extends Controller
 						$customer->offer_id = $offerListing->fk_int_scratch_offers_id;
                         $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                         $customer->offer_text = $offerListing->txt_description;
+						$customer->redeem_source='web';
                         //$offerListing->int_scratch_offers_balance--;
                         //$offerListing->save();
                         $customer->save();
@@ -357,43 +347,20 @@ class GlScratchWebController extends Controller
     }
 
 
-
     public function glScratched($id,$web_api=null)
     {
 
         $customer = ScratchWebCustomer::find($id);
         $vendor_id = User::getVendorIdApi($customer->user_id);
-        if($vendor_id == 3286){
-            $company = request('company_name');
-        }else{
-            $company = '';
-        }
-		
+       		
         $offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->select('int_winning_status')->first();
         $customer->status = ScratchWebCustomer::SCRATCHED;
         $uniqueId = $customer->unique_id;
-		
-        /**.....Add Leads ......*/
-        //if (!request()->has('status') && !request()->filled('status')) {
-         //   request()->merge([
-           //     'status' => 'New'
-           // ]);
-       // }
-        //$enq_id = Enquiry::getCRMWebsiteUsers(EnquiryType::GLSCRATCH_WEB, $customer->mobile, $vendor_id, $customer->name, '', '', $customer->country_code,$company ,request());
-        /** ......End Leads .... */
-
-
         $offetText = $customer->offer_text;
-        /** .... Send SMS ...*/
+		
+        /** .... Send email ...*/
         if ($offerListing->int_winning_status == ScratchOffersListing::WIN) 
 		{
-
-            try {
-                $message = "Congratulations $customer->name !! You have won $offetText And Your Redeem Id is $uniqueId";
-                //event(new CreateFollowup($message,EnquiryFollowup::TYPE_NOTE,$enq_id,$vendor_id));
-            } catch (\Exception $e) {
-                 \Log::info($e->getMessage());
-            } 
 
             if ($customer->email != NULL) {
                 try{
@@ -404,7 +371,7 @@ class GlScratchWebController extends Controller
                         'content' => $content,
                     ];
 					
-                    //dispatch(new SendEmailJob($data));
+                    dispatch(new SendEmailJob($data));
 					
                 }catch(\Exception $e){
                     \Log::info($e->getMessage());
@@ -414,66 +381,8 @@ class GlScratchWebController extends Controller
 			{
 				
 			}
-			
-        }else{
-            try {
-                $message = "Sorry $customer->name !! You have lost scratch card. Better luck next time";
-                //event(new CreateFollowup($message,EnquiryFollowup::TYPE_NOTE,$enq_id,$vendor_id));
-            } catch (\Exception $e) {
-                 \Log::info($e->getMessage());
-            } 
         }
 
-        if(request()->has('branch_id')){
-            $branch = ScratchBranch::find(request('branch_id'));
-            $branch_name = $branch ? $branch->branch : '';
-        }
-        else{
-            $branch_name = '';
-        }
-
-
-        /** .... SMS End ....*/
-
-        /** .... Notifications ... */
-        /*$userObject = User::getUserDetails($vendor_id);
-        $userAdminObject = User::getSingleAdminDetails();
-        $notifications = new Notifications();
-        $from = env('MAIL_FROM_ADDRESS');
-        $to = $userObject->email;
-        $subject = "GL Scratch Web Notifications";
-        $name = $userObject->vchr_user_name;
-        $logo = $userAdminObject->vchr_logo;
-        $attachment = "";
-        $telegramId = $userObject->telegram_id;
-        $mobileNumber = $userObject->vchr_user_mobile;
-        $defaultSenderIdAdmin = SingleSMS:: getSenderid($userAdminObject->pk_int_user_id, '');
-        $defaultRouteAdmin = SingleSMS:: getRoute($userAdminObject->pk_int_user_id, '');
-        // $content1 = "New Leads via GL Scratch Web- " . $customer->mobile . "";
-        $content1 = "🔅 Hey, You Have Got a New Lead via Digital Scratch Card. 🔅 
-
-        Customer Name : ".$customer->name." 
-        Customer Number : +" . $customer->country_code .' '. $customer->mobile . "
-        Bill Number : ".$customer->bill_no."
-        Branch Name : ".$branch_name."
-        Date and Time : " . Carbon::now();
-        // $content2 = "You have new leads via GL Scratch Web - " . $customer->mobile . "";
-        $content2 = $content1;
-        $notification_data = [
-            "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-            "sound" => "default",
-            // "page" => "enquiry_details",
-            // "id" => (string)$insertCrm
-        ];
-        $dataSend['message'] = $content1;
-        $dataSend['user_id'] =  $customer->user_id ?? $vendor_id;
-        $dataSend['page'] = 'Scratch';
-        $notifications->notifications($from, $to, $subject, $name, $content1, $content2, $logo, $attachment, $telegramId, $vendor_id, $mobileNumber, $defaultRouteAdmin, $defaultSenderIdAdmin,$dataSend);
-
-        /** .... End Notification ... */
-
-        // if($web_api == "scratch_api"){
-			
         $offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->where('int_scratch_offers_balance','>', '0')->first();
         if($offerListing){
             $offerListing->int_scratch_offers_balance--;
@@ -482,9 +391,7 @@ class GlScratchWebController extends Controller
 
         $flag = $customer->save();
         if ($flag) {
-
             return response()->json(['msg' => "Success", 'status' => true]);
-
         }
         return response()->json(['msg' => "Sorry Somthing Went Wrong .!! Try again", 'status' => false]);
     }

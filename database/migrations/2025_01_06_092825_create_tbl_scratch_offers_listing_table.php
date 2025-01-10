@@ -25,7 +25,6 @@ class CreateTblScratchOffersListingTable extends Migration
             $table->integer('int_status');
 			$table->integer('created_by')->nullable();
 			$table->integer('type_id')->nullable();
-			$table->softDeletes();
             $table->timestamps();
         });
     }
