@@ -48,8 +48,9 @@ class CampaignDetailController extends Controller
 	  $diff_days=0;
 	  if($offer)
 	  {
+		$now=Carbon::now()->format('Y-m-d');  
 		$date = Carbon::create($offer->end_date);
-		$now = Carbon::now();
+		$now = Carbon::create($now);
 		$diff_days= round($now->diffInDays($date),0);
 	  }
 	  	  
