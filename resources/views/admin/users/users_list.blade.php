@@ -138,6 +138,13 @@
 			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					<label for="location" class="form-label">Location<span class="required">*</span></label>
+					<input type="text" class="form-control"  name="location" id="location" placeholder="Location" required >
+				</div>
+			</div>
+			
+			<div class="row mb-2" >
+				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="email" class="form-label">Company/Shop Name</label>
 					<input type="text" class="form-control"  name="company" id="company" placeholder="Company/Shop Name" >
 				</div>
@@ -150,12 +157,7 @@
 				</div>
 			</div>
 
-			<div class="row mb-2" >
-				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label for="location" class="form-label">Location<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="location" id="location" placeholder="Location" >
-				</div>
-			</div>
+			
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
