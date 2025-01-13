@@ -114,6 +114,8 @@
                    </div><!--end row-->
                 </div>
               </div>
+			  
+			  
 	<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="add-campaign" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
           <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Add Campaign</h5>

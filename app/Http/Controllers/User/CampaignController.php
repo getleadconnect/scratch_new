@@ -61,6 +61,7 @@ class CampaignController extends Controller
 	  $offer = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 	  ->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
 	  ->where('tbl_scratch_offers.pk_int_scratch_offers_id',$id)->first();
+	  
 	 return view('users.campaign.view_campaign_gifts_list',compact('offer'));
   }	
   
@@ -196,7 +197,6 @@ class CampaignController extends Controller
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item offer-edit" href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-campaign" aria-controls="offcanvasScrolling" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
                               <li><a class="dropdown-item offer-delete" href="javascript:void(0)" id="'.$row->pk_int_scratch_offers_id.'"><i class="lni lni-trash"></i> Delete</a></li>
-							  <li><a class="dropdown-item "  href="'.route('users.add-gifts',$row->pk_int_scratch_offers_id).'" ><i class="lni lni-save"></i> Add Gifts</a></li>
 							  <li><a class="dropdown-item "  href="'.route('users.get-campaign',$row->pk_int_scratch_offers_id).'" ><i class="lni lni-eye"></i> View Campaign</a></li>'
 							  .$btn.
 							  '</ul>
