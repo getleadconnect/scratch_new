@@ -867,3 +867,8 @@
 {
 	border:1px solid #5858dd;
 }
+
+.disabled
+{
+	background-color:#e4e4e4;
+}

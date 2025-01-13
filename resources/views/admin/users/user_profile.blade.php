@@ -9,6 +9,11 @@
 {
 	margin-bottom:1rem !important;
 }
+.card-info p
+{
+	font-size:20px;
+}
+
 </style>
 
 <link href="{{ asset('assets/intl-tel-input17.0.3/intlTelInput.min.css')}}" rel="stylesheet"/>
@@ -40,7 +45,7 @@
 			  
 			 <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 overflow-hidden">
-                  <div class="card-body pt-3">
+                  <div class="card-body pt-3 ">
                       <div class="profile-avatar text-center mt-5">
 					    <img src="{{$usr->user_logo}}" class="rounded-circle shadow" width="120" height="120" alt="">
 					  </div>
@@ -100,7 +105,7 @@
 				
 				<div class="col">
 					<div class="card radius-10">
-					  <div class="card-body">
+					  <div class="card-body card-info">
 						<div class="d-flex align-items-center">
 						  <div class="">
 							<p class="mb-1 mt-3"> Subscription: 
@@ -126,7 +131,7 @@
 				   
 				  <div class="col">
 					<div class="card radius-10">
-					  <div class="card-body">
+					  <div class="card-body card-info">
 						<div class="d-flex align-items-center">
 						  <div class="">
 							<p class="mb-1 mt-3"> Total Scratch Count <i class="bi bi-arrow-right"></i></p>
@@ -142,7 +147,7 @@
 				   
 				   <div class="col">
 					<div class="card radius-10">
-					  <div class="card-body">
+					  <div class="card-body card-info">
 						<div class="d-flex align-items-center">
 						  <div class="">
 							<p class="mb-1 mt-3">Total Scratch Used <i class="bi bi-arrow-right"></i></p>
@@ -159,7 +164,7 @@
 				   
 					<div class="col">
 						<div class="card radius-10">
-						  <div class="card-body">
+						  <div class="card-body card-info">
 							<div class="d-flex align-items-center">
 							  <div class="">
 								<p class="mb-1 mt-3">Balance Scratch Count <i class="bi bi-arrow-right"></i></p>
@@ -189,14 +194,43 @@
 							<i class="fa fa-arrow-left"></i> Back</a></div>
 					  </div>
 					  <hr>
-					  
-					  <div class="row">
-					  <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
-					  
-					  
-                      <div class="card shadow-none border">
+									   
+					  <div class="card shadow-none border">
                         <div class="card-header">
-                          <h6 class="mb-0">Add Scratch Count</h6>
+                          <h5 class="mb-0"><i class="bi bi-plus"></i>Add Subscription </h5>
+                        </div>
+						
+                        <div class="card-body">
+							<form id="formAddSubscription">
+								@csrf
+								<input type="hidden" name="user_id" id="user_id" value="{{$user_id}}">
+								
+								<div class="row mt-3 mb-2" >
+								<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
+									<label >Start Date <span class="required">*</span></label>
+									<input type="date" class="form-control"  name="start_date" id="start_date" placeholder="date from" required>
+								</div>
+								<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
+									<label >End Date <span class="required">*</span></label>
+									<input type="date" class="form-control"  name="end_date" id="end_date" placeholder="date to" required>
+								</div>
+								<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
+										<label style="width:100%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+										<button type="submit" class="btn btn-primary">Set</button>
+									</div>
+								</div>
+							</form>
+							
+                        </div>
+                      </div>
+					  
+
+					  <div class="row">
+					  <div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					  
+					  <div class="card shadow-none border">
+                        <div class="card-header">
+                          <h5 class="mb-0"><i class="bi bi-plus"></i> Add Scratch Count</h5>
                         </div>
 						
                         <div class="card-body">
@@ -207,11 +241,11 @@
 								<fieldset  id="div_scratch_count" @if($subscription=="Expired"){{__('disabled')}}@endif>
 								<div class="row mt-3 mb-2">
 								
-									<label class="col-12 col-lg-4 col-xl-4 col-xxl-4 col-form-label">Scratch Count<span class="required">*</span></label>
-									<div class="col-12 col-lg-4 col-xl-4 col-xxl-4">
+									<label class="col-12 col-lg-2 col-xl-2 col-xxl-2 col-form-label">Scratch Count<span class="required">*</span></label>
+									<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
 										<input type="number" class="form-control"  name="scratch_count" id="scratch_count" placeholder="count" required>
 									</div>
-									<div class="col-12 col-lg-4 col-xl-4 col-xxl-4">
+									<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
 										<button type="submit" class="btn btn-primary px-4">Add Scratch</button>
 									</div>
 								</div>
@@ -220,45 +254,15 @@
 							
                         </div>
                       </div>
-					  </div>
 					  
-					  <div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
-                      <div class="card shadow-none border">
-                        <div class="card-header">
-                          <h6 class="mb-0">Subscription </h6>
-                        </div>
-						
-                        <div class="card-body">
-						
-							<form id="formAddSubscription">
-								@csrf
-								<input type="hidden" name="user_id" id="user_id" value="{{$user_id}}">
-								
-								<div class="row mt-3 mb-2" >
-								<div class="col-12 col-lg-5 col-xl-5 col-xxl-5">
-									<label >Start Date <span class="required">*</span></label>
-									<input type="date" class="form-control"  name="start_date" id="start_date" placeholder="date from" required>
-								</div>
-								<div class="col-12 col-lg-5 col-xl-5 col-xxl-5">
-									<label >End Date <span class="required">*</span></label>
-									<input type="date" class="form-control"  name="end_date" id="end_date" placeholder="date to" required>
-								</div>
-								<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
-										<label >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-										<button type="submit" class="btn btn-primary">Set</button>
-									</div>
-								</div>
-							</form>
-							
-                        </div>
-                      </div>
+                      
 					  </div>
 					</div>
 					
 
                     <div class="card shadow-none border">
                         <div class="card-header">
-                          <h6 class="mb-0">Scratch Purchase History</h6>
+                          <h5 class="mb-0"><i class="fa fa-file-alt"></i> Scratch Purchase History</h5>
                         </div>
 						
                         <div class="card-body">
@@ -424,7 +428,14 @@ var addValidator=$('#formAddSubscription').validate({
 		success: function(result){
 			if(result.status == 1)
 			{
-				toastr.success(result.msg);
+				//toastr.success(result.msg);
+				
+				Swal.fire({
+					  //title: "Are you sure?",
+					  text: "Subscription Added!",
+					  icon: "info",
+					})
+				
 				location.reload();
 			}
 			else
@@ -450,6 +461,7 @@ $('#datatable tbody').on('click','.link-delete',function()
 	  confirmButtonColor: "#3085d6",
 	  cancelButtonColor: "#d33",
 	  confirmButtonText: "Yes, Delete it!"
+	  
 	}).then((result) => {
 	  if (result.isConfirmed) {
 		

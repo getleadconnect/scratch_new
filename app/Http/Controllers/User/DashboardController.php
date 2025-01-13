@@ -41,26 +41,25 @@ class DashboardController extends Controller
 		$sub['subscription']='Active';
 		$sub['start_date']="";
 		$sub['end_date']="";
-		
+			
 		$date = Carbon::create($user->subscription_end_date);
 		$now = Carbon::now();
 		$sub_diff_days= round($now->diffInDays($date),0);
 
-		if($user && ($user->subscription_start_date=='' || $user->subscription_end_date=='') )
-		{
-			$sub['subscription']='No Subscription';
-		}
-		else 
-		{
-		
-			$subscription_date = Carbon::create($user->subscription_end_date)->addDays(1)->format('Y-m-d');
-			if($subscription_date<=date('Y-m-d'))
-				$sub['subscription']="Expired";
+			if($user->subscription_start_date=="" and $user->subscription_end_date=="")
+			{
+				$sub['subscription']="No";
+			}
+			else 
+			{
+			
+				$subscription_date = Carbon::create($user->subscription_end_date)->addDays(1)->format('Y-m-d');
+				if($subscription_date<=date('Y-m-d'))
+					$sub['subscription']="Expired";
 
-			$sub['start_date']=$user->subscription_start_date?Carbon::createFromFormat('Y-m-d',$user->subscription_start_date)->format('d-m-Y'):'';
-			$sub['end_date']=$user->subscription_end_date?Carbon::createFromFormat('Y-m-d',$user->subscription_end_date)->format('d-m-Y'):'';
-		}
-	
+				$sub['start_date']=$user->subscription_start_date?Carbon::createFromFormat('Y-m-d',$user->subscription_start_date)->format('d-m-Y'):'';
+				$sub['end_date']=$user->subscription_end_date?Carbon::createFromFormat('Y-m-d',$user->subscription_end_date)->format('d-m-Y'):'';
+			}
 
 // BAR chart data------------------------------
 		$offers=ScratchOffer::select('tbl_scratch_offers.pk_int_scratch_offers_id','tbl_scratch_offers.vchr_scratch_offers_name')

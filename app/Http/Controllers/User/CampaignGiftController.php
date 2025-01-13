@@ -228,7 +228,8 @@ public function addGifts($id)
 		
         ->addColumn('action', function ($row)
         {
-			return '<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>';
+			return '<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light edit-gift" data-bs-toggle="offcanvas" data-bs-target="#edit_gift"><i class="fa fa-pencil-alt" style="font-size:14px;color:#5779f1;"></i></a>
+					<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>';
             
         })
         ->rawColumns(['action','image','status'])
@@ -377,29 +378,44 @@ public function deleteGift($id)
         ->make(true);
     }
 	
-	
 public function edit($id)
 {
 	$gft=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$id)->first();
 	return view('users.campaign.edit_gift',compact('gft'));
 }
 
-
 public function updateGift(Request $request)
 {
 
+		$url=substr($request->prev_url,strpos($request->prev_url,'/',3));
+
+		$user_id=User::getVendorId();
+
+		$gift_id=$request->gift_id;
+		$file_name=$request->gimage;
+
+		$lst=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$gift_id)->first();
+		$old_cnt=$lst->int_scratch_offers_count;
+		$dif=$old_cnt-$request->offer_count_edit;
+
+		$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
+		
+		if(abs($dif)>$sc->balance_count)
+		{
+			Session::flash("fail","Insufficient scratch count!");
+			return redirect($url);
+		}
+		
+		if($request->customer_count>$request->offer_count_edit)	
+		{
+			Session::flash("fail","Already (".$request->customer_count .") customers scratch this offer, Can't reduce count.!");
+			return redirect($url);
+		}
+		
 		DB::beginTransaction();
-        
 		try
-			{
-            	$user_id=User::getVendorId();
-
-				$gift_id=$request->gift_id;
-				$file_name=$request->gimage;
-
-				$lst=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$gift_id)->first();
-				$old_cnt=$lst->int_scratch_offers_count;
-				
+		{
+		
 				$filePath='offers_listing/';
 				if($request->gift_image_edit)
 				{
@@ -409,27 +425,30 @@ public function updateGift(Request $request)
 					FileUpload::deleteFile($lst->image,'local');
 					$file_name=$filePath.$gift_image;
 				}
-
-				$lst->int_scratch_offers_count=$request->offer_count_edit;
-				$lst->int_scratch_offers_balance=$request->offer_count_edit;
+				
+				if($request->customer_count<$request->offer_count_edit)
+				{
+					$lst->int_scratch_offers_count=$request->offer_count_edit;
+					$lst->int_scratch_offers_balance=$request->offer_count_edit-$request->customer_count;
+				}
+				
+				if($request->has('winning_status_edit'))
+					$lst->int_winning_status=$request->winning_status_edit;
 				$lst->txt_description=$request->description_edit;
-				$lst->int_winning_status=$request->winning_status_edit;
-				$lst->image=$file_name;    						
+				$lst->image=$file_name;  
 				$flag=$lst->save();
 				
 				
-				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
-				$dif=$old_cnt-$request->offer_count_edit;
-				
-				$sc->used_count=($sc->total_count-($sc->balance_count+$dif));
-				$sc->balance_count=($sc->balance_count+$dif);
+				$sc->used_count=$sc->used_count-$dif;
+				$sc->balance_count=$sc->balance_count+$dif;
 				$sc->save();
+								
 
 				if($flag)
         		{   
 					DB::commit();
-					Session::flash('success',"Campaign successfully updated.");
-					return redirect('users/gifts-list');
+					Session::flash('success',"Gift successfully updated.");
+					return redirect($url);
         		}
         		else
         		{
@@ -445,10 +464,7 @@ public function updateGift(Request $request)
 				Session::flash('fail',$e->getMessage());
 				return redirect()->back();
             }
-    } 
-
-
-
+   } 
 
 
 }

@@ -138,22 +138,22 @@
 			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label for="email" class="form-label">Company/Shop Name<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="company" id="company" placeholder="Company/Shop Name" required>
+					<label for="email" class="form-label">Company/Shop Name</label>
+					<input type="text" class="form-control"  name="company" id="company" placeholder="Company/Shop Name" >
 				</div>
 			</div>
 			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label for="email" class="form-label">Desgination<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="designation" id="designation" placeholder="designation" required>
+					<label for="email" class="form-label">Desgination</label>
+					<input type="text" class="form-control"  name="designation" id="designation" placeholder="designation" >
 				</div>
 			</div>
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="location" class="form-label">Location<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="location" id="location" placeholder="Location" required>
+					<input type="text" class="form-control"  name="location" id="location" placeholder="Location" >
 				</div>
 			</div>
 

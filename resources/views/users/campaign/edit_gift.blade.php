@@ -1,29 +1,33 @@
+@php
+	$cust_cnt=$gft->int_scratch_offers_count-$gft->int_scratch_offers_balance;
+@endphp
+
 <form  method="post" action="{{url('users/update-gift')}}" enctype="multipart/form-data">
 	@csrf
-					
+		
 		<input type="hidden" name="gift_id" id="gift_id" value="{{$gft->pk_int_scratch_offers_listing_id}}">
 		<input type="hidden" name="gimage" id="gimage" value="{{$gft->image}}">
+		<input type="hidden" name="customer_count" id="customer_count" value="{{$cust_cnt}}">
+		<input type="hidden" name="prev_url" id="prev_url" value="{{url()->previous()}}">
 	
-			@if($gft->int_scratch_offers_count!=$gft->int_scratch_offers_balance)
+			@if($cust_cnt>0)
 			<div class="mb-2 row">
 			    <div class="col-lg-11 col-xl-11 col-xxl-11">
 					<ul>
-					<li class="text-blue">Customers already scratched this offer. To edit description and image only.</li>
+					<li class="text-red">{{$cust_cnt}} customers scratched this offer.</li>
 					</ul>
 				</div>
-			</div>	
+			</div>
 			@endif
-			
+		
 			<div class="mb-2 row">
-			    <div class="col-lg-11 col-xl-11 col-xxl-11">
+			    <div class="col-lg-5 col-xl-5 col-xxl-5">
 				<label for="example-text-input" class="col-form-label">Gift Count</label>
-				<input class="form-control " type="text" name="offer_count_edit" id="offer_count_edit" value="{{$gft->int_scratch_offers_count}}"
-				@if($gft->int_scratch_offers_count!=$gft->int_scratch_offers_balance)
-					readonly disabled
-				@endif
-				required>
+				<input class="form-control " type="text" name="offer_count_edit" id="offer_count_edit" value="{{$gft->int_scratch_offers_count}}" required>
 				</div>
-			</div>	
+
+			</div>
+			
 				
 			<div class="mb-2 row">
 			    <div class="col-lg-11 col-xl-11 col-xxl-11">
@@ -31,8 +35,8 @@
 				<textarea class="form-control" name="description_edit" required>{{$gft->txt_description}}</textarea>
 				
 				</div>
-			</div>		
-			
+			</div>
+						
 			<div class="mb-2 row">
 			    <div class="col-lg-8 col-xl-8 col-xxl-8">
 				<label for="example-text-input" class="col-form-label">Image</label>
@@ -41,14 +45,14 @@
 				<div class="col-lg-3 col-xl-3 col-xxl-3">
 				<img src="{{url('uploads').'/'.$gft->image}}" class="gift_image_output_edit" style="width:100px;">
 				</div>
-			</div>		
-							
+			</div>
+										
 			<div class="mb-2 row">
 			    <div class="col-lg-11 col-xl-11 col-xxl-11">
 				<label for="example-text-input" class="col-form-label">Status</label>
 				<select name="winning_status_edit" id="winning_status_edit" class="form-control wstatus" 
 				@if($gft->int_scratch_offers_count!=$gft->int_scratch_offers_balance)
-				disabled
+					disabled
 				@endif
 				required>
 						<option value="">--select--</option>
@@ -57,7 +61,7 @@
 				</select>
 				</div>
 			</div>
-			
+						
 		
 			<div class="mb-2 mt-3 row">
 			    <div class="col-lg-11 col-xl-11 col-xxl-11 text-right">

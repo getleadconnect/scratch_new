@@ -160,10 +160,23 @@ public function addSubscription(Request $request)
 		$result=User::where('pk_int_user_id',$user_id)->update($data);
 		
 			$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();
-			$sc->total_count=0;
-			$sc->used_count=0;
-			$sc->balance_count=0;
-			$sc->save();
+			if($sc)
+			{
+				$sc->total_count=0;
+				$sc->used_count=0;
+				$sc->balance_count=0;
+				$sc->save();
+			}
+			else
+			{
+				$dat=[
+					'fk_int_user_id'=>$user_id,
+					'total_count'=>0,
+					'used_count'=>0,
+					'balance_count'=>0,
+				];
+				$res=ScratchCount::create($dat);	
+			}
 				
 		if($result)
 		{   

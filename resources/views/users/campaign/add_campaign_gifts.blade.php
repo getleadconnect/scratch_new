@@ -128,7 +128,7 @@
 										<th>Description</th>
 										<th>Balance</th>
 										<th>Status</th>
-										<th>Action</th>
+										<th style="width:60px;">Action</th>
 									  </tr>
 									</thead>
 									<tbody>
@@ -154,7 +154,16 @@
         <!--<i class='fa fa-camera' onclick="fileInput.click();"></i>-->
     </form> 
 			  
-
+	<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="edit_gift" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
+          <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Edit</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+          </div>
+			<div class="offcanvas-body">
+  
+            </div>
+    </div>
+	
 
 @push('scripts')
 
@@ -214,23 +223,27 @@ BASE_URL ={!! json_encode(url('/')) !!}
     });
 
 
-var addValidator=$('#formAddGifts').validate({ 
-	
-	rules: {
-		offer_count: {required: true},
-		description: {required: true},
-		image_list:{requirded:true},
-		winning_status: {required: true}
-	},
-});
 
-function clearData()
+
+
+$('#datatable tbody').on('click','.edit-gift',function()
 {
-	$("#offer_count").val('');
-	$("#description").val('');
-	$("gift_image").val('');
-	$("winning_status").val('');
-}
+
+	var id=$(this).attr('id');
+	var Result=$("#edit_gift .offcanvas-body");
+
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('users/edit-gift')}}"+"/"+id,
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(res)
+			{
+			   Result.html(res);
+			}
+		});
+
+});
 
 $("#winning_status").change(function()
 {
@@ -252,6 +265,24 @@ $("#winning_status").change(function()
 		
 });
 
+
+function clearData()
+{
+	$("#offer_count").val('');
+	$("#description").val('');
+	$("gift_image").val('');
+	$("winning_status").val('');
+}
+
+var addValidator=$('#formAddGifts').validate({ 
+	
+	rules: {
+		offer_count: {required: true},
+		description: {required: true},
+		image_list:{requirded:true},
+		winning_status: {required: true}
+	},
+});
 
 $('#formAddGifts').submit(function(e) 
 	{
