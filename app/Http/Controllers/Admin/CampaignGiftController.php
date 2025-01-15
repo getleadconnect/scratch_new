@@ -84,7 +84,7 @@ class CampaignGiftController extends Controller
             return $row->vchr_scratch_offers_name;
         })
 				
-		 ->addColumn('status', function ($row) 
+		 ->addColumn('win_status', function ($row) 
         {
             if ($row->int_winning_status== 1) 
 			{
@@ -96,9 +96,23 @@ class CampaignGiftController extends Controller
 			}
             return $wst;
         })
-        ->rawColumns(['image','status'])
+		
+		->addColumn('status', function ($row) 
+        {
+             if ($row->int_status==1) {
+                $status='<span class="badge rounded-pill bg-success">Active</span>';
+            } else {
+                $status='<span class="badge rounded-pill bg-danger">Inactive</span>';
+            }
+			return $status;
+        })
+			
+		
+        ->rawColumns(['image','win_status','status'])
         ->make(true);
     }
+	
+	
 	
 	public function viewDeletedGiftListings(Request $request)
     {

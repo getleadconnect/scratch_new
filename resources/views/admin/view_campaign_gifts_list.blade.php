@@ -87,6 +87,7 @@
                                             <th>Stage</th>
                                             <th>Description</th>
 											<th>Count</th>
+											<th>Win/loss</th>
                                             <th>Status</th>
                                           </tr>
                                         </thead>
@@ -153,6 +154,7 @@ BASE_URL ={!! json_encode(url('/')) !!}
 			{"data": "type_name" },
 			{"data": "txt_description" },
 			{"data": "int_scratch_offers_count" },
+			{"data": "win_status" },
 			{"data": "status" },
         ],
 			

@@ -40,13 +40,13 @@
               </a>
             </li>
 			
-			<li>
+			<!--<li>
               <a href="{{url('admin/deleted-gifts-list')}}" title="Campaigns">
                 <div class="parent-icon"><i class="bi bi-house-fill"></i>
                 </div>
                 <div class="menu-title">Deleted Gift Lists</div>
               </a>
-            </li>
+            </li> -->
 			
 			<li>
               <a href="#" title="Campaigns">
