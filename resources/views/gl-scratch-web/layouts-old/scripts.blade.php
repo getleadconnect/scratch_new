@@ -5,7 +5,7 @@
 
 <script src="{{url('glscratch-web/assetsold/vendors/general/bootstrap/dist/js/bootstrap.min.js')}}" type="text/javascript"></script> 
 <script src="{{url('glscratch-web/assetsold/js/demo2/scripts.bundle.js')}}" type="text/javascript"></script> 
-<script src="{{   url('glscratch-web/assetsold/js/demo2/pages/login/login-general.js')    }}" type="text/javascript"></script> 
+<script src="{{url('glscratch-web/assetsold/js/demo2/pages/login/login-general.js')    }}" type="text/javascript"></script> 
 <script src="{{url('glscratch-web/assetsold/js/demo2/pages/login/jq.js')}}" type="text/javascript"></script> 
 <script src="{{url('glscratch-web/assetsold/js/demo2/pages/login/scratchie.js')}}" type="text/javascript"></script> 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
