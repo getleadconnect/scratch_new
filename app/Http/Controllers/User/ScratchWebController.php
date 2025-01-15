@@ -100,9 +100,9 @@ class ScratchWebController extends Controller
             })*/
 			
 			->addColumn('show', function ($row) {
-                if($row->redeem==1 && $row->status==1) 
+                if($row->redeem==1 && $row->win_status==1) 
 					$red="<span class='text-green'>Redeemed</span>";
-				else if($row->status==0) 
+				else if($row->win_status==0) 
 					$red="<span class='text-danger'>--</span>";
 				else
 					$red="<span class='text-danger'>Pending</span>";
@@ -178,9 +178,9 @@ public function getAppCustomers(Request $request)
 			
 			->addColumn('show', function ($row) {
 				
-				if($row->redeem==1 && $row->status==1) 
+				if($row->redeem==1 && $row->win_status==1) 
 					$red="<span class='text-green'>Redeemed</span>";
-				else if($row->status==0) 
+				else if($row->win_status==0) 
 					$red="<span class='text-danger'>--</span>";
 				else
 					$red="<span class='text-danger'>Pending</span>";
