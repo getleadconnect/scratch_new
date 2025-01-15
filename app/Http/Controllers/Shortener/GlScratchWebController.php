@@ -252,7 +252,7 @@ class GlScratchWebController extends Controller
 					
             $customer = new ScratchWebCustomer();
             $customer->fill($request->all());
-            $customer->status = ScratchWebCustomer::NOT_SCRATCHED;
+			$customer->status = ScratchWebCustomer::NOT_SCRATCHED;
             $customer->redeem = ScratchWebCustomer::NOT_REDEEMED;
             $customer->email = $request->email;
             $customer->branch_id = $request->branch;
@@ -267,6 +267,12 @@ class GlScratchWebController extends Controller
                     $uniqueId = 'GW' . strtoupper(substr(uniqid(), 8));
                     $unique_flag = ScratchWebCustomer::where('unique_id', $uniqueId)->exists();
                 } while ($unique_flag);
+				
+				
+				if($offerListing->winning_status==1)
+					$customer->win_status = 1;
+				else
+					$customer->win_status = 0;
 				
                 $customer->unique_id = $uniqueId;
 				$customer->offer_id = $offerListing->fk_int_scratch_offers_id;
@@ -301,6 +307,7 @@ class GlScratchWebController extends Controller
                     $customer = new ScratchWebCustomer();
                     $customer->fill($request->all());
                     $customer->status = ScratchWebCustomer::NOT_SCRATCHED;
+					
                     $customer->redeem = ScratchWebCustomer::NOT_REDEEMED;
                     $customer->email = $request->email;
                     $customer->branch_id = $request->branch;
@@ -314,6 +321,12 @@ class GlScratchWebController extends Controller
                             $uniqueId = 'GW' . strtoupper(substr(uniqid(), 8));
                             $unique_flag = ScratchWebCustomer::where('unique_id', $uniqueId)->exists();
                         } while ($unique_flag);
+						
+						
+						if($offerListing->winning_status==1)
+							$customer->win_status = 1;
+						else
+							$customer->win_status = 0;
 						
                         $customer->unique_id = $uniqueId;
 						$customer->offer_id = $offerListing->fk_int_scratch_offers_id;

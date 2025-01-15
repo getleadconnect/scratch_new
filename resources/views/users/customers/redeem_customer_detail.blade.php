@@ -45,7 +45,7 @@
 			<tr><td></td><td><span class="text-green" id="success">&nbsp;<span></td></tr>
 			
 			<tr><td></td><td>
-			@if($cust->redeem!=1)
+			@if($cust->redeem!=1 and $cust->win_status==1)
 				<button type="submit" class="mt-2 btn btn-primary btn-redeem" id="{{$cust->id}}" style="height:45px;" > Redeem Now</button>
 			@endif
 			</td></tr>
