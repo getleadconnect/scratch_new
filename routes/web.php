@@ -84,6 +84,8 @@ Route::controller(CampaignGiftController::class)->group(function() {
 	Route::get('/view-gifts-list', 'viewGiftListings')->name('view-gifts-list');
 	Route::get('/edit-gift/{id}', 'edit')->name('edit-gift');
 	Route::post('/update-gift', 'updateGift')->name('update-gift');
+	
+	Route::get('/gift-activate-deactivate/{opt}/{id}', 'giftActivateDeactivate')->name('gift-activate-deactivate');
 		
 });
 

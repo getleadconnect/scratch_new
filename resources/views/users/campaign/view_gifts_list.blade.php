@@ -79,6 +79,7 @@
                                             <th>Stage</th>
                                             <th>Description</th>
 											<th>Count</th>
+											<th>Win/Loss</th>
                                             <th>Status</th>
 											<th style="width:50px;">Action</th>
                                           </tr>
@@ -158,6 +159,7 @@ BASE_URL ={!! json_encode(url('/')) !!}
 			{"data": "type_name" },
 			{"data": "txt_description" },
 			{"data": "gift_count" },
+			{"data": "win_status" },
 			{"data": "status" },
 			{"data": "action" },
         ],
@@ -235,6 +237,52 @@ $('#datatable tbody').on('click','.delete-gift',function()
 	});
 
 });
+ 
+ $("#datatable tbody").on('click','.act-deact-gift',function()
+{
+	var opt=$(this).data('option');
+	var id=$(this).attr('id');
+	
+	var opt_text=(opt==1)?"activate":"deactivate";
+	optText=opt_text.charAt(0).toUpperCase()+opt_text.slice(1);
+	
+	Swal.fire({
+	  title: optText+"?",
+	  text: "You want to "+opt_text+" this campaign?",
+	  icon: "warning",
+	  showCancelButton: true,
+	  confirmButtonColor: "#3085d6",
+	  cancelButtonColor: "#d33",
+	  confirmButtonText: "Yes, "+opt_text+" it!"
+	}).then((result) => {
+	  if (result.isConfirmed) {
+		
+		
+		  jQuery.ajax({
+			type: "get",
+			url: BASE_URL+"/users/gift-activate-deactivate/"+opt+"/"+id,
+			dataType: 'json',
+			//data: {vid: vid},
+			success: function(res)
+			{
+			   if(res.status==true)
+			   {
+				   toastr.success(res.msg);
+				   $('#datatable').DataTable().ajax.reload(null, false);
+			   }
+			   else
+			   {
+				 toastr.error(res.msg); 
+			   }
+			}
+		  });
+	  }
+	});
+
+});
+ 
+ 
+ 
  
 
 </script>

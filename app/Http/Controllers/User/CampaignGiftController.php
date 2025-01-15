@@ -228,8 +228,10 @@ public function addGifts($id)
 		
         ->addColumn('action', function ($row)
         {
+			
 			return '<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light edit-gift" data-bs-toggle="offcanvas" data-bs-target="#edit_gift"><i class="fa fa-pencil-alt" style="font-size:14px;color:#5779f1;"></i></a>
-					<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>';
+					<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>
+					'.$btn;
             
         })
         ->rawColumns(['action','image','status'])
@@ -238,7 +240,7 @@ public function addGifts($id)
 
 public function deleteGift($id)
     {
-		
+	
 		$user_id=User::getVendorId();
          try {
 			 
@@ -349,7 +351,7 @@ public function deleteGift($id)
             return $row->int_scratch_offers_balance."/".$row->int_scratch_offers_count;
         })
 				
-		 ->addColumn('status', function ($row) 
+		 ->addColumn('win_status', function ($row) 
         {
             if ($row->int_winning_status== 1) 
 			{
@@ -362,19 +364,40 @@ public function deleteGift($id)
             return $wst;
         })
 		
-		->addColumn('action', function ($row)
+		->addColumn('status', function ($row) 
         {
+             if ($row->int_status==1) {
+                $status='<span class="badge rounded-pill bg-success">Active</span>';
+            } else {
+                $status='<span class="badge rounded-pill bg-danger">Inactive</span>';
+            }
+			return $status;
+        })
+		
+		
+		->addColumn('action', function ($row)
+		{
+			if ($row->int_status == 1)
+			{
+				$btn='<li><a class="dropdown-item act-deact-gift" href="javascript:;" data-option=0 id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-close"></i> Deactivate</a></li>';
+			}
+			else
+			{
+				$btn='<li><a class="dropdown-item act-deact-gift" href="javascript:;" data-option=1 id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="fa fa-check"></i> Activate</a></li>';
+			}
+
 			$action='<div class="fs-5 ms-auto dropdown">
                           <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="fadeIn animated bx bx-dots-vertical"></i></div>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item edit-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-gift" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
                               <li><a class="dropdown-item delete-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-trash"></i> Delete</a></li>
+							  '.$btn.'
 							  </ul>
                         </div>';
 			return $action;
         })
 
-        ->rawColumns(['image','action','status'])
+        ->rawColumns(['image','action','win_status','status'])
         ->make(true);
     }
 	
@@ -465,6 +488,37 @@ public function updateGift(Request $request)
 				return redirect()->back();
             }
    } 
+
+
+public function giftActivateDeactivate($op,$id)
+	{
+		if($op==1)
+		{
+		   $new=['int_status'=>1];
+		}
+		else
+		{	
+		   $new=['int_status'=>0];
+		}
+
+		$result=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$id)->update($new);
+		
+			if($result)
+			{
+				if($op==1)
+					return response()->json(['msg' =>'Gift successfully activated!' , 'status' => true]);
+				else
+				    return response()->json(['msg' =>'Gift successfully deactivated!' , 'status' => true]);
+			}
+			else
+			{
+				return response()->json(['msg' =>'Something wrong, try again!' , 'status' => false]);
+			}				
+
+	}
+
+
+
 
 
 }
