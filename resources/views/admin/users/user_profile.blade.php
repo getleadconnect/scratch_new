@@ -119,10 +119,12 @@
 							<!--<h4 class="mb-0 text-primary">0</h4>-->
 						  </div>
 						  <div class="ms-auto fs-2 text-primary">
+							@if($usr->subscription_start_date!='' && $usr->subscription_end_date!='')
 							<label class="mb-0 mt-3 text-primary fs-6">[ {{date_create($usr->subscription_start_date)->format('d-m-Y')}}
 								&nbsp;&nbsp;<span class="text-red">=></span>&nbsp;&nbsp;
 							{{date_create($usr->subscription_end_date)->format('d-m-Y')}} ] 
 							</label>
+							@endif
 						  </div>
 						</div>
 					  </div>

@@ -318,7 +318,7 @@ public function userProfile($user_id)
 	  })->first();
 	
 	$subscription='Active';
-	if($usr->subscription_end_date<date('Y-m-d'))
+	if($usr->subscription_end_date<date('Y-m-d') && $usr->subscription_end_date!='')
 	{
 		$subscription="Expired";
 	}

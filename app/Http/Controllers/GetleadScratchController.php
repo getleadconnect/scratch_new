@@ -38,6 +38,7 @@ class GetleadScratchController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
+	
     public function login(Request $request)
     {
         $input=$request->all();
@@ -98,6 +99,7 @@ class GetleadScratchController extends Controller
         }
     }
     
+	
     public function type(Request $request)
     {
         $input=$request->all();
