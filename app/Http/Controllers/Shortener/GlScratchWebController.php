@@ -269,7 +269,7 @@ class GlScratchWebController extends Controller
                 } while ($unique_flag);
 				
 				
-				if($offerListing->winning_status==1)
+				if($offerListing->int_winning_status==1)
 					$customer->win_status = 1;
 				else
 					$customer->win_status = 0;
@@ -323,7 +323,7 @@ class GlScratchWebController extends Controller
                         } while ($unique_flag);
 						
 						
-						if($offerListing->winning_status==1)
+						if($offerListing->int_winning_status==1)
 							$customer->win_status = 1;
 						else
 							$customer->win_status = 0;
