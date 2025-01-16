@@ -178,6 +178,11 @@
 	</script>
 @endif
 
+@if (Session::get('msg_swal'))
+	<script>
+		toastr.error("{{Session::get('msg_swal')}}");
+	</script>
+@endif
 
 <script>
 

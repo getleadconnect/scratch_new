@@ -89,9 +89,7 @@ Route::controller(CampaignGiftController::class)->group(function() {
 		
 });
 
-
-
-Route::controller(ScratchHistoryController::class)->group(function() {
+/*Route::controller(ScratchHistoryController::class)->group(function() {
 
 	Route::get('/redeem-history', 'index')->name('redeem-history');
 	Route::get('/view-redeem-history', 'viewRedeemHistory')->name('view-redeem-history');
@@ -99,7 +97,7 @@ Route::controller(ScratchHistoryController::class)->group(function() {
 	
 	Route::get('scratch-offer-redeem/{id}', 'redeemOffers')->name('scratch-offer-redeem');
 	
-});
+});*/
 
 
 Route::controller(GlShortLinksController::class)->group(function() {

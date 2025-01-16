@@ -15,6 +15,7 @@ use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
 use App\Models\ScratchCount;
 use App\Models\User;
+use App\Traits\GeneralTrait;
 
 use Validator;
 
@@ -28,6 +29,7 @@ use Carbon\Carbon;
 
 class CampaignGiftController extends Controller
 {
+  use GeneralTrait;
   
   public function __construct()
   {
@@ -41,11 +43,23 @@ class CampaignGiftController extends Controller
  
 public function addGifts($id)
 {
+			
 	$user_id=User::getVendorId();
+	
+	$result=$this->checkUserStatus($user_id);
+	if($result==true)
+	{
+	
 	$sof=ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 		->leftJoin('scratch_type','tbl_scratch_offers.type_id','scratch_type.id')->where('pk_int_scratch_offers_id',$id)->first();
 	$sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
 	return view('users.campaign.add_campaign_gifts',compact('sof','sbal_count'));
+	}
+	else
+	{
+		
+		return back();
+	}
 }
 
    
@@ -124,6 +138,7 @@ public function addGifts($id)
 	       		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
             }
     } 
+
 
 
 	public function getCustomers(Request $request)
@@ -213,9 +228,9 @@ public function addGifts($id)
             }
         })
 		
-		 ->addColumn('status', function ($offers) 
+		 ->addColumn('win_status', function ($row) 
         {
-            if ($offers->int_winning_status== 1) 
+            if ($row->int_winning_status== 1) 
 			{
                 $wst='<i class="fa fa-trophy text-success" style="font-size:20px;" aria-hidden="true"></i>';
             }
@@ -226,17 +241,28 @@ public function addGifts($id)
             return $wst;
         })
 		
+		 ->addColumn('status', function ($row) 
+        {
+            if ($row->int_status==1) {
+                $status='<span class="badge rounded-pill bg-success">Active</span>';
+            } else {
+                $status='<span class="badge rounded-pill bg-danger">Inactive</span>';
+            }
+			return $status;
+        })
+		
         ->addColumn('action', function ($row)
         {
 			
 			return '<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light edit-gift" data-bs-toggle="offcanvas" data-bs-target="#edit_gift"><i class="fa fa-pencil-alt" style="font-size:14px;color:#5779f1;"></i></a>
-					<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>
-					'.$btn;
+					<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>';
             
         })
-        ->rawColumns(['action','image','status'])
+        ->rawColumns(['action','image','win_status','status'])
         ->make(true);
     }
+	
+	
 
 public function deleteGift($id)
     {

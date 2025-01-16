@@ -127,6 +127,7 @@
 										<th>Stage</th>
 										<th>Description</th>
 										<th>Balance</th>
+										<th>Win/Loss</th>
 										<th>Status</th>
 										<th style="width:60px;">Action</th>
 									  </tr>
@@ -216,14 +217,12 @@ BASE_URL ={!! json_encode(url('/')) !!}
 			{"data": "type_name" },
 			{"data": "txt_description" },
 			{"data": "int_scratch_offers_balance" },
+			{"data": "win_status" },
 			{"data": "status" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],
 			
     });
-
-
-
 
 
 $('#datatable tbody').on('click','.edit-gift',function()

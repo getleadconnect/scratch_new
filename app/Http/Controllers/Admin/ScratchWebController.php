@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -10,7 +10,7 @@ use App\Models\ScratchOffer;
 use App\Models\ScratchBranch;
 use App\Models\User;
 
-use App\Exports\ScratchWebCustomersList;
+use App\Exports\CustomersList;
 
 use Auth;
 use DataTables;
@@ -27,19 +27,20 @@ class ScratchWebController extends Controller
     {
         $branches=ScratchBranch::where('vendor_id',User::getVendorId())->get();
 		$offers=ScratchOffer::where('fk_int_user_id',User::getVendorId())->get();
-		return view('users.customers.scratch_web_customers',compact('branches','offers'));
+		$users=User::where('int_role_id','!=',1)->get();
+		return view('admin.customers.scratch_web_customers',compact('branches','offers','users'));
     }
 
     public function getWebCustomers(Request $request)
     {
 			
-        $user_id = User::getVendorId();
-		
         $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent','scratch_branches.branch_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
-            ->where('user_id', $user_id)->where('redeem_source','web')
+            ->where('redeem_source','web')
 		    ->where(function($where)use($request){
+				if($request->user_id)
+					$where->where('scratch_web_customers.user_id', $request->user_id);
 				if($request->branch)
 					$where->where('scratch_web_customers.branch_id',$request->branch);
 				if($request->campaign)
@@ -50,7 +51,6 @@ class ScratchWebController extends Controller
 					   ->whereDate('scratch_web_customers.created_at','<=',$request->end_date);
 				}  
 			   })->orderBy('id', 'Desc')->get();
-
 
         return DataTables::of($customers)
 			->addIndexColumn()
@@ -90,7 +90,7 @@ class ScratchWebController extends Controller
 					$win="<span class='text-danger'>loss</span>";
 				return $win;
             })
-			
+						
 			->addColumn('show', function ($row) {
                 if($row->redeem==1 && $row->win_status==1) 
 					$red="<span class='text-green'>Redeemed</span>";
@@ -110,14 +110,14 @@ class ScratchWebController extends Controller
 
 public function getAppCustomers(Request $request)
     {
-			
-        $user_id = User::getVendorId();
-		
+
         $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent','scratch_branches.branch_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
-            ->where('user_id', $user_id)->where('redeem_source','app')
+            ->where('redeem_source','app')
 		    ->where(function($where)use($request){
+				if($request->user_id)
+					$where->where('scratch_web_customers.user_id', $request->user_id);
 				if($request->branch)
 					$where->where('scratch_web_customers.branch_id',$request->branch);
 				if($request->campaign)
@@ -128,7 +128,7 @@ public function getAppCustomers(Request $request)
 					   ->whereDate('scratch_web_customers.created_at','<=',$request->end_date);
 				}  
 			   })->orderBy('id', 'Desc')->get();
-		
+		    		
         return DataTables::of($customers)
 			->addIndexColumn()
             ->editColumn('created_at', function ($row) {
@@ -158,7 +158,6 @@ public function getAppCustomers(Request $request)
 					return $row->redeemed_agent;
 				    return '---';
             })
-			
  			
 			->addColumn('status', function ($row) {
                 if($row->status==1)
@@ -184,26 +183,14 @@ public function getAppCustomers(Request $request)
             ->tojson(true);
     }
 
-
-    public function redeem($id)
-    {
-        $flag = ScratchWebCustomer::where('id', $id)->update([
-            'redeem' => ScratchWebCustomer::REDEEMED,
-            'redeemed_on' => now(),
-            'redeemed_agent' => Auth::id()]);
-        if ($flag) {
-            return response()->json(['msg' => "Redeemed Successfully.", 'status' => true]);
-        }
-        return response()->json(['msg' => "Something Went Wrong !! Try Again Later", 'status' =>false]);
-    }
-
 		
-	public function exportWebCustomersList(Request $request)
+	public function exportCustomersList(Request $request)
 	{
 		$sdate="";
 		$edt="";
 		$branch=$request->branch;
 		$campaign=$request->campaign;
+		$user=$request->user_id;
 		
 		if($request->start_date!="")
 			$sdate=date_create($request->start_date)->format('Y-m-d');
@@ -211,33 +198,15 @@ public function getAppCustomers(Request $request)
 		if($request->end_date!="")
 			$edate=date_create($request->end_date)->format('Y-m-d');
 
-		 //return Excel::download($export, 'test.xlsx');
-        return Excel::download(new ScratchWebCustomersList($sdate,$edate,$branch,$campaign), 'scratch_web_customers_list'.'_'.date('Y-m-d').'.'.'xlsx');
+	 
+		 //$dat=new CustomersList($sdate,$edate,$user,$branch,$campaign);
+		 //dd($dat);
+		 
+		 
+        return Excel::download(new CustomersList($sdate,$edate,$user,$branch,$campaign), 'scratch_customers_list'.'_'.date('Y-m-d').'.'.'xlsx');
     }
 		
-		
-	public function redeemScratch()
-	{
-		return View('users.customers.redeem_scratch');
-	}
-	
-	
-	public function redeemScratchNow(Request $request)
-	{
-		$code_mob=$request->code_mobile;
-		$cust=[];
-		if($code_mob!="")
-		{
-			$cust=ScratchWebCustomer::select('scratch_web_customers.*','tbl_scratch_offers.vchr_scratch_offers_name','scratch_branches.branch_name')
-			->leftJoin('tbl_scratch_offers','scratch_web_customers.offer_id','tbl_scratch_offers.pk_int_scratch_offers_id')
-			->leftJoin('scratch_branches','scratch_web_customers.branch_id','scratch_branches.id')
-			->where('unique_id', 'like', "%".$code_mob)
-			->orWhere('mobile', 'like', "%".$code_mob)->first();
-		}
-		return View('users.customers.redeem_customer_detail',compact('cust'));
-		
-	}
-	
+
 	
 	
 }

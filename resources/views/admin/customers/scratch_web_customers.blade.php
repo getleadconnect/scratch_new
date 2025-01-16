@@ -52,7 +52,7 @@
 						  <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>
 						  
 						  
-						  <form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
+						  <form method="POST" id="export_redeem_history"  action="{{url('admin/export-customers-list')}}" enctype="multipart/form-data" >
 							@csrf 
 						  
 						   <div class="row" style="padding:3px 10px 10px 10px;" >
@@ -64,6 +64,16 @@
 							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
 								<label>End Date</label>
 								<input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date" required>
+							</div>
+							
+							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+								<label>Users</label>
+								<select id="user_id" name="user_id" class="form-control" >
+                                 <option value="">Select User</option>
+                                 @foreach($users as $usr)
+                                 <option value="{{ $usr->id }}">{{ $usr->vchr_user_name }}</option>
+                                 @endforeach
+								</select>
 							</div>
 							
 							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
@@ -85,8 +95,9 @@
                                  @endforeach
                               </select>
 							</div>
-							
-							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:18px;">
+							</div>
+							<div class="row text-right">
+							<div class="col-12 col-lg-12 col-xl-12 col-xxl-12" style="padding:5px 50px 15px 10px;">
 							<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
 							<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
 							<button type="submit" class="btn btn-secondary btn-xs"  > <i class="lni lni-download"></i> Download</button>
@@ -238,11 +249,12 @@ var table1 = $('#datatable').DataTable({
 				
 		ajax:
 		{
-			url:BASE_URL+"/users/get-scratch-web-customers",
+			url:BASE_URL+"/admin/get-scratch-web-customers",
 			data: function (data) 
 		    {
                data.start_date = $('#start_date').val();
                data.end_date = $('#end_date').val();
+			   data.user_id = $('#user_id').val();
                data.branch = $('#branch').val();
                data.campaign = $('#campaign').val();
 		    },
@@ -283,12 +295,13 @@ var table2 = $('#datatable_app').DataTable({
 				
 		ajax:
 		{
-			url:BASE_URL+"/users/get-scratch-app-customers",
+			url:BASE_URL+"/admin/get-scratch-app-customers",
 			data: function (data) 
 		    {
                data.start_date = $('#start_date').val();
                data.end_date = $('#end_date').val();
                data.branch = $('#branch').val();
+			   data.user_id = $('#user_id').val();
                data.campaign = $('#campaign').val();
 		    },
         },
@@ -328,49 +341,6 @@ $("#btn-filter").click(function()
 	});
 
 });
-
-
-$('#datatable').on('click', '.scratch-web-redeem', function (event) {
-           event.preventDefault();
-           var customer_id = $(this).attr('customer-id');
-
-           var url = BASE_URL + '/user/scratch-web-redeem/' + customer_id;
-   
-			Swal.fire({
-				  //title: "Are you sure?",
-				  text: "Are you sure, You want to redeem now?",
-				  icon: "question",
-				  showCancelButton: true,
-				  confirmButtonColor: "#3085d6",
-				  cancelButtonColor: "#d33",
-				  confirmButtonText: "Yes, Redeem it!"
-				}).then((result) => {
-				  if (result.isConfirmed) {
-					
-					var tid=$(this).attr('id');
-					
-					  $.ajax({
-					  url: BASE_URL + '/users/scratch-web-redeem/' + customer_id,
-					  type: 'get',
-					  dataType: 'json',
-					  //data:{'track_id':tid},
-					  success: function (res) 
-					  {
-						if(res.status==1)
-						{
-							 toastr.success(res.msg);
-							 $('#datatable').DataTable().ajax.reload(null,false);
-						}
-						else
-						{
-							 toastr.error(res.msg);
-						}
-					  }
-					});
-
-				  }
-				});
-       });
 
 /*
 

@@ -40,6 +40,16 @@
               </a>
             </li>
 			
+			
+			<li>
+              <a href="{{url('admin/scratch-customers')}}" title="Customers List">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
+                </div>
+                <div class="menu-title">Cuatomers List</div>
+              </a>
+            </li>
+			
 			<!--<li>
               <a href="{{url('admin/deleted-gifts-list')}}" title="Campaigns">
                 <div class="parent-icon"><i class="bi bi-house-fill"></i>
@@ -48,13 +58,13 @@
               </a>
             </li> -->
 			
-			<li>
+			<!--<li>
               <a href="#" title="Campaigns">
                 <div class="parent-icon"><i class="bi bi-house-fill"></i>
                 </div>
                 <div class="menu-title">Option</div>
               </a>
-            </li>
+            </li> -->
 
 
           </ul>

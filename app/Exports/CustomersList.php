@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-
 use Maatwebsite\Excel\Concerns\WithHeadings;
 //use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -10,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Models\ScratchWebCustomer;
 use App\Models\User;
 
-class ScratchWebCustomersList implements FromCollection,WithHeadings
+class CustomersList implements FromCollection,WithHeadings
 {
 	//use Exportable;
 	
@@ -18,10 +17,12 @@ class ScratchWebCustomersList implements FromCollection,WithHeadings
 	protected $eDate=null;
 	protected $branch=null;
 	protected $campaign=null;
+	protected $user=null;
 	
-	function __construct($sdate,$edate,$branch,$campaign)
+	function __construct($sdate,$edate,$user,$branch,$campaign)
 	{
 		$this->sDate=$sdate;
+		$this->user=$user;
 		$this->eDate=$edate;
 		$this->branch=$branch;
 		$this->campaign=$campaign;
@@ -49,16 +50,20 @@ class ScratchWebCustomersList implements FromCollection,WithHeadings
     public function collection()
     {
 		
-		$user_id=User::getVendorId();
-		
+			
 		$sdate=$this->sDate;
 		$edate=$this->eDate;
 		$branch=$this->branch;
 		$campaign=$this->campaign;
-				
-		$scdt=ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
-		->leftJoin('scratch_branches','scratch_web_customers.branch_id','=','scratch_branches.id')
-		->where('user_id',$user_id);
+		$user_id=$this->user;
+		
+		$scdt=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent','scratch_branches.branch_name')
+			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
+			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id');
+		
+		if($user_id!=""){
+			$scdt->where('scratch_web_customers.user_id','=',$user_id);
+		}
 		
 		if($sdate!=""){
 			$scdt->whereDate('scratch_web_customers.created_at','>=',$sdate);

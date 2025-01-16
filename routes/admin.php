@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CampaignGiftController;
+use App\Http\Controllers\Admin\ScratchWebController;
 
 use App\Http\Controllers\Admin\CommonController;
 
@@ -45,5 +46,15 @@ Route::controller(CampaignGiftController::class)->group(function() {
 	Route::get('/view-deleted-gifts-list', 'viewDeletedGiftListings')->name('view-deleted-gifts-list');
 });
 
+Route::controller(ScratchWebController::class)->group(function() {
+
+	Route::get('/scratch-customers', 'index')->name('scratch-customers');
+	Route::get('/get-scratch-web-customers', 'getWebCustomers')->name('get-scratch-web-customers');
+	Route::get('/get-scratch-app-customers', 'getAppCustomers')->name('get-scratch-app-customers');
+	Route::get('/scratch-web-redeem/{id}', 'redeem')->name('scratch-web-redeem');
+	Route::post('/sractch-web-history-download', 'downloadHistory')->name('sractch-web-history-download');	
+	Route::post('/export-customers-list', 'exportCustomersList')->name('export-customers-list');
+	
+});
 
 });
