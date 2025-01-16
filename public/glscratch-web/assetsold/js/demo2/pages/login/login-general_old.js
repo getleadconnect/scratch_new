@@ -234,7 +234,6 @@ var KTLoginGeneral = function() {
         KTUtil.animateClass(login.find('.kt-login__forgot')[0], 'fadeIn animated');
     }
 	
-	
     var handleFormSwitch = function() {
 
         $('#kt_login_forgot').click(function(e) {
