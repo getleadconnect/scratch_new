@@ -151,7 +151,7 @@ input[type="number"]::-ms-reveal {
                                         </select>
                                     </div>
                                     <div class="col-8 pr-0">
-                                        <label for="mobile_number">Whatsapp number</label>
+                                        <label for="mobile_number">Whatsapp Number</label>
                                         <input class="form-control" type="number" placeholder="Mobile Number" name="mobile_number" autocomplete="off" id="mobile_number">
                                     </div>                                    
                             </div>
@@ -298,9 +298,7 @@ input[type="number"]::-ms-reveal {
          var shortlink = {!! json_encode($shortlink) !!}
          var url = location.origin
          var bypass_ids = @json(\App\Common\Variables::getScratchBypass());
-		 
-		 console.log(bypass_ids);
-		 
+	 
     </script>
 @endpush
 

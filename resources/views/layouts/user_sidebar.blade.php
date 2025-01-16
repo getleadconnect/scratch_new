@@ -94,6 +94,9 @@
                 </li>
 				  <li> <a href="{{url('users/staff-users')}}"><i class="fa fa-caret-right"></i>Staff Users</a>
                 </li>
+				
+				<li> <a href="{{url('users/general-settings')}}"><i class="fa fa-caret-right"></i>General Settings</a>
+                </li>
                 
               </ul>
             </li>

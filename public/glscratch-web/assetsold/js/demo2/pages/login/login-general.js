@@ -139,7 +139,8 @@ var KTLoginGeneral = function() {
 		var status=findValueInArray(vendor_id, bypas_ids);
 
 		//if(bypas_ids.includes(vendor_id))
-		if(status==true)
+		//if(status==true)
+		if($("#otp_verify_status").val()==0)
 		{
             data.otp = null;
             verify_user(data,$button);
@@ -231,9 +232,8 @@ var KTLoginGeneral = function() {
         login.addClass('kt-login--forgot');
         $('.carousel').addClass('hide-banner')
         KTUtil.animateClass(login.find('.kt-login__forgot')[0], 'fadeIn animated');
-
     }
-
+	
     var handleFormSwitch = function() {
 
         $('#kt_login_forgot').click(function(e) {
@@ -261,7 +261,6 @@ var KTLoginGeneral = function() {
         $('#kt_login_signup_cancel').click(function(e) {
 
             e.preventDefault();
-
             displaySignInForm();
 
         });
@@ -366,7 +365,7 @@ var KTLoginGeneral = function() {
                         if(data.status == true)
                         {
                             var vendor_id = parseInt($("#vendor_id").val(), 10);
-
+							
 							var bypas_ids=bypass_ids.split(',');
 							var status=findValueInArray(vendor_id, bypas_ids);
 
@@ -385,7 +384,7 @@ var KTLoginGeneral = function() {
                                 content: data.msg,
                             });
                         }
-						
+
                         hideSpinner($button,'');
                     }
                 });
@@ -407,8 +406,7 @@ function findValueInArray(value, arr){
   }
   return result;
 }
-	
-	
+		
 	
 	
  var handleSignUpFormSubmit = function() {

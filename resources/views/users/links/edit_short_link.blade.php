@@ -53,7 +53,8 @@
 					</div>
 			</div>
 			</div>
-			
+						
+		
 			<hr class="mt-3">
 			<div class="mb-2 row">	
 				<div class="col-lg-12 col-xl-12 col-xxl-12 " style="text-align:right;">

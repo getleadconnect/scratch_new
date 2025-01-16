@@ -26,7 +26,6 @@ use App\Common\Common;
 use App\Common\Variables;
 use App\Common\WhatsappSend;
 use App\Common\Notifications;
-use App\Common\SingleSMS;
 use App\Services\WhatsappService;
 
 //use App\Jobs\SendNotification;
@@ -34,8 +33,6 @@ use App\Services\WhatsappService;
 use App\Jobs\SendEmailJob;
 
 //use App\Core\CustomClass;
-
-use App\SmsPanel;
 
 use Carbon\Carbon;
 use Jenssegers\Agent\Agent;
@@ -52,6 +49,8 @@ class GlScratchWebController extends Controller
     public function shortenLink($code)
     {
         $shortlink = ShortLink::where('code', $code)->where('status', ShortLink::ACTIVE)->first();
+		
+		
         if ($shortlink) {
             $agent = new Agent();
             $device = $agent->device();
@@ -135,12 +134,11 @@ class GlScratchWebController extends Controller
 
         return view('gl-scratch-web.short-link.invalid');
     }
-	
-	
+		
 
     public function verifyMobile(Request $request)
     {
-
+	
         if(request()->has('bill_no')){
             $check_num = ScratchWebCustomer::where('bill_no',request('bill_no'))->where('user_id',$request->vendor_id)->first();
             if($check_num){
@@ -167,14 +165,14 @@ class GlScratchWebController extends Controller
 		}
 		
 		$mobile = $request->country_code . $request->mobile;
-		
 		$bypass_ids=explode(",",Variables::getScratchBypass());
-        if(in_array($request->vendor_id, $bypass_ids))
+		
+		if(in_array($request->vendor_id, $bypass_ids))
 		{
 			return response()->json(['msg' => "bypass otp", 'status' => true]);
 		}
 		
-	//otp send to whats app --------------------------------------------------
+		//otp send to whats app --------------------------------------------------
 		        
         try {
 
@@ -185,6 +183,8 @@ class GlScratchWebController extends Controller
 
             $matchThese = ['number' => $request->mobile, 'user_id' => $request->vendor_id,'otp_type' => 'scratch_web'];
             UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
+					
+			
 			
 			Session::put('number',$request->mobile);
 			
@@ -209,13 +209,11 @@ class GlScratchWebController extends Controller
         }
 
     }
-		
 	
     public function verifyOTP(Request $request)
     {
-
         // return response()->json(['msg' => "Token Expired.!! Try again", 'status' => true]);
-		
+
         $requestOtp = $request->otp;
         $number = Session::get('number');
         if (!empty($number)) {

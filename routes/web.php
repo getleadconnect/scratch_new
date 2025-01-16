@@ -18,6 +18,7 @@ use App\Http\Controllers\User\ScratchBillController;
 use App\Http\Controllers\User\ScratchOfferBranchController;
 use App\Http\Controllers\User\ScratchStaffUserController;
 use App\Http\Controllers\User\UserProfileController;
+use App\Http\Controllers\User\GeneralSettingsController;
 
 use App\Http\Controllers\Shortener\ShortenerController;
 use App\Http\Controllers\Shortener\GlScratchWebController;
@@ -182,6 +183,12 @@ Route::controller(UserProfileController::class)->group(function() {
 	Route::post('/update-user-profile', 'updateUserProfile')->name('update-user-profile');
 	Route::post('/update-profile-image', 'uploadProfileImage')->name('update-profile-image');
 	Route::post('/change-password', 'changePassword')->name('change-password');
+});
+
+Route::controller(GeneralSettingsController::class)->group(function() {
+
+	Route::get('/general-settings', 'index')->name('general-settings');
+	
 });
 
 });
