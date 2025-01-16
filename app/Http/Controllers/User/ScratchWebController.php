@@ -185,7 +185,7 @@ public function getAppCustomers(Request $request)
     }
 
 
-    public function redeem($id)
+    /*public function redeem($id)
     {
         $flag = ScratchWebCustomer::where('id', $id)->update([
             'redeem' => ScratchWebCustomer::REDEEMED,
@@ -195,7 +195,7 @@ public function getAppCustomers(Request $request)
             return response()->json(['msg' => "Redeemed Successfully.", 'status' => true]);
         }
         return response()->json(['msg' => "Something Went Wrong !! Try Again Later", 'status' =>false]);
-    }
+    }*/
 
 		
 	public function exportWebCustomersList(Request $request)
