@@ -305,7 +305,7 @@ input[type="number"]::-ms-reveal {
                     return {
                         results: $.map(data.data, function (item) {
                             return {
-                                text: item.branch,
+                                text: item.branch_name,
                                 id: item.id
                             }
                         })
