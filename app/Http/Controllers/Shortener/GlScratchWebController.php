@@ -194,7 +194,7 @@ class GlScratchWebController extends Controller
                     'otp' => $otp
                 ];
 				
-                //(new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
+                (new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
 				
             } catch (\Exception $e) {
                 Log::info($e->getMessage());

@@ -54,18 +54,18 @@
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100 mt-2">
 						
-						<!--<div class="row mt-3">
+						<div class="row mt-3">
 						<div class="col-12 col-lg-12">
 						<p>Scratch & Win</p>
 						<div class="d-flex">
 						<p class="ps-3 pt-2">●&nbsp; Scratch Customers OTP verification is On/Off</p>&nbsp;&nbsp; 
 						<div class="form-check form-switch">
-							<input class="form-check-input" style="width:70px;height:30px;" type="checkbox" id="flexSwitchCheckChecked" checked="">
+							<input class="form-check-input" data-userid="{{data['user_id']}}" style="width:70px;height:30px;" id="otp_bypass" type="checkbox" id="flexSwitchCheckChecked"
+							@if($data['otp_user_id']!="") value="1" checked @else value="0" @endif >
 						</div>	
 						</div>
-						<p>Select Offer <p>
 						</div>
-						</div> -->
+						</div>
 						
 			
                     </div>
@@ -98,49 +98,15 @@
 
 BASE_URL ={!! json_encode(url('/')) !!}
 
-				
-var addValidator=$('#formAddStaffUser').validate({ 
-	
-	rules: {
-		user_name: {required: true,},
-		email: {required: true,},
-		password: {required: true,minlength:6, maxlength:15},
-		mobile: {required: true,},
-	},
-
-	submitHandler: function(form) 
-	{
-		var code=phone_number.getSelectedCountryData()['dialCode'];
-		$("#country_code").val(code);
-		
-		$.ajax({
-		url: "{{ url('users/save-staff-user') }}",
-		method: 'post',
-		data: $('#formAddStaffUser').serialize(),
-		success: function(result){
-			if(result.status == 1)
-			{
-				$("#btn-submit").attr('disabled',false).html('Submit')
-				$('#datatable').DataTable().ajax.reload(null,false);
-				toastr.success(result.msg);
-				$('#formAddStaffUser')[0].reset();
-			}
-			else
-			{
-				toastr.error(result.msg);
-			}
-		}
-		});
-	  }
-	});
 
 
-$('#datatable tbody').on('click','.edit-user',function()
+
+$(document).on('click','.otp_bypass',function()
 {
 
-	var id=$(this).attr('id');
-	var Result=$("#edit-user .offcanvas-body");
-
+	var id=$(this).value('id');
+	var userid=$(this).data('userid');
+	
 			jQuery.ajax({
 			type: "GET",
 			url: "{{url('users/edit-staff-user')}}"+"/"+id,

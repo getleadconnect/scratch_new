@@ -4,16 +4,8 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
-use App\Facades\FileUpload;
 
-use App\Models\ScratchOffer;
-use App\Models\ScratchWebCustomer;
-use App\Models\ScratchBranch;
-
-use App\Models\ScratchOffersListing;
-use App\Models\ScratchType;
-use App\Models\ScratchCount;
+use App\Models\Settings;
 use App\Models\User;
 
 use Validator;
@@ -36,13 +28,22 @@ class GeneralSettingsController extends Controller
   
   public function index()
   {
-	 return view('users.settings.general_settings'); 
+	  $user_id=User::getVendorId();
+	  
+	  $sett=Settings::where('vchr_settings_type','otp_bypass')->where('vchr_settings_value',$user_id)->where('fk_int_user_id',$user_id)->first();
+	  	  $data['user_id']=$user_id;
+		  $data['otp_user_id']='';
+	  if($sett)
+	  {
+		  $data['otp_user_id']=$sett->vchr_settings_value;
+	  }
+	  
+	 return view('users.settings.general_settings',compact('data')); 
   }
  
 
-
    
- public function saveGifts(Request $request)  //additional gifts
+ public function saveOtpGifts(Request $request)  //additional gifts
     {
 
 		$validate=Validator::make($request->all(),
@@ -117,7 +118,6 @@ class GeneralSettingsController extends Controller
 	       		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
             }
     } 
-
 
 
 
