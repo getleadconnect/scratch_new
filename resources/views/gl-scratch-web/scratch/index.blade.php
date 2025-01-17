@@ -119,7 +119,7 @@ input[type="number"]::-ms-reveal {
                             <div class="kt-login__desc">Enter your details to get your scratch and win offer</div>
                         </div>
 						
-                        <form class="kt-login__form kt-form" action="" id="details-page">
+                        <form class="kt-login__form kt-form" id="details-page">
 						@csrf
                             <div class="input-group">
                                 <label for="full_name">Name</label>

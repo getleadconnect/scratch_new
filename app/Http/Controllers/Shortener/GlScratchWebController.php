@@ -134,6 +134,7 @@ class GlScratchWebController extends Controller
 
         return view('gl-scratch-web.short-link.invalid');
     }
+	
 		
 
     public function verifyMobile(Request $request)
@@ -243,7 +244,6 @@ class GlScratchWebController extends Controller
         
 		if($otp_verify_status=="Disabled")
 		{
-					
             $customer = new ScratchWebCustomer();
             $customer->fill($request->all());
 			$customer->status = ScratchWebCustomer::NOT_SCRATCHED;
@@ -338,7 +338,6 @@ class GlScratchWebController extends Controller
 
                         return response()->json(['status' => true, 'offerListing' => $offerListing]);
                     }
-					
                     return response()->json(['msg' => "Scratch Offer is Completed", 'status' => false]);
                 } else {
                     return response()->json(['msg' => "Invalid OTP", 'status' => false]);

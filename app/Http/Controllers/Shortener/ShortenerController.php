@@ -15,6 +15,7 @@ use Jenssegers\Agent\Agent;
 use App\Models\ShortLink;
 use App\Models\ScratchBranch;
 use App\Models\ScratchOffer;
+use App\Models\ScratchOffersListing;
 
 use App\Models\ShortLinkHistory;
 use App\Models\Settings;
@@ -44,18 +45,26 @@ class ShortenerController extends Controller
 			return view('gl-scratch-web.short-link.invalid',compact('messageText'));
 		}
 		
-
 		$messageText = "Oops this link is Invalid";
 		$shortlink=ShortLink::where('vendor_id',$user_id)->where('code',$code);
         if((clone $shortlink)->first()){
-           
-                $shortlink = $shortlink->where('vendor_id',$user_id)->where('status',ShortLink::ACTIVE)->first();
 
+                $shortlink = $shortlink->where('vendor_id',$user_id)->where('status',ShortLink::ACTIVE)->first();
+		
 				if(!$shortlink){
                     $messageText = "Oops!! This link is inactive.";
                     return view('gl-scratch-web.short-link.invalid',compact('messageText'));
                 }
+				
+				$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $shortlink->offer_id)
+								->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)->first();
+				if(!$offerListing)
+				{
+					$messageText = "Oops!! This offer is closed.";
+					return view('gl-scratch-web.short-link.invalid',compact('messageText')); 
+				}
 
+				
 				$offer=ScratchOffer::where('pk_int_scratch_offers_id',$shortlink->offer_id)->first();	
 				if($offer)
 				{
@@ -80,7 +89,8 @@ class ShortenerController extends Controller
 					$messageText = "Oops!! This link is Invalid.";
 					return view('gl-scratch-web.short-link.invalid',compact('messageText')); 
 				}
-
+				
+				
 				
                 $agent = new Agent();        
                 $device = $agent->device();
@@ -184,7 +194,7 @@ class ShortenerController extends Controller
             }
 			
         }else{
-            $messageText = "Oops!! This is invalid campaign.";
+            $messageText = "Oops!! This is invalid offer.";
             return view('gl-scratch-web.short-link.invalid',compact('messageText','user_id'));
         }
         return view('gl-scratch-web.short-link.invalid',compact('messageText','user_id'));

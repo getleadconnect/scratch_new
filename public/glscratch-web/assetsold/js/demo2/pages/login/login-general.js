@@ -351,7 +351,6 @@ var KTLoginGeneral = function() {
                         company_name: $('#company_name').val(),
                         insurance: $('#insurance').val(),
                         event_name: $('#event_name').val(),
-
                     },
                     success:function(data) {
                         if(data.status == true)
