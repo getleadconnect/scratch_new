@@ -30,94 +30,74 @@ class GeneralSettingsController extends Controller
   {
 	  $user_id=User::getVendorId();
 	  
-	  $sett=Settings::where('vchr_settings_type','otp_bypass')->where('vchr_settings_value',$user_id)->where('fk_int_user_id',$user_id)->first();
-	  	  $data['user_id']=$user_id;
-		  $data['otp_user_id']='';
+	  $sett=Settings::where('vchr_settings_type','scratch_otp_enabled')->where('fk_int_user_id',$user_id)->first();
+	  $data['otp_bypass_value']='Disabled';
 	  if($sett)
 	  {
-		  $data['otp_user_id']=$sett->vchr_settings_value;
+		  $data['otp_bypass_value']=$sett->vchr_settings_value;
 	  }
 	  
 	 return view('users.settings.general_settings',compact('data')); 
   }
  
-
-   
- public function saveOtpGifts(Request $request)  //additional gifts
-    {
-
-		$validate=Validator::make($request->all(),
+public function setScratchOtpEnabled(Request $request)
+{
+	$validate=Validator::make($request->all(),
 			[
-			'offer_count'=>'required',
-			//'gift_image'=>'required|mimes:jpeg,png,jpg,gif,svg|max:524288',    //500kb
-			'description'=>'required',
-			'winning_status'=>'required']);
-		
+			'otp_bypass_value'=>'required',
+			]);
+	
 		if($validate->fails())
 		{
-			return response()->json(['msg'=>'Gift  details missing!','status'=>false]);
+			return response()->json(['msg'=>'Something wrong, Try again!','status'=>false]);
 		}
-				
-		DB::beginTransaction();
-
-            try
+		
+		try
 			{
             	$user_id=User::getVendorId();
+				$otp_val=$request->otp_bypass_value;
 
-					$offerId=$request->campaign_id;
-					$gift_image=$request->better_luck_image;
-					$filePath = 'offers_listing/';
-					
-					if($request->gift_image)
-					{
-						$file_image=$request->gift_image;  
-						$gift_image = uniqid(). '.' . $file_image->getClientOriginalExtension();
-						
-						FileUpload::uploadFile($file_image, $filePath,$gift_image,'local');
-					}
-											
-						$lst=new ScratchOffersListing();
-						$lst->fk_int_user_id=$user_id;
-						$lst->created_by=$user_id;
-						$lst->fk_int_scratch_offers_id=$offerId;
-						$lst->int_scratch_offers_count=$request->offer_count;
-						$lst->int_scratch_offers_balance=$request->offer_count;
-						$lst->txt_description=$request->description;
-						$lst->type_id=$request->offer_type_id;
-						$lst->int_winning_status=$request->winning_status;
-						$lst->int_status="1";
-              
-						//$lst->gift_image=$filePath.$nameOffer;
-						$lst->image=$filePath.$gift_image;      						
-						$flag=$lst->save();
+				if($otp_val=="Disabled")
+					$otp_val="Enabled";
+				else
+				   $otp_val="Disabled";
 
+				$setv=$sett=Settings::where('vchr_settings_type','scratch_otp_enabled')->where('fk_int_user_id',$user_id)->first();
+				if($setv)
+				{
+					$setv->vchr_settings_value=$otp_val;
+					$flag=$setv->save();
+				}
+				else
+				{
+					$set=new Settings();
+					$set->fk_int_user_id=$user_id;
+					$set->vchr_settings_type='scratch_otp_enabled';
+					$set->vchr_settings_value=$otp_val;
+					$set->int_status=1;
+              		$flag=$set->save();
+				}
 				
-				$sc=ScratchCount::where('fk_int_user_id',$user_id)->first();  //update scratch count
-				$offer_count=$request->offer_count;
-				$ucount=$sc->total_count-($sc->used_count+$request->offer_count);
-				
-				$sc->used_count=$sc->used_count+$offer_count;
-				$sc->balance_count=$sc->balance_count-$offer_count;
-				$sc->save();
-
 				if($flag)
         		{   
-					DB::commit();
-					return response()->json(['msg'=>'Gift successfully saved','status'=>true]);
+					if($otp_val=="Enabled")
+						return response()->json(['msg'=>'Scratch customer OTP enabled','status'=>true,'bypass_value'=>$otp_val]);
+					else
+						return response()->json(['msg'=>'Scratch customer OTP disabled','status'=>true,'bypass_value'=>$otp_val]);
         		}
         		else
         		{
-					DB::rollback();
 					return response()->json(['msg'=>'Something wrong, try again.','status'=>false]);
         		}
 	
            }
             catch(\Exception $e)
             {
-				DB::rollback();
 	       		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
             }
-    } 
+	
+}
+
 
 
 

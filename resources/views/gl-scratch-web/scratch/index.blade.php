@@ -132,23 +132,8 @@ input[type="number"]::-ms-reveal {
                                                 style=" padding-left: 1rem; padding-right: .5rem;"
                                                 autocomplete="off">
 												
-										@php
-										$bypass_ids=explode(",",App\Common\Variables::getScratchBypass());
-										@endphp
-												
-                                        @if(in_array($shortlink->vendor_id,$bypass_ids ))
-                                            <option value="91" selected>+91
-                                            <option value="971" >+971
-                                            <option value="973">+973
-                                            <option value="974">+974
-                                            <option value="966">+966
-                                        @else
-                                            <option value="91" selected>+91
-                                            <option value="973">+973
-                                            <option value="971">+971
-                                        @endif
-                                          
-                                        </select>
+										    <option value="91" selected>+91
+                                           </select>
                                     </div>
                                     <div class="col-8 pr-0">
                                         <label for="mobile_number">Whatsapp Number</label>
@@ -157,7 +142,8 @@ input[type="number"]::-ms-reveal {
                             </div>
                             <input type="hidden" id="offer_id" value="{{$shortlink->offer_id}}" name="offer_id">
                             <input type="hidden" id="vendor_id" value="{{$shortlink->vendor_id}}" name="vendor_id">
-							
+							<input type="text" id="scratch_otp_enabled" value="{{$scratch_otp_enabled}}" name="scratch_otp_enabled">
+														
                             @if($shortlink->email_required == 1)
                                 <div class="input-group">
                                     <label for="customer_email">Email</label>
@@ -297,8 +283,7 @@ input[type="number"]::-ms-reveal {
          var user = {!! json_encode($user) !!}
          var shortlink = {!! json_encode($shortlink) !!}
          var url = location.origin
-         var bypass_ids = @json(\App\Common\Variables::getScratchBypass());
-	 
+         		 	 
     </script>
 @endpush
 

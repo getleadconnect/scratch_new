@@ -17,6 +17,7 @@ use App\Models\ScratchBranch;
 use App\Models\ScratchOffer;
 
 use App\Models\ShortLinkHistory;
+use App\Models\Settings;
 use App\Models\User;
 
 use App\Traits\GeneralTrait;
@@ -161,19 +162,20 @@ class ShortenerController extends Controller
             $branches=ScratchBranch::where('vendor_id',$shortlink->vendor_id)->get();        
             $expired = false;
 
-            if($shortlink->vendor_id == 1815)
-                $title = 'Hilite - Get an existing offer, click the logo link';
-            else
-                $title = 'Get an existing offer, click the logo link';   
-
             $offerList =[];
             $user=User::where('pk_int_user_id',$shortlink->vendor_id)->where('int_status', Variables::ACTIVE)->first();    
 			
+			$set=Settings::where('vchr_settings_type','scratch_otp_enabled')->where('fk_int_user_id',$shortlink->vendor_id)->first();
+			if($set)
+				$scratch_otp_enabled=$set->vchr_settings_value;
+			else
+				$scratch_otp_enabled="Disabled";
+						
             if($user){       
                 $offer=ScratchOffer::where('fk_int_user_id',$user_id)->where('int_status',ScratchOffer::ACTIVATE)->where('pk_int_scratch_offers_id',$shortlink->offer_id)->first(); 
                 if($offer){
 					
-                    return view('gl-scratch-web.scratch.index', compact(['user','offer','shortlink','branches','title']));
+                    return view('gl-scratch-web.scratch.index', compact(['user','offer','shortlink','branches','scratch_otp_enabled']));
                     // return view('gl-scratch-web.short-link.scratch-new',compact(['user','offer','shortlink','branches','title']));
                 }else{
                     $messageText = "Oops!! There is no offers added.";
@@ -183,9 +185,9 @@ class ShortenerController extends Controller
 			
         }else{
             $messageText = "Oops!! This is invalid campaign.";
-            return view('gl-scratch-web.short-link.invalid',compact('messageText'));
+            return view('gl-scratch-web.short-link.invalid',compact('messageText','user_id'));
         }
-        return view('gl-scratch-web.short-link.invalid',compact('messageText'));
+        return view('gl-scratch-web.short-link.invalid',compact('messageText','user_id'));
     }
 	
     public function form()

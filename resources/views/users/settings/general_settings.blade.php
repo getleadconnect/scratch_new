@@ -58,16 +58,15 @@
 						<div class="col-12 col-lg-12">
 						<p>Scratch & Win</p>
 						<div class="d-flex">
-						<p class="ps-3 pt-2">●&nbsp; Scratch Customers OTP verification is On/Off</p>&nbsp;&nbsp; 
+						<p class="ps-3 pt-2">●&nbsp; Scratch Customers OTP verification is <b><span id="enabled">{{$data['otp_bypass_value']}}</span></b></p>&nbsp;&nbsp; 
 						<div class="form-check form-switch">
-							<input class="form-check-input" data-userid="{{data['user_id']}}" style="width:70px;height:30px;" id="otp_bypass" type="checkbox" id="flexSwitchCheckChecked"
-							@if($data['otp_user_id']!="") value="1" checked @else value="0" @endif >
+							<input class="form-check-input" style="width:70px;height:30px;" id="otp_bypass" type="checkbox" id="flexSwitchCheckChecked"
+							 value="{{$data['otp_bypass_value']}}" @if($data['otp_bypass_value']=='Enabled') checked @endif >
 						</div>	
 						</div>
 						</div>
 						</div>
-						
-			
+									
                     </div>
                    </div><!--end row-->
                 </div>
@@ -98,27 +97,30 @@
 
 BASE_URL ={!! json_encode(url('/')) !!}
 
-
-
-
-$(document).on('click','.otp_bypass',function()
+$(document).on('click','#otp_bypass',function()
 {
+	var bypass_value=$(this).val();
 
-	var id=$(this).value('id');
-	var userid=$(this).data('userid');
-	
 			jQuery.ajax({
-			type: "GET",
-			url: "{{url('users/edit-staff-user')}}"+"/"+id,
-			dataType: 'html',
-			//data: {vid: vid},
+			type: "POST",
+			url: "{{url('users/set-scratch-otp-enabled')}}",
+			dataType: 'json',
+			data: {_token:"{{csrf_token()}}",otp_bypass_value: bypass_value},
 			success: function(res)
 			{
-			   Result.html(res);
+			   if(res.status==true)
+			   {
+				   toastr.success(res.msg);
+				   $("#enabled").html(res.bypass_value);
+				   $("#otp_bypass").val(res.bypass_value);
+			   }
+			   else
+			   {
+				   toastr.error(res.msg);
+			   }
 			}
 		});
 });
-
 
 </script>
 @endpush

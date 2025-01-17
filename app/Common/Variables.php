@@ -25,17 +25,8 @@ class Variables
 
     const ACTIVE = 1;
     const DEACTIVE = 0;
-   
-    const SERVICE_CRM = 'CRM';
-    const SERVICE_GLP = 'GL Promo';
+
     const SERVICE_GLS = 'GL Scratch';
-    const SERVICE_GLV = 'GL Verify';
-    const SERVICE_MISSEDCALL = 'Missed Call';
-    const SERVICE_SMS = 'SMS';
-    const SERVICE_IVR = 'IVR';
-    const SERVICE_EVENTS = 'GL Events';
-    const SERVICE_SALES = 'Sales';
-    const SERVICE_CAMPAIGNS = 'Campaigns';
 
     const DEF_COUNTRY_INDIA = 29;
 
@@ -59,7 +50,7 @@ class Variables
     const  ALERT_BOX_SENT_MESSAGE = 'Your message has been sent';
 
 
-    const GETLEAD_SERVICES = [self::SERVICE_CRM, self::SERVICE_GLP, self::SERVICE_GLS, self::SERVICE_GLV, self::SERVICE_MISSEDCALL, self::SERVICE_SMS, self::SERVICE_IVR, self::SERVICE_EVENTS, self::SERVICE_SALES, self::SERVICE_CAMPAIGNS];
+    /*const GETLEAD_SERVICES = [self::SERVICE_CRM, self::SERVICE_GLP, self::SERVICE_GLS, self::SERVICE_GLV, self::SERVICE_MISSEDCALL, self::SERVICE_SMS, self::SERVICE_IVR, self::SERVICE_EVENTS, self::SERVICE_SALES, self::SERVICE_CAMPAIGNS];
 
     const APOLO_USER_ID = 765;
     //const APOLO_USER_ID = 2;
@@ -74,7 +65,7 @@ class Variables
     const IVR_NUMBER_RESTRICT = [3119];
 
     const SCARTCH_BYPASS = [3286,3316,1870];
-
+*/
     /**
      * @return mixed
      */
@@ -151,102 +142,10 @@ class Variables
 
     }
 
-    /**
-     * @param $logType
-     * @return string
-     */
-    public static function getLogType($logType)
-    {
-        switch ($logType) {
-            case EnquiryFollowup::TYPE_NOTE:
-                return "Note";
-                break;
-            case EnquiryFollowup::TYPE_LOG_CALL:
-                return "Call";
-                break;
-            case EnquiryFollowup::TYPE_LOG_EMAIL:
-                return "Email";
-                break;
-            case EnquiryFollowup::TYPE_LOG_MEETING;
-                return "Meeting";
-                break;
-            case EnquiryFollowup::TYPE_TASK:
-                return "Task";
-                break;
-            case EnquiryFollowup::TYPE_SCHEDULE:
-                return "Schedule";
-                break;
-            default:
-                return "No information available for that day . ";
-                break;
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $array
-     * @param $key
-     * @return null
-     */
-    function searchForService($id, $array, $key)
-    {
-        foreach ($array as $index => $val) {
-            if ($val[$key] === $id) {
-                return $val[$key];
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param $array
-     * @param $service
-     * @return null
-     */
-    public function getGetleadService($array, $service)
-    {
-        foreach ($array as $index => $sub) {
-            if ($sub->plans->services->contains('plan_id', $sub->plans->id)) {
-                $sub->user_service = $this->searchForService($service, $sub->plans->services, 'service');
-            } else {
-                unset($array[$index]);
-            }
-        }
-        return $service_name = $this->searchForService($service, $array, 'user_service');
-    }
-
-
-    public static function checkSubscription($service=null)
-    {
-        $commonObj = new Common();
-        $userSubscription = $commonObj->checkUserSubscription(User::getVendorId(), $service);
-        
-        if ($userSubscription) {
-            return true;
-        }
-    }
-
-    public static function getSmsRoutes($otp)
-    {
-        $query = Smsroute::where('int_sms_route_status', Smsroute::ACTIVATE)
-            ->where('vchr_sms_route', '!=', Smsroute::EMAIL);
-        if ($otp == 0) {
-            $query = $query->where('priority', '!=', Variables::OTP_PRIORITY);
-        }
-        $routes = $query->get();
-        return $routes;
-    }
 
     public static function getDesignations()
     {
         return Designation::where('vendor_id', User::getVendorId())->select('pk_int_designation_id', 'vchr_designation')->get();
-    }
-
-    public static function getLeadTypes()
-    {
-        return LeadType::where('vendor_id', User::getVendorId())
-            ->select('id', 'name')
-            ->get();
     }
 
    /* public static function getScratchBypass()
@@ -261,8 +160,8 @@ class Variables
         }
     }
 	*/
-	
-	public static function getScratchBypass()
+		
+	/*public static function getScratchBypass()
     {
         $settings = Settings::where('vchr_settings_type','scratch-bypass')
         ->pluck('vchr_settings_value');
@@ -271,8 +170,14 @@ class Variables
         }else{
             return [];
         }
-    }
-
+    }*/
+	
+	public static function getScratchBypass($user_id)
+    {
+        $settings = Settings::where('vchr_settings_type','scratch_otp_enabled')->where('fk_int_user_id',$user_id)
+        ->pluck('vchr_settings_value')->first();
+		return $settings;
+    } 
 
     public static function checkEnableSettings($label,$vendor_id =null)
     {

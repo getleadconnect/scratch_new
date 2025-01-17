@@ -166,18 +166,30 @@ class GlScratchWebController extends Controller
 		
 		$mobile = $request->country_code . $request->mobile;
 		
+		//$bypass_ids=explode(",",Variables::getScratchBypass($request->vendor_id));
+
+		/*if(in_array($request->vendor_id, $bypass_ids))
+		{
+			return response()->json(['msg' => "bypass otp", 'status' => true]);
+		}*/
+
+		
 		$otp_verify_status=Variables::getScratchBypass(request('vendor_id'));
 
 		if($otp_verify_status=="Disabled")
 		{
 			return response()->json(['msg' => "Enbled otp", 'status' => true]);
 		}
-
+		
+		
 		//otp send to whats app --------------------------------------------------
 		
         try {
 
             $otp = rand(1111, 9999);
+
+            /*if(in_array($request->vendor_id, Variables::getScratchBypass()))
+                return response()->json(['msg' => "Please Wait For Your Otp", 'status' => true]);*/
 
             $matchThese = ['number' => $request->mobile, 'user_id' => $request->vendor_id,'otp_type' => 'scratch_web'];
             UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
@@ -239,8 +251,11 @@ class GlScratchWebController extends Controller
     {
 		
         $mobile = $request->country_code . $request->mobile;
+		
+		//$bypass_ids=explode(",",Variables::getScratchBypass($request->vendor_id));
 		$otp_verify_status=Variables::getScratchBypass($request->vendor_id);
         
+		//if(in_array($request->vendor_id, $bypass_ids))
 		if($otp_verify_status=="Disabled")
 		{
 					
@@ -429,6 +444,23 @@ class GlScratchWebController extends Controller
         
     }
 
+    /*public function searchAutocompleteBranch($user_id)
+    {
+        $vendor_id = User::getVendorIdApi($user_id);
+        if(request()->filled('term'))
+            $branches = ScratchBranch::where('vendor_id',$vendor_id)
+                            ->select('id','branch')
+                            ->where(function($q){
+                                $q->where('branch','LIKE','%'.request('term').'%');
+                            })
+                            ->get();
+        else
+            $branches = [];
+                
+        return response()->json([ 'status' => 'success','data' => $branches]);
+    }
+	*/
+	
 	
 	public function getBranchAutocomplete($user_id)
     {

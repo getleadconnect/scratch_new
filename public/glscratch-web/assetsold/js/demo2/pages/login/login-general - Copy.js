@@ -26,10 +26,16 @@ var KTLoginGeneral = function() {
 
                 </div>`);
 
+
+
         form.find('.alert').remove();
+
         alert.prependTo(form);
+
         //alert.animateClass('fadeIn animated');
+
         KTUtil.animateClass(alert[0], 'fadeIn animated');
+
         alert.find('span').html(msg);
 
     }
@@ -126,12 +132,15 @@ var KTLoginGeneral = function() {
             short_link: shortlink.link,
             offer_id:$("#offer_id").val(),
             user_id:user.pk_int_user_id,
-			scratch_otp_enabled:$("#scratch_otp_enabled").val(),
             vendor_id: $("#vendor_id").val()
         }
-			
-		var otp_verify_status=$("#scratch_otp_enabled").val();
-		if(otp_verify_status=="Disabled")
+		
+		var bypas_ids=bypass_ids.split(',');
+		var status=findValueInArray(vendor_id, bypas_ids);
+
+		//if(bypas_ids.includes(vendor_id))
+		//if(status==true)
+		if($("#otp_verify_status").val()==0)
 		{
             data.otp = null;
             verify_user(data,$button);
@@ -357,10 +366,12 @@ var KTLoginGeneral = function() {
                         if(data.status == true)
                         {
                             var vendor_id = parseInt($("#vendor_id").val(), 10);
+							
+							var bypas_ids=bypass_ids.split(',');
+							var status=findValueInArray(vendor_id, bypas_ids);
 
-							var otp_verify_status=$("#scratch_otp_enabled").val();
-
-							if(otp_verify_status=="Disabled")
+                            //if(bypas_ids.includes(vendor_id))
+							if(status==true)
 							{
                                 verify_otp($button)
                             }else{
@@ -404,41 +415,74 @@ function findValueInArray(value, arr){
 
             e.preventDefault();
 
+
+
             var btn = $(this);
+
             var form = $(this).closest('form');
+
+
 
             form.validate({
 
                 rules: {
-                    fullname: { 
-					required: true  
-					},
-                    email: { 
-					required: true,
-                    email: true
+
+                    fullname: {
+
+                        required: true
+
                     },
+
+                    email: {
+
+                        required: true,
+
+                        email: true
+
+                    },
+
                     password: {
+
                         required: true
+
                     },
+
                     rpassword: {
+
                         required: true
+
                     },
+
                     agree: {
+
                         required: true
+
                     }
+
                 }
 
             });
 
+
+
             if (!form.valid()) {
+
                 return;
-			}
+
+            }
+
+
 
             btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
+
             btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
+
+
 
             form.ajaxSubmit({
+
                 url: '',
+
                 success: function(response, status, xhr, $form) {
 
                         // similate 2s delay
@@ -446,14 +490,25 @@ function findValueInArray(value, arr){
                         setTimeout(function() {
 
                             btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
+
                             form.clearForm();
+
                             form.validate().resetForm();
 
+
+
                             // display signup form
+
                             displaySignInForm();
+
                             var signInForm = login.find('.kt-login__signin_form');
+
                             signInForm.clearForm();
+
                             signInForm.validate().resetForm();
+
+
+
                             showErrorMsg(signInForm, 'success', 'Thank you. To complete your registration please check your email.');
 
                         }, 2000);
@@ -480,11 +535,16 @@ function findValueInArray(value, arr){
             form.validate({
 
                 rules: {
-					email: {
+    email: {
+
                         required: true,
+
                         email: true
+
                     }
+
                 }
+
             });
 
             if (!form.valid()) {
@@ -503,16 +563,25 @@ function findValueInArray(value, arr){
 
                         setTimeout(function() {
 
-                            btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false); // remove
+                                btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false); // remove
+
                             form.clearForm(); // clear form
+
                             form.validate().resetForm(); // reset validation states
+
+
 
                             // display signup form
 
                             displaySignInForm();
+
                             var signInForm = login.find('.kt-login__signin form');
+
                             signInForm.clearForm();
+
                             signInForm.validate().resetForm();
+
+
 
                             showErrorMsg(signInForm, 'success', 'Cool! Password recovery instruction has been sent to your email.');
 
