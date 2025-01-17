@@ -459,6 +459,7 @@ input[type="number"]::-ms-reveal {
             });
         // $('#qrcode-2').hide()    
     }
+		
 
     $(document).on('change','.lead_id',function(){
         $.ajax({

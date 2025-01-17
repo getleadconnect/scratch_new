@@ -15,7 +15,7 @@ use App\Models\ShortLink;
 use App\Models\ShortLinkHistory;
 use App\Models\User;
 use App\Traits\GeneralTrait;
-
+use App\Traits\EndroidQrcodeTrait;
 
 use Validator;
 
@@ -28,28 +28,24 @@ use Log;
 class GlShortLinksController extends Controller
 {
   
-  use GeneralTrait;
+  use GeneralTrait, EndroidQrcodeTrait;
   
   public function __construct()
   {
      //$this->middleware('admin');
   }
-  
+    
+   
   public function index()
   {
-	    /*$short_links = ShortLink::where('link', 'NOT LIKE', 'http://' . '%')->get();
-        foreach ($short_links as $item) {
-            $item->link = 'http://' . $item->link;
-            $item->save();
-        } 
-		*/
-	
+	 
 	 $user_id=User::getVendorId();
 	 $subscription=$this->checkUserStatus($user_id);
 	
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
 	 return view('users.links.gl_short_links',compact('offers','subscription'));
-  }	
+	 
+  }
    
  
   
@@ -84,6 +80,15 @@ class GlShortLinksController extends Controller
 				return $bill_req;
 			})
 			
+			->addColumn('qrcode', function ($links) 
+			{
+				if($links->qrcode_file!="")
+				$qrc='<a  href="'.FileUpload::viewFile($links->qrcode_file,'local').'" target="_blank"><img class="qrcode-icon" src='.FileUpload::viewFile($links->qrcode_file,'local').' width="40" height="40"></a>';
+				else
+				$qrc="--";
+				return $qrc;
+			})
+			
 			->addColumn('branch', function ($links) 
 			{
 				$brn_req=($links->branch_required==1)?"Yes":"No";
@@ -106,11 +111,12 @@ class GlShortLinksController extends Controller
 								<ul class="dropdown-menu">
 								<li><a class="dropdown-item link-edit" href="javascript:;" id="'.$links->id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-link" aria-controls="offcanvasScrolling" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
 								<li><a class="dropdown-item link-view" href="'.route('users.web-click-link-history',$links->id).'"><i class="lni lni-eye"></i> View</a></li>
+								<li><a class="dropdown-item gen-qrcode" href="javascript:;" id="'.$links->id.'"><i class="fa fa-qrcode"></i> Generate QrCode</a></li>
 								  '.$btn.'<ul>
 							</div>';
 				return $action;				
             })
-            ->rawColumns(['action','status'])
+            ->rawColumns(['action','status','qrcode'])
             ->toJson(true);
    }
 
@@ -148,29 +154,79 @@ public function store(Request $request)
 		}
 		else
 		{
-			
-			$link = new  ShortLink();
-			$code=strtoupper($request->code);
-			$link->vendor_id = User::getVendorId();
-			$link->link = env('SHORT_LINK_DOMAIN') . '/'.$link->vendor_id."/". $code;
-			$link->code = $code;
-			$link->offer_id = $request->offer_id;
-			$link->custom_field = $request->custom_field;
-			$link->bill_number_only_apply_from_list = $request->custom_field; //bill no
-			$link->email_required = $request->email_required;
-			$link->branch_required = $request->branch_required;
-			$link->status = ShortLink::ACTIVE;
-			$flag = $link->save();
+			try{
+				$short_code=strtoupper($request->code);
+				$user_id=User::getVendorId();
+				
+				$filename="qr_codes/".$short_code.'-'.time().'.png';
+				$path = public_path('uploads/'.$filename);
+				$short_link=env('SHORT_LINK_DOMAIN') . '/'.$user_id."/". $short_code;
+				
+				$result=$this->generateQrCode($short_link,$path);   //generate qrcode for scan link
 
-			if ($flag) {
-				return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
+				$link = new  ShortLink();
+				$link->vendor_id = $user_id;
+				$link->link = $short_link;
+				$link->code = $short_code;
+				$link->offer_id = $request->offer_id;
+				$link->custom_field = $request->custom_field;
+				$link->bill_number_only_apply_from_list = $request->custom_field; //bill no
+				$link->email_required = $request->email_required;
+				$link->branch_required = $request->branch_required;
+				$link->status = ShortLink::ACTIVE;
+				$link->qrcode_file=$filename;
+				$flag = $link->save();
+
+				if ($flag) {
+					return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
+				}
+				else
+				{
+					FileUpload::deleteFile($filename,'local');
+					return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
+				}
 			}
-			else
+			catch(\Exception $e)
 			{
-				return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
+				return response()->json(['msg' =>$e->getMessage(), 'status' => false]);	
 			}
 		}
     }
+
+public function reGenerateQrcode(Request $request)
+{
+	
+	$id=$request->link_id;
+	 $link = ShortLink::where("id", $id)->first();
+	 if($link)
+	 {
+		$old_file=$link->qrcode_file;
+		 
+		$short_code=strtoupper($link->code);
+		$user_id=User::getVendorId();
+				
+		$filename="qr_codes/".$short_code.'-'.time().'.png';
+		$path = public_path('uploads/'.$filename);
+		$short_link=env('SHORT_LINK_DOMAIN') . '/'.$user_id."/". $short_code;
+
+		$result=$this->generateQrCode($short_link,$path);   //generate qrcode for scan link 
+		
+		$link->qrcode_file=$filename;
+		$flag=$link->save();
+		if ($flag)
+			{
+				FileUpload::deleteFile($old_file,'local');
+				return response()->json(['msg' =>'Qrcode successfully added!' , 'status' => true]);
+			}
+			else
+			{
+				FileUpload::deleteFile($filename,'local');
+				return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
+			}	
+		 
+	 }
+	
+}
 
 
 public function edit($id)
@@ -184,7 +240,7 @@ public function updateLink(Request $request)
     {
 		
 		$id=$request->link_id;
-		
+	
         $link = ShortLink::find($id);
 		$link->vendor_id= User::getVendorId();
         $link->offer_id=$request->offer_id_edit;

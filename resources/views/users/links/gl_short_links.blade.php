@@ -13,6 +13,10 @@
 {
 	width:30%;
 }						
+.qrcode-icon:hover
+{
+	border:1px solid blue;
+}
 </style>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -64,6 +68,7 @@
                                 <th>Sl No</th>
                                 <th>Offer Name</th>
                                 <th>Link</th>
+								<th>QrCode</th>
                                 <th>Code</th>
 								<th><span>Email</span> <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
 								<th>BillNo <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
@@ -187,6 +192,7 @@ var table = $('#datatable').DataTable({
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
 			{"data": "offer" },
 			{"data": "link" },
+			{"data": "qrcode" },
 			{"data": "code" },
 			{"data": "email" },
 			{"data": "billno" },
@@ -215,8 +221,29 @@ $(document).on('click','.link-add',function()
 		});
 });
 
-
-
+$(document).on('click','.gen-qrcode',function()
+{
+	var link_id=$(this).attr('id');
+	
+		jQuery.ajax({
+		type: "GET",
+		url: "{{url('users/generate-qrcode')}}",
+		dataType: 'json',
+		data: {link_id: link_id},
+		success: function(res)
+		{
+		   if(res.status==true)
+		   {
+			   toastr.success(res.msg);
+			   $('#datatable').DataTable().ajax.reload(null,false);
+		   }
+		   else
+		   {
+			   toastr.success(res.msg);
+		   }
+		}
+	});
+});
 
 
 
