@@ -435,9 +435,9 @@ class GlScratchWebController extends Controller
         $vendor_id = User::getVendorIdApi($user_id);
         if(request()->filled('term'))
             $branches = ScratchBranch::where('vendor_id',$vendor_id)
-                            ->select('id','branch')
+                            ->select('id','branch_name')
                             ->where(function($q){
-                                $q->where('branch','LIKE','%'.request('term').'%');
+                                $q->where('branch_name','LIKE','%'.request('term').'%');
                             })
                             ->get();
         else
