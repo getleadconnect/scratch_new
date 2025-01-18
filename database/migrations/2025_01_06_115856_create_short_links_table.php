@@ -20,6 +20,7 @@ class CreateShortLinksTable extends Migration
             $table->unsignedBigInteger('offer_id')->nullable();            
             $table->string('code')->nullable();
             $table->string('link')->nullable();
+			$table->string('qrcode_file')->nullable();
 			$table->text('url')->nullable();
             $table->tinyInteger('bill_number_only_apply_from_list')->default(0);
 			$table->tinyInteger('email_required')->nullable();

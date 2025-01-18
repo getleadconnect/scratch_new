@@ -83,6 +83,7 @@
 									<th>Name</th>
 									<th>Mobile</th>
 									<th>Email</th>
+									<th>Company</th>
 									<th>Address</th>
 									<th>Location</th>
 									<th>Created At</th>
@@ -296,6 +297,7 @@ var table = $('#datatable').DataTable({
 			{"data": "name" },
 			{"data": "mobile" },
 			{"data": "email" },
+			{"data": "company" },
 			{"data": "address" },
 			{"data": "location" },
 			{"data": "cdate" },

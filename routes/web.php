@@ -19,6 +19,7 @@ use App\Http\Controllers\User\ScratchOfferBranchController;
 use App\Http\Controllers\User\ScratchStaffUserController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\GeneralSettingsController;
+use App\Http\Controllers\User\ForgotPasswordController;
 
 use App\Http\Controllers\Shortener\ShortenerController;
 use App\Http\Controllers\Shortener\GlScratchWebController;
@@ -35,6 +36,21 @@ Route::controller(LoginController::class)->group(function() {
 	Route::post('/login', 'userLogin')->name('user-login');
 	Route::post('/logout', 'logout')->name('logout');
 });
+
+
+
+Route::controller(ForgotPasswordController::class)->group(function() {
+
+Route::get('forgot-password','index')->name('forgot-password');  
+Route::post('send-forgot-password-otp','sendForgotPasswordOtp')->name('send-forgot-password-otp');  
+		  //Route::get('resend-forgot-password-otp/{email}',[AdminController::class,'resendForgotPasswordOtp'])->name('resend-forgot-password-otp');  
+Route::get('verify-otp','verifyOtp')->name('verify-otp');  
+Route::post('check-forgot-password-otp','checkForgotPasswordOtp')->name('check-forgot-password-otp');  
+Route::get('change-user-password','changeUserPassword')->name('change-user-password');  
+Route::post('update-user-password','updateUserPassword')->name('update-user-password');  
+
+});
+
 
 
 Route::group(['prefix'=>'users','as'=>'users.','middleware' => 'authware'], function()

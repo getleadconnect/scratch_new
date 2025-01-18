@@ -14,8 +14,6 @@
 		@include('onboarding.layouts.slider')
 	<!--begin::Aside-->
 
-	{{-- <!--begin::Content--><div class="help"><a href="#"><span class="mr-2"><img src="{{url('onboarding/assets/media/ep_help.svg')}}"></span>Help center</a></div> --}}
-
 		<div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto gsign-up">
 			<!--begin::Content body-->
 			<div class="d-flex flex-column-fluid flex-center">
@@ -35,7 +33,7 @@
 						<!--begin::Form group-->
 							<div class="form-group form-feild-row  country-code-row text-left position-relative">
 								<label class="sign-label">Mobile number </label>
-								<input class="form-control form-control-solid h-auto phone-field text-input" type="number" placeholder="Mobile number" name="email" id="phoneField1" autocomplete="off" value="{{ old('email')}}"/>
+								<input class="form-control form-control-solid h-auto phone-field text-input" type="number" placeholder="Mobile number" name="mobile" id="phoneField1" autocomplete="off" value="{{ old('mobile')}}" required />
 								<input type="hidden" id="country_code" name="country_code" value="{{ $countryCode }}">
 							</div>
 							<!--end::Form group-->
@@ -44,7 +42,7 @@
 								<div class="d-flex justify-content-between mt-n5">
 									<label class="sign-label pt-5">Password</label>
 								</div>
-								<input class="form-control form-control-solid h-auto" type="password" placeholder="Type your password here" name="password" autocomplete="off" id="password"/>
+								<input class="form-control form-control-solid h-auto" type="password" placeholder="Type your password here" name="password" autocomplete="off" id="password" required />
 								<span id="toggle_pwd" class="fa fa-lg fa-fw field_icon fa-eye-slash mt-5"></span>
 								<a href="#" class="text-right text-hover-primary float-right d-block mt-2 forgot-password pt-2" >Forgot Password ?</a>
 							</div>
@@ -52,14 +50,12 @@
 							<!--begin::Action-->
 							<div class="pb-lg-0 pb-5 sign-d-flex  align-items-center w-100 mt-5 pt-5">
 								<button type="submit"  class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 " style="width:100%;" >Sign In</button> <!--id="kt_login_signin_submit"-->
-								<h6 class="have-acc mt-5 pt-5">Don’t have an account ? <a href="#">Signup</a></h6>									
+								<!-- <h6 class="have-acc mt-5 pt-5">Don’t have an account ? <a href="#">Signup</a></h6>	-->
 							</div>
 							<!--end::Action-->
-						{{-- </div> --}}
 						
 					</form>
 
-					{{-- <div class="help-mob"><a href="#"><span class="mr-2"><img src="assets/media/ep_help.svg"></span>Help center</a></div> --}}
 			</div>
 		</div>
 			
@@ -74,6 +70,12 @@
 	@if (Session::get('error'))
 		<script>
 			toastr.error("{{Session::get('error')}}");
+		</script>
+	@endif
+	
+	@if (Session::get('fp_success'))
+		<script>
+			toastr.error("{{Session::get('fp_success')}}");
 		</script>
 	@endif
 	

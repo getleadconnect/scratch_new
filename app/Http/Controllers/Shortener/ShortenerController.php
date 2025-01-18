@@ -90,8 +90,6 @@ class ShortenerController extends Controller
 					return view('gl-scratch-web.short-link.invalid',compact('messageText')); 
 				}
 				
-				
-				
                 $agent = new Agent();        
                 $device = $agent->device();
                 $os = $agent->platform();

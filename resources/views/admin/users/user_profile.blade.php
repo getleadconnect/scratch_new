@@ -45,9 +45,9 @@
 			  
 			 <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 overflow-hidden">
-                  <div class="card-body pt-3 ">
-                      <div class="profile-avatar text-center mt-5">
-					    <img src="{{$usr->user_logo}}" class="rounded-circle shadow" width="120" height="120" alt="">
+                  <div class="card-body pt-3">
+                      <div class="profile-avatar text-center" style="margin-top:40px;">
+					    <img src="{{$usr->user_logo}}" class="rounded-circle shadow" width="120" height="115" alt="">
 					  </div>
 					  
                       <!--<div class="d-flex align-items-center justify-content-around mt-5 gap-3">
@@ -65,11 +65,12 @@
                           </div>
                       </div> -->
 					  
-                      <div class="text-center mt-5 mb-3">
+                      <div class="text-center mt-3 mb-3">
+						<p class="mb-0 text-secondary">[{{$usr->pk_int_user_id}}]</p>
                         <h4 class="mb-1">{{ucfirst($usr->vchr_user_name)}}</h4>
                         <p class="mb-0 text-secondary">{{$usr->location}}</p>
                         <div class="mt-4"></div>
-                        <h6 class="mb-1">{{$usr->designation}}</h6>
+                        <h6 class="mb-1">{{$usr->designation_id}}</h6>
                         <p class="mb-2 text-secondary">{{$usr->address}}</p>
 						
 						<p class="mb-0 text-secondary">+{{$usr->vchr_user_mobile}}</p>

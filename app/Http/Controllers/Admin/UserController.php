@@ -10,6 +10,7 @@ use App\Facades\FileUpload;
 use App\Models\User;
 use App\Models\PurchaseScratch;
 use App\Models\ScratchCount;
+use App\Models\Settings;
 
 use Validator;
 
@@ -39,6 +40,8 @@ class UserController extends Controller
     {
         // return $request;
 
+		DB::beginTransaction();
+
         $validator=validator::make($request->all(),User::$userRule,User::$userRuleMessage);
 		
         if ($validator->fails()) 
@@ -64,22 +67,36 @@ class UserController extends Controller
 					'int_status'=>User::ACTIVATE,
 					'int_role_id'=>User::USERS
 				];
-					
-				$result=User::create($data);
 
+				
+				$result=User::create($data);
+				$user_id=$result->pk_int_user_id;
+
+				$sdata=[
+					'vchr_settings_type'=>"scratch_otp_enabled",
+					'vchr_settings_value'=>"Disabled",
+					'fk_int_user_id'=>$user_id,
+					'int_status'=>1,
+				];
+				
+				$res=Settings::create($sdata);
+				
 				if($result)
         		{   
+					DB::commit();
 					return response()->json(['msg'=>'User successfully added.','status'=>true]);
         		}
         		else
         		{
+					DB::rollback();
 					return response()->json(['msg'=>'Something wrong, Try again.','status'=>false]);
         		}
 
            }
             catch(\Exception $e)
             {
-			   return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
+				DB::rollback();
+			  return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
             }
         } 
     }
@@ -111,10 +128,22 @@ class UserController extends Controller
 			
 			return $status;
         })
-		->addColumn('mobile', function ($row) {
+		->editColumn('mobile', function ($row) {
             
 			$mob="+".$row->countrycode." ".$row->mobile;
 			return $mob;
+        })
+		->editColumn('address', function ($row) {
+            
+			return $row->address??"--";
+        })
+		->editColumn('location', function ($row) {
+            
+			return $row->location??"--";
+        })
+		->addColumn('company', function ($row) {
+            
+			return $row->company_name??"--";
         })
 		->addColumn('cdate', function ($row) {
             

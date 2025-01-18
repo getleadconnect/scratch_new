@@ -6,8 +6,14 @@
   #toggle_pwd {
  
  top: 45% !important;
- 
-}</style>
+  }
+ .field_icon {
+    position: absolute;
+    top: 36% !important;
+    right: 2%;
+    color: rgba(8, 7, 12, 0.6);
+}
+</style>
 @endpush
 @section('content')
 	
@@ -21,7 +27,9 @@
 				<!--begin::Signin-->
 				<div class="login-form login-signin">
 					<!--begin::Form-->
-					<form class="form" novalidate="novalidate" method="post" action="{{ url('/change-password') }}" id="kt_password_change_form">
+					<form class="form" novalidate="novalidate" method="post" action="{{ route('update-user-password')}}" id="kt_password_change_form">
+					@csrf
+					<input type="hidden" name="user_mob" id="user_mob" value="{{$user_mob}}" />
 						<!--begin::Title-->
 						<div class="pb-13 pt-lg-0 pt-5 mx-auto">
 							<img class=" logo-mob" src="{{url('onboarding/assets/media/mob-logo.svg')}}" width="80%">
@@ -34,21 +42,25 @@
 							<div class="d-flex justify-content-between mt-n5">
 								<label class="sign-label pt-5">Enter Password</label>
 							</div>
-							{{-- <input class="form-control form-control-solid h-auto" type="password" placeholder="Type your new password" id="password_reg" name="password" autocomplete="off" /> --}}
-							<input class="form-control form-control-solid h-auto fa-eye" type="password" placeholder="Type your new password" name="password" autocomplete="off" id="password_reg"/>
-							<span id="toggle_pwd" class="fa fa-lg fa-fw field_icon fa-eye-slash mt-5"></span>
-						</div>
-						<div class="form-group">
+							
+							<input type="password" name="password" id="password" class="form-control form-control-solid h-auto fa-eye"  placeholder="Type your new password" minlength=6 maxlength=20 required />
+							<span id="toggle_pwd1" class="fa fa-lg fa-fw field_icon fa-eye-slash mt-5"></span>
+							<label id="password-error" class="error arrow" for="password"></label>
+							</div>
+									
+						<div class="form-group position-relative">
 							<div class="d-flex justify-content-between mt-n5">
 								<label class="sign-label pt-5">Re-enter Password</label>
 							</div>
-							<input class="form-control form-control-solid h-auto" type="password" placeholder="Re enter password" name="password_confirmation" autocomplete="off" />
+							<input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-solid h-auto fa-eye"  placeholder="Type your new password" minlength=6 maxlength=20 required />
+							<span id="toggle_pwd2" class="fa fa-lg fa-fw field_icon fa-eye-slash mt-5"></span>
+							<label id="password_confirmation-error" class="error arrow" for="password"></label>
 						</div>
-						<input type="hidden" name="token" value="{{ request()->segment(1) }}"/>
+						
 						<!--end::Form group-->
 						<!--begin::Action-->
 						<div class="pb-lg-0 pb-5 sign-d-flex  align-items-center w-100 mt-5 pt-5">
-							<a href="#" id="kt_password_change_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 sign-btn  d-block w-100 mt-5 mt-5 pt-5">Continue</a>
+						 <button type="submit" class="pt-2 pb-2 btn btn-primary font-weight-bolder font-size-h6 px-8 sign-btn d-block w-100 mt-5 mt-5 bold " style="color: #fff !important;font-weight: bold;">CHANGE PASSWORD</button>
 							<h6 class="have-acc mt-5 pt-5">Remember password ? <a href="{{url('login')}}"> 
 								Back to login page</a></h6>
 						</div>
@@ -60,16 +72,47 @@
 		</div>
 	<!--end::Content-->
 	@push('script')
-	<script src="{{url('onboarding/assets/js/pages/form/forgot.js')}}"></script>
-	{{-- <script src="{{url('onboarding/assets/js/pages/form/login.js')}}"></script> --}}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 	<script>
-		$(function () {
-			$("#toggle_pwd").click(function () {
-				$(this).toggleClass("fa-eye fa-eye-slash");
-			var type = $(this).hasClass("fa-eye") ? "text" : "password";
-				$("#password_reg").attr("type", type);
-			});
-		});
+	/* Function for validate form */
+ var validate2=$("#kt_password_change_form").validate({
+            rules: {
+                password:{
+                    minlength: 6,
+                    maxlength: 20,
+                    required: true,
+                },
+                password_confirmation:{
+                    equalTo: "#password",
+                }
+            },
+            messages: {
+                password:{
+                    required : "Enter valid password",
+                },
+            },
+            errorPlacement: function(label, element) {
+                label.addClass("arrow")
+                label.insertAfter('#div_pas');
+            },
+        });
+
+
+   $(function () {
+        $("#toggle_pwd1").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+        var type = $(this).hasClass("fa-eye") ? "text" : "password";
+            $("#password").attr("type", type);
+        });
+		
+		$("#toggle_pwd2").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+        var type = $(this).hasClass("fa-eye") ? "text" : "password";
+            $("#password").attr("type", type);
+        });
+		
+		
+    });
 	</script>
 @endpush
 <!--end::Page Scripts-->

@@ -1,8 +1,12 @@
-
 @extends('onboarding.layouts.master')
 @push('css')
 <link href="{{ url('onboarding/assets/css/pages/form/login.css') }}" rel="stylesheet">
-<link href="{{ url('backend/fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+<link href="{{ url('onboarding/fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+<style>
+	.field_icon {
+		top: 38px !important;
+	}
+</style>
 @endpush
 @section('content')
 	
@@ -10,50 +14,85 @@
 		@include('onboarding.layouts.slider')
 	<!--begin::Aside-->
 
-	{{-- <!--begin::Content--><div class="help"><a href="#"><span class="mr-2"><img src="{{url('onboarding/assets/media/ep_help.svg')}}"></span>Help center</a></div> --}}
-		<!--begin::Content-->
 		<div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto gsign-up">
 			<!--begin::Content body-->
 			<div class="d-flex flex-column-fluid flex-center">
 				<!--begin::Signin-->
-				<div class="login-form login-signin">
+				<div class="login-form login-signin main-login">
 					<!--begin::Form-->
-					<form class="form" novalidate="novalidate" method="POST" action="{{ url('/forgotpassword-email') }}" id="kt_forgot_signin_form">
+					<form class="form" method="post"  action="{{route('send-forgot-password-otp')}}"  id="kt_password_change_submit"> <!--id="kt_login_signin_form"-->
 						<!--begin::Title-->
+						@csrf
 						<div class="pb-13 pt-lg-0 pt-5 mx-auto">
 							<img class=" logo-mob" src="{{url('onboarding/assets/media/mob-logo.svg')}}" width="80%">
-							
-							<h3 class="sign-title">Forgot password?</h3>
-							<p class="pt-5"> Enter your Email and we will send an otp for verification </p>
-							<!-- <p>Create your account</p> -->
+						
+							<h3 class="sign-title">Forgot your password!</h3>
+							{{-- <p class="pt-5"> Log in to your account</p> --}}
 						</div>
-						{{-- <div class="form-group form-feild-row  country-code-row text-left position-relative">
-							<label class="sign-label">Phone number </label>
-							<input class="form-control form-control-solid h-auto phone-field text-input" type="text" placeholder="Mobile number" name="number" id="phoneField1" autocomplete="off" value="{{ old('email')}}"/>
-							<input type="hidden" id="country_code" value="{{ $countryCode }}">
-						</div> --}}
-						<div class="form-group">
-							<label class="sign-label">Email</label>
-							<input class="form-control form-control-solid h-auto" type="text" placeholder="Email address" name="email" autocomplete="off" value="{{ old('email')}}"/>
-							@if($errors->has('email'))
-								<div class="error arrow">{{ $errors->first('email') }}</div>
-							@endif
-						</div>
-						<div class="pb-lg-0 pb-5 sign-d-flex  align-items-center w-100 mt-5 pt-5">
-							<a href="#" id="kt_forgot_signin_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 sign-btn  d-block w-100 mt-5 mt-5 pt-5">Send OTP</a>
-							<h6 class="have-acc mt-5 pt-5"> <a href="{{url('login')}}">Back to login page</a></h6>									
-						</div>
-						<!--end::Action-->
+						<!--begin::Title-->
+						<!--begin::Form group-->
+							<div class="form-group form-feild-row  country-code-row text-left position-relative">
+								<label class="sign-label">Mobile number </label>
+								<input  type="number" name="mobile" id="phoneField1" class="form-control form-control-solid h-auto phone-field text-input"placeholder="Mobile number"  autocomplete="off" value="{{ old('mobile')}}"/>
+								<input type="hidden" id="country_code" name="country_code" value="{{ $countryCode }}">
+								@if($errors->has('mobile'))
+									<label style="color:red;">{{$errors->first('mobile')}}</label>
+								@endif
+								
+							</div>
+							<!--end::Form group-->
+
+							<!--begin::Action-->
+							<div class="pb-lg-0 pb-5 sign-d-flex  align-items-center w-100 mt-5 pt-5">
+								<button type="submit"  class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 " style="width:100%;" >Send Otp</button> <!--id="kt_login_signin_submit"-->
+								<!--<h6 class="have-acc mt-5 pt-5">Don’t have an account ? <a href="#">Signup</a></h6>-->
+							</div>
+							<!--end::Action-->
 						
 					</form>
-					<!--end::Form-->
-				</div>
-				
 			</div>
 		</div>
-		<!--end::Content-->
-		@push('script')
-		<script src="{{url('onboarding/assets/js/pages/form/forgot.js')}}"></script>
+			
+	@push('script')
+	
+	@if(Session::get('success'))
+		<script>
+			toastr.success("{{Session::get('success')}}");
+		</script>
+	@endif
+
+	@if (Session::get('error'))
+		<script>
+			toastr.error("{{Session::get('error')}}");
+		</script>
+	@endif
+		
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+		
+	<script>
+	
+        var validate = $("#kt_login_signin_form").validate({
+            rules: {
+                mobile: {
+                    required: true,
+                    number:true
+                },
+            },
+            messages: {
+                mobile:{
+                    required : "Enter whatsapp number",
+                    number:"Please enter whatsapp number"
+                },
+            },
+            errorPlacement: function(label, element) {
+                label.addClass("arrow")
+                label.insertAfter(element);
+            },
+        });
+
+	</script>
+	
+		
 	@endpush
-<!--end::Page Scripts-->
+	<!--end::Page Scripts-->
 @endsection
