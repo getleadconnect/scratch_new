@@ -39,6 +39,7 @@ class ShortenerController extends Controller
 		$user_id=$id;
 		
 		$result=$this->checkUserStatus($id);
+		
 		if($result==false)
 		{
 			$messageText = "Oops!! This link is expired!!!.";

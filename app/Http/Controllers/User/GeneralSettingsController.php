@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\SentServiceJob;
+use GuzzleHttp\Client;
 
 use App\Models\Settings;
 use App\Models\User;
@@ -100,13 +101,13 @@ public function setScratchOtpEnabled(Request $request)
 }
 
 
-    public function sendWhatsappOtp()
+/*    public function sendWhatsappOtp()
     {
         // Send the message
 		$bussinessId = 107390568652882;
         $url = 'https://graph.facebook.com/v19.0/'.$bussinessId.'/messages';
 		$token = 'EAAtUQaQveEkBO0gmcNGs7gwa5Q6tch09XviFFSevZAlfUePAuiBHqrY42EdhicnxrQZAPsowjXEARlQaUz2AmoWu7T8rxAxQfWZAE4SjaWvLmazWYd2gscSgC8A1p3dcsJKELfZBW0Kdw9aY3bEYi1PIXSDGjVZA78MCg4Mn0yw76DJYe3rl772KVMgDvKQzp3Sk6svkZB9MhhPkDu';
-			
+
 		$data['mobile_no']="+919995338385";
 		$data['otp']=1234;
 		
@@ -147,17 +148,26 @@ public function setScratchOtpEnabled(Request $request)
         $params['template']["components"] = $components['components'];
 
         try {
-            $headers = [
+           
+		   $headers = [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$token
             ];
 
-            SentServiceJob::dispatch($url, $params,$headers);
-			return true;
-
+			$client = new Client();
+            $response = $client->request('POST', $url, [
+                'json' => $params,
+                'headers' => $headers,
+            ]);
+            
+			$result=json_decode($response->getBody(), true);
+			//return $result['messages'][0]['message_status'];  //will return 'accepted'
+			return $result
+			
         } catch (\Exception $e) {
-            Log::info($e->getMessage());
-            throw new \Exception($e->getMessage());
+            Log::info('Sent service job failed: ' . $e->getMessage());
+            return $e->getMessage();
         }
-    }
+
+    }*/
 }

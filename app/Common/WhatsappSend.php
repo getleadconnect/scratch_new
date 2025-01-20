@@ -19,6 +19,7 @@ class WhatsappSend
      * @param mixed $otp
      * @return mixed
      */
+	 
     public function sendWhatsappOtp($data)
     {
         return $this->whatsappService->sendOtp($data);

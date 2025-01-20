@@ -18,7 +18,7 @@ class SentServiceJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($url,$postData,$headers=null)
+    public function __construct($url,$postData,$headers)
     {
         $this->url = $url;
         $this->postData = $postData;
@@ -31,25 +31,18 @@ class SentServiceJob implements ShouldQueue
     public function handle()
     {
         $client = new Client();
-        if(!$this->headers)
-            $this->headers = [
-                'Content-Type' => 'application/json',
-            ];
-
         try {
             $response = $client->request('POST', $this->url, [
                 'json' => $this->postData,
                 'headers' => $this->headers,
             ]);
-
-            // $response = $client->request('POST', $this->url, [
-            //     'form_params' => $this->postData
-            // ]);
-
-            return (string) $response->getBody();
+            
+			$result=(string) $response->getBody();
+			return $result;
+			
         } catch (\Exception $e) {
             Log::info('Sent service job failed: ' . $e->getMessage());
-            return false;
+            return $e->getMessage();
         }
     }
 }

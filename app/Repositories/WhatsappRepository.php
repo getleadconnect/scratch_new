@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Jobs\SentServiceJob;
+//use App\Jobs\SentServiceJob;
+
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
@@ -56,24 +57,32 @@ class WhatsappRepository
                 ]
             ];
         $params['template']["components"] = $components['components'];
-
-        try {
-            $headers = [
+		
+		try {
+           
+		   $headers = [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$this->token
             ];
 
-            try {
-                SentServiceJob::dispatch($this->url, $params,$headers);
-            } catch (\Exception $e) {
-                Log::info($e->getMessage());
-            }
-
-            return true;
+			//SentServiceJob::dispatch($this->url, $params,$headers);
+			
+			$client = new Client();
+            $response = $client->request('POST', $this->url, [
+                'json' => $params,
+                'headers' => $headers,
+            ]);
+            
+			$result=json_decode($response->getBody(), true);
+			//return $result['messages'][0]['message_status'];  //will return 'accepted'
+			return $result;
 
         } catch (\Exception $e) {
-            Log::info($e->getMessage());
-            throw new \Exception($e->getMessage());
-        }
+            Log::info('Sent service job failed: ' . $e->getMessage());
+            return $e->getMessage();
+		}
+
     }
+	
+	
 }
