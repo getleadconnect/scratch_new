@@ -164,6 +164,7 @@ public function checkForgotPasswordOtp(Request $request)
 	}
 }
 
+
 public function updateUserPassword(Request $request)
 {
 	$validate = Validator::make(request()->all(),[

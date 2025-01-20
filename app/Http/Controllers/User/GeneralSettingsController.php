@@ -100,14 +100,14 @@ public function setScratchOtpEnabled(Request $request)
 }
 
 
-    public function sendWhatasappOtp()
+    public function sendWhatsappOtp()
     {
         // Send the message
 		$bussinessId = 107390568652882;
         $url = 'https://graph.facebook.com/v19.0/'.$bussinessId.'/messages';
 		$token = 'EAAtUQaQveEkBO0gmcNGs7gwa5Q6tch09XviFFSevZAlfUePAuiBHqrY42EdhicnxrQZAPsowjXEARlQaUz2AmoWu7T8rxAxQfWZAE4SjaWvLmazWYd2gscSgC8A1p3dcsJKELfZBW0Kdw9aY3bEYi1PIXSDGjVZA78MCg4Mn0yw76DJYe3rl772KVMgDvKQzp3Sk6svkZB9MhhPkDu';$token=
 		
-		$data['mobile_no']="919995338385";
+		$data['mobile_no']="+919995338385";
 		$data['otp']=1234;
 		
         $params = [
