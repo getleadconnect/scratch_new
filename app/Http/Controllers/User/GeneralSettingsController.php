@@ -143,6 +143,7 @@ public function setScratchOtpEnabled(Request $request)
                     ]
                 ]
             ];
+			
         $params['template']["components"] = $components['components'];
 
         try {
@@ -151,8 +152,8 @@ public function setScratchOtpEnabled(Request $request)
                 'Authorization' => 'Bearer '.$token
             ];
 
-            $result=SentServiceJob::dispatch($url, $params,$headers);
-			return $result;
+            SentServiceJob::dispatch($url, $params,$headers);
+			return true;
 
         } catch (\Exception $e) {
             Log::info($e->getMessage());
