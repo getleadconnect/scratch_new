@@ -25,14 +25,8 @@ use App\Models\UserOtp;
 use App\Common\Common;
 use App\Common\Variables;
 use App\Common\WhatsappSend;
-//use App\Common\Notifications;
 use App\Services\WhatsappService;
-
-//use App\Jobs\SendNotification;
-
 use App\Jobs\SendEmailJob;
-
-//use App\Core\CustomClass;
 
 use Carbon\Carbon;
 use Jenssegers\Agent\Agent;

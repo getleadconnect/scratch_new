@@ -39,6 +39,10 @@
 									<label style="color:red;">{{$errors->first('mobile')}}</label>
 								@endif
 								
+								@if($errors->has('fail'))
+									<label style="color:red;">{{$errors->first('fail')}}</label>
+								@endif
+								
 							</div>
 							<!--end::Form group-->
 
@@ -61,11 +65,6 @@
 		</script>
 	@endif
 
-	@if (Session::get('error'))
-		<script>
-			toastr.error("{{Session::get('error')}}");
-		</script>
-	@endif
 		
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 		

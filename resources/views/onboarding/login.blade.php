@@ -44,7 +44,7 @@
 								</div>
 								<input class="form-control form-control-solid h-auto" type="password" placeholder="Type your password here" name="password" autocomplete="off" id="password" required />
 								<span id="toggle_pwd" class="fa fa-lg fa-fw field_icon fa-eye-slash mt-5"></span>
-								<a href="#" class="text-right text-hover-primary float-right d-block mt-2 forgot-password pt-2" >Forgot Password ?</a>
+								<a href="{{route('forgot-password')}}" class="text-right text-hover-primary float-right d-block mt-2 forgot-password pt-2" >Forgot Password ?</a>
 							</div>
 							<!--end::Form group-->
 							<!--begin::Action-->
@@ -75,7 +75,7 @@
 	
 	@if (Session::get('fp-success'))
 		<script>
-			toastr.error("{{Session::get('fp-success')}}");
+			toastr.success("{{Session::get('fp-success')}}");
 		</script>
 	@endif
 	

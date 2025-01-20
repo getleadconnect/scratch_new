@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Stevebauman\Location\Facades\Location;
 
+use App\Common\WhatsappSend;
+use App\Services\WhatsappService;
+use GuzzleHttp\Client;
+
 use App\Common\Common;
 use App\Models\User;
 use App\Models\UserOtp;
@@ -84,9 +88,9 @@ public function sendForgotPasswordOtp(Request $request)
 
 		$randomNumber = random_int(1000, 9999);
 		$user_mob=$request->mobile_phoneCode.$request->mobile;
-		
-		$user=User::where('vchr_user_mobile',$user_mob)->first();
 
+		$user=User::where('vchr_user_mobile',$user_mob)
+					->orWhere('mobile',$request->mobile)->first();
 		if(!$user)
 		{
 			$err=['fail'=>"User account does'nt exist, Try again!"];
@@ -103,16 +107,19 @@ public function sendForgotPasswordOtp(Request $request)
 			}
 			else
 			{
-			$res=UserOtp::create([
-				'number'=>$user_mob,
-				'otp'=>$randomNumber,
-			]);
-		}
-
-		//code here - > to send otp to whatsapp
-
-		$this->user_mob=$user_mob;
+				$res=UserOtp::create([
+					'number'=>$user_mob,
+					'otp'=>$randomNumber,
+				]);
+			}
 		
+		$dataSend = [
+                    'mobile_no' => $user_mob,
+                    'otp' => $randomNumber
+                ];
+		
+		(new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
+
 		Session::put('user_mob',$user_mob);
 		return redirect('verify-otp');
 			
