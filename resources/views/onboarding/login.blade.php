@@ -73,9 +73,9 @@
 		</script>
 	@endif
 	
-	@if (Session::get('fp_success'))
+	@if (Session::get('fp-success'))
 		<script>
-			toastr.error("{{Session::get('fp_success')}}");
+			toastr.error("{{Session::get('fp-success')}}");
 		</script>
 	@endif
 	

@@ -83,8 +83,9 @@ class LoginController extends Controller
     public function userLogin(Request $request)
     {
 
+
 		$validate = Validator::make(request()->all(),[
-			'email' => 'required', 
+			'mobile' => 'required', 
             'password' => 'required',
         ]);
 		
@@ -96,14 +97,13 @@ class LoginController extends Controller
 		else
 		{
 		
-			$credentials = $request->only('email', 'password');
-			$country_code = $request->only('email_phoneCode');
+			$credentials = $request->only('mobile', 'password');
+			$country_code = $request->only('mobile_phoneCode');
 			
 			$user = User::where('int_status', Variables::ACTIVE)
 				->where(function ($query) use ($credentials, $country_code) {
-					$query->where('vchr_user_name', $credentials['email'])
-						->orWhere('vchr_user_mobile', $country_code['email_phoneCode'] . $credentials['email'])
-						->orWhere('email', $credentials['email']);
+					$query->where('vchr_user_mobile', $country_code['mobile_phoneCode'] . $credentials['mobile'])
+						->orWhere('mobile', $credentials['mobile']);
 				})
 				->first();
 

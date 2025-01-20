@@ -42,6 +42,10 @@ class SentServiceJob implements ShouldQueue
                 'headers' => $this->headers,
             ]);
 
+            // $response = $client->request('POST', $this->url, [
+            //     'form_params' => $this->postData
+            // ]);
+
             return (string) $response->getBody();
         } catch (\Exception $e) {
             Log::info('Sent service job failed: ' . $e->getMessage());
