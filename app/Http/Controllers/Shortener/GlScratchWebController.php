@@ -25,7 +25,7 @@ use App\Models\UserOtp;
 use App\Common\Common;
 use App\Common\Variables;
 use App\Common\WhatsappSend;
-use App\Common\Notifications;
+//use App\Common\Notifications;
 use App\Services\WhatsappService;
 
 //use App\Jobs\SendNotification;
@@ -134,8 +134,7 @@ class GlScratchWebController extends Controller
 
         return view('gl-scratch-web.short-link.invalid');
     }
-	
-		
+
 
     public function verifyMobile(Request $request)
     {
@@ -191,7 +190,7 @@ class GlScratchWebController extends Controller
                     'otp' => $otp
                 ];
 				
-                //(new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
+                (new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
 				
             } catch (\Exception $e) {
                 Log::info($e->getMessage());
