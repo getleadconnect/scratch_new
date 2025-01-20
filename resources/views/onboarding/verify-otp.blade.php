@@ -58,6 +58,7 @@
 							<!--begin::Action-->
 							<div class="pb-lg-0 pb-5 sign-d-flex  align-items-center w-100 mt-5 pt-5">
 								<button type="submit" class="pt-2 pb-2 btn btn-primary font-weight-bolder font-size-h6 px-8 sign-btn d-block w-100 mt-5 mt-5 bold " style="color: #fff !important;font-weight: bold;">VERIFY</button>
+								<p class="have-acc mt-5 pt-5">Remember password ? <a href="{{route('login')}}">Login</a></p>
 							</div>
 							<!--end::Action-->
 						</form>

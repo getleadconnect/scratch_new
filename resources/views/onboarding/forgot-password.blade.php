@@ -49,7 +49,7 @@
 							<!--begin::Action-->
 							<div class="pb-lg-0 pb-5 sign-d-flex  align-items-center w-100 mt-5 pt-5">
 								<button type="submit"  class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 " style="width:100%;" >Send Otp</button> <!--id="kt_login_signin_submit"-->
-								<!--<h6 class="have-acc mt-5 pt-5">Don’t have an account ? <a href="#">Signup</a></h6>-->
+								<p class="have-acc mt-5 pt-5">Remember password ? <a href="{{route('login')}}">Login</a></p>
 							</div>
 							<!--end::Action-->
 						
