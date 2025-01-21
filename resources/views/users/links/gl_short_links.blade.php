@@ -40,14 +40,16 @@
               <div class="card">
                 <div class="card-header p-y-3">
 				<div class="row">
-				<div class="col-lg-9 col-xl-9 col-xxl-9 col-9">
+				<div class="col-lg-6 col-xl-6 col-xxl-6 col-6">
                   <h6 class="mb-0 pt5"><i class="fa fa-link"></i> Web links</h6>
 				  </div>
-				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
+				  <div class="col-lg-6 col-xl-6 col-xxl-6 col-6 text-right">
 				  @if($subscription==true)
-					 <button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
-				     <button type="button" class="btn btn-gl-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
+					 <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-plus"></i>&nbsp;Qr-Code PDF</button>
+					 &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
+				     &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
 				  @else
+					<button class="btn btn-primary btn-xs link-add-err" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-plus"></i>&nbsp;Qr-Code PDF</button>
 					<button type="button" class="btn btn-primary btn-xs link-add-err" ><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>    
 					<button type="button" class="btn btn-gl-primary btn-xs link-add-err"><i class="fa fa-plus"></i>&nbsp;Add Links</button>
 				  @endif
@@ -135,7 +137,44 @@
             </div>
     </div>
 	
-
+		
+	<div class="modal fade" id="gen-pdf-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Generate Qr-Code PDF</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				
+				<div class="modal-body">
+				<form method="Post" action="{{route('users.generate-qrcode-pdf')}}" enctype="multipart/form-data">
+				@csrf
+				
+				<input type="hidden" name="user_id" id="user_id" value="{{$user_id}}">
+				
+				<div class="mb-2 row">
+					<div class="col-lg-12 col-xl-12 col-xxl-12">
+					<label for="example-text-input" class="col-form-label">Select Campaign</label>
+					<select class="form-select" name="offer_id" id="offer_id" required>
+						<option value="" >select</option>
+						@foreach($offers as $row)
+							<option value="{{$row->pk_int_scratch_offers_id}}" >{{$row->vchr_scratch_offers_name}}</option>
+						@endforeach
+					  </select>
+					
+					</div>
+				</div>
+				
+				<div class="modal-footer mt-5">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"> Close </button>
+					<button type="submit" class="btn btn-primary" name="btn-submit"> Download PDF </button>
+				</div>
+				</form>
+				
+				</div>
+			</div>
+		</div>
+	</div>
 
 <div class="modal fade" id="add-gifts-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xxl">

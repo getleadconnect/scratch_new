@@ -12,6 +12,8 @@ use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
 use App\Models\ScratchCount;
 use App\Models\User;
+use App\Models\ShortLink;
+
 use App\Traits\GeneralTrait;
 
 use Validator;
@@ -21,7 +23,7 @@ use Session;
 use Auth;
 use Log;
 use DB;
-
+use PDF;
 
 class CampaignController extends Controller
 {
@@ -40,10 +42,10 @@ class CampaignController extends Controller
 	 	 
 	 $type=ScratchType::where('status',1)->get(); 
 	 $sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
-	 return view('users.campaign.campaign_list',compact('type','sbal_count','subscription'));
+	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
+	 return view('users.campaign.campaign_list',compact('type','sbal_count','subscription','offers','user_id'));
   }	
-  
-    
+      
   public function addCampaign()
   {
 	 $user_id=User::getVendorId();
@@ -53,8 +55,6 @@ class CampaignController extends Controller
 	 return view('users.campaign.add_campaign',compact('type','sbal_count'));
   }	
   
-  
-
   
   public function getCampaignDetails($id)
   {
@@ -509,8 +509,26 @@ public function viewDeletedGiftListings(Request $request)
         ->make(true);
     }
 
-
-
-
+public function generateQrcodePdf(Request $request)
+{
+	try
+	{
+		$offer_id=$request->offer_id;
+		$user_id=$request->user_id;
+		
+		$qrimages=ShortLink::select('qrcode_file')->where('offer_id',$offer_id)->where('vendor_id',$user_id)->where('link_type','Multiple')->get();
+		if(!$qrimages->isEmpty())
+		{
+			$pdf = PDF::loadView('users.links.generate_qrcode_pdf', compact('qrimages'));
+			$filename="qr_codes-".date('Ymdhis').".pdf";
+			return $pdf->download($filename);
+		}
+	}
+	catch(\Exception $e)
+	{
+		\Log::info($e->getMessage());
+		return false; 
+	}
+}
 
 }

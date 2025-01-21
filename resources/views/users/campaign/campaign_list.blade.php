@@ -49,7 +49,7 @@
 				  {{--<a href="{{url('users/add-campaign')}}"  class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>--}}
 				  <a href="javascript:;" id="btn-add-campaign" class="btn btn-primary btn-xs" data-bs-toggle="offcanvas" data-bs-target="#add-campaign" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
 				  @else
-					 <a href="javascript:;" id="btn-add-camp" class="btn btn-primary btn-xs" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
+					<a href="javascript:;"  class="btn btn-primary btn-xs btn-camp" ><i class="fa fa-plus"></i>&nbsp;Add Campaign</a>
 				  @endif
 				  </div>
 
@@ -136,13 +136,11 @@
           </div>
 			<div class="offcanvas-body">
   
-  
-  
-  
             </div>
     </div>
-	
-	
+		
+
+
 	
 	
 	<div class="gift-modal shadow hide" id="campaign-gift">
@@ -186,7 +184,7 @@
 
 <script>
 
-$(document).on('click','#btn-add-camp',function()
+$(document).on('click','.btn-camp',function()
 {
 	Swal.fire({
 		  title: "{{Session::get('msg_title')}}",
