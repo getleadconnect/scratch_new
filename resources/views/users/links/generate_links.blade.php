@@ -1,5 +1,15 @@
 {{--<form id="formAddLink" method="POST" action="{{route('users.generate-multiple-links')}}" enctype="multipart/form-data">--}}
   
+		<div class="mb-2 row">
+			<div class="col-lg-12 col-xl-12 col-xxl-12">
+			<ul style="color:blue;">
+			<li>To create one time scratch links. Once scratch the link is automaticaly disabled</li>
+			<li>And repeated scratching not allowed</li>
+			</ul>
+			</div>
+		</div>
+  
+    
 		<form id="formMultipleLinks" enctype="multipart/form-data">
 			@csrf
 			
