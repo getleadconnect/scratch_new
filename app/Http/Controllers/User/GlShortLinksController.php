@@ -10,6 +10,7 @@ use App\Facades\FileUpload;
 use App\Models\ScratchOffer;
 use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
+use App\Models\ScratchWebCustomer;
 
 use App\Models\ShortLink;
 use App\Models\ShortLinkHistory;
@@ -110,6 +111,7 @@ class GlShortLinksController extends Controller
 							  <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="fadeIn animated bx bx-dots-vertical"></i></div>
 								<ul class="dropdown-menu">
 								<li><a class="dropdown-item link-edit" href="javascript:;" id="'.$links->id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-link" aria-controls="offcanvasScrolling" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
+								<li><a class="dropdown-item link-del" href="javascript:;" id="'.$links->id.'" ><i class="lni lni-trash"></i> Delete</a></li>
 								<li><a class="dropdown-item link-view" href="'.route('users.web-click-link-history',$links->id).'"><i class="lni lni-eye"></i> View</a></li>
 								<li><a class="dropdown-item gen-qrcode" href="javascript:;" id="'.$links->id.'"><i class="fa fa-qrcode"></i> Generate QrCode</a></li>
 								  '.$btn.'<ul>
@@ -192,6 +194,40 @@ public function store(Request $request)
 			}
 		}
     }
+	
+	
+public function destroy($id)
+{
+	
+	try
+	{
+		$slink=ShortLink::where('id',$id)->first();
+		
+		if($slink)
+		{
+			$cust=ScratchWebCustomer::where('offer_id',$slink->pk_int_scratch_offers_id)->count();
+			if($cust<=0)
+				$res=$slink->delete();
+			else
+				return response()->json(['msg'=>"Can't Remove, Already customer scratched this offer, Please deactivate this link.",'status'=>false]);
+			
+			
+			if($res)
+			{   
+				return response()->json(['msg'=>'Short link successfully removed.','status'=>true]);
+			}
+			else
+			{
+				return response()->json(['msg'=>'Something wrong, Try again.','status'=>false]);
+			}
+		}
+	}
+	catch(\Exception $e)
+	{
+		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
+	}
+}	
+
 
 public function reGenerateQrcode(Request $request)
 {

@@ -121,10 +121,7 @@ public function uploadProfileImage(Request $request)
         $usr->save();
 
         return redirect()->back()->with('success', 'Image update successfully!');
-
 }
-
-
 
 public function changePassword(Request $request)
 {

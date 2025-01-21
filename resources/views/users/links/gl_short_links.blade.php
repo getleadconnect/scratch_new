@@ -312,6 +312,45 @@ $("#datatable tbody").on('click','.btn-act-deact',function()
 });
 
 
+$("#datatable tbody").on('click','.link-del',function()
+{
+	var id=$(this).attr('id');
+	
+	  Swal.fire({
+	  title: "Are you sure?",
+	  text: "You want to delete this link?",
+	  icon: "warning",
+	  showCancelButton: true,
+	  confirmButtonColor: "#3085d6",
+	  cancelButtonColor: "#d33",
+	  confirmButtonText: "Yes, Delete it!"
+	}).then((result) => {
+	  if (result.isConfirmed) {
+		
+		
+		  jQuery.ajax({
+			type: "get",
+			url: BASE_URL+"/users/delete-link"+"/"+id,
+			dataType: 'json',
+			//data: {vid: vid},
+			success: function(res)
+			{
+			   if(res.status==true)
+			   {
+				   toastr.success(res.msg);
+				   $('#datatable').DataTable().ajax.reload(null, false);
+			   }
+			   else
+			   {
+				 toastr.error(res.msg); 
+			   }
+			}
+		  });
+	  }
+	});
+
+});
+
 function fileValidation()
 {
 	var fileInput = document.getElementById('class_icon'); 
