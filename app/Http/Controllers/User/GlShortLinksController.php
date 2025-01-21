@@ -24,7 +24,7 @@ use DataTables;
 use Session;
 use Auth;
 use Log;
-
+use PDF;
 
 class GlShortLinksController extends Controller
 {
@@ -44,7 +44,7 @@ class GlShortLinksController extends Controller
 	 $subscription=$this->checkUserStatus($user_id);
 	
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
-	 return view('users.links.gl_short_links',compact('offers','subscription'));
+	 return view('users.links.gl_short_links',compact('offers','subscription','user_id'));
   }
     
   
@@ -409,6 +409,32 @@ public function linkActivateDeactivate($op,$id)
 			}				
 
 	}
+
+
+public function generateQrcodePdf(Request $request)
+{
+	try
+	{
+		$offer_id=$request->offer_id;
+		$user_id=$request->user_id;
+		
+		$qrimages=ShortLink::select('qrcode_file')->where('offer_id',$offer_id)->where('vendor_id',$user_id)->where('link_type','Multiple')->get();
+		if(!$qrimages->isEmpty())
+		{
+			$pdf = PDF::loadView('users.links.generate_qrcode_pdf', compact('qrimages'));
+			$filename="qr_codes-".date('Ymdhis').".pdf";
+			return $pdf->download($filename);
+		}
+	}
+	catch(\Exception $e)
+	{
+		\Log::info($e->getMessage());
+		return false; 
+	}
+}
+
+
+
 
 //web click link history -------------------------------------------------
   

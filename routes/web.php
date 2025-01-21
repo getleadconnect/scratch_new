@@ -78,6 +78,8 @@ Route::controller(CampaignController::class)->group(function() {
 	Route::get('/offer-activate-deactivate/{opt}/{id}', 'offerActivateDeactivate')->name('offer-activate-deactivate');
 	Route::post('/update-image', 'uploadOfferGiftImage')->name('update-image');
 	
+	
+	
 });
 
 
@@ -134,6 +136,7 @@ Route::controller(GlShortLinksController::class)->group(function() {
 	Route::post('/generate-multiple-links', 'saveGeneratedMultipleLinks')->name('generate-multiple-links');
 	
 	Route::get('/generate-qrcode', 'reGenerateQrcode')->name('generate-qrcode');
+	Route::post('/generate-qrcode-pdf', 'generateQrcodePdf')->name('generate-qrcode-pdf');
 });
 
 Route::controller(ScratchWebController::class)->group(function() {
