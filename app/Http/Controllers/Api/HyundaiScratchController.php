@@ -24,21 +24,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\VerifyEmailScratch;
 use App\Services\WhatsappService;
-use App\BillingSubscription;
 use App\SmsPanel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-
-class GetleadScratchController extends Controller
+use App\BillingSubscription;
+class HyundaiScratchController extends Controller
 {
     /**
     * Display a listing of the resource.
     *
     * @return \Illuminate\Http\Response
     */
-	
     public function login(Request $request)
     {
         $input=$request->all();
@@ -53,16 +51,18 @@ class GetleadScratchController extends Controller
             try
             {
                 $user = User::active()->where('email', $request->username)->orWhere('vchr_user_mobile', $request->username)->first();
-                if ($user && Hash::check($request->password,$user->password)) 
-                {
+                if ($user && Hash::check($request->password,$user->password)) {
                     $vendor_id = User::getVendorIdApi($user->pk_int_user_id );
-                    
-                    return response()->json(['message' => 'Logged Successfully','user'=>$user,'path'=>url('/'), 'status' => true]);  
-                }   
-                 else
-                 {
+                    $userSubscription = BillingSubscription::where('vendor_id',$vendor_id)
+                    ->orderBy('expiry_date','desc')
+                    ->first(); 
+                    if($userSubscription && ($userSubscription->expiry_date < (Carbon::today()->format('Y-m-d'))))
+                        {
+                            return response()->json(['message' => 'You are not subscribed to GL Scratch or plan expired. please contact your administrator.', 'status' => false]); 
+                        }
+                    return response()->json(['message' => 'Logged Successfully','user'=>$user,'path'=>url('/'), 'status' => true]); 
+                }else
                     return response()->json(['message' => 'Invalid Login', 'status' => false]); 
-                 }
             }catch(\Exception $e){
                 return response()->json(['message' => $e->getMessage(), 'status' => false]);
             }
@@ -99,7 +99,6 @@ class GetleadScratchController extends Controller
         }
     }
     
-	
     public function type(Request $request)
     {
         $input=$request->all();
@@ -153,9 +152,16 @@ class GetleadScratchController extends Controller
         $validator = Validator::make($request->all(),$rule);
         if (!$validator->passes()) 
         {
-            return response()->json(['msg'=>$validator->messages(), 'status' => false]);
+            return response()->json(['msg'=>$validator->messages(), 'status' => 'fail']);
         }
         $userid=User::getVendorIdApi($request->user_id);
+        $userSubscription = BillingSubscription::where('vendor_id',$userid)
+                    ->orderBy('expiry_date','desc')
+                    ->first(); 
+        if($userSubscription && ($userSubscription->expiry_date < (Carbon::today()->format('Y-m-d'))))
+            {
+                return response()->json(['msg' => 'You are not subscribed to GL Scratch or plan expired. please contact your administrator.', 'status' => false]); 
+            }
         if(request()->has('bill_no')){
             $check_bill = ScratchCustomers::where('vchr_billno', $request->bill_no)->where('fk_int_user_id',$userid)->first();
             if($check_bill){
@@ -183,7 +189,7 @@ class GetleadScratchController extends Controller
         try {
             $number = $mobile;
             $otp = rand(1111, 9999);
-            $matchThese = ['number' => $request->mobile_no, 'user_id' => $request->user_id,'otp_type' => 'scratch_api'];
+            $matchThese = ['user_id' => $userid, 'otp_type' => 'scratch_api'];
             UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
             
             if(in_array($request->user_id, Variables::getScratchBypass()))
@@ -256,7 +262,7 @@ class GetleadScratchController extends Controller
         if ($validator->passes()) 
         {
             $requestOtp = request('otp');
-            $otpOld = UserOtp::where('number',request('mobile_no'))->where('user_id',request('user_id'))->where('otp_type','scratch_api')->latest()->first();
+            $otpOld = UserOtp::where('user_id',request('user_id'))->where('otp_type','scratch_api')->latest()->first();
             
             // Check if an OTP was found and if it has expired by 2 minutes
             if ($otpOld) {
@@ -280,7 +286,6 @@ class GetleadScratchController extends Controller
                 ->inRandomOrder()
                 ->first();
             
-            $otpOld->delete();
             return response()->json(['message' => "Otp verified successfull", 'status' => true,'data' => $offerListing]);
             
         }else{
@@ -610,29 +615,29 @@ class GetleadScratchController extends Controller
                                 ]);
                             }
 
-                            // try{
-                            //     $dealer = User::select('vchr_user_name','vchr_user_mobile')->find($vendor_id);
-                            //     $client_body = [
-                            //         "Sl_No"=> '=row()-1',
-                            //         "Ref_Id" => (string)$customers->pk_int_scratch_customers_id,
-                            //         "Dealer" => $dealer->vchr_user_name.'-'.$dealer->vchr_user_mobile,
-                            //         "Retailer" => $additional_fields['retailer'],
-                            //         "Customer_Name" => (string)$customers->vchr_name,
-                            //         "Mobile_Number" => (string)$customers->vchr_mobno,
-                            //         "VIN" => $additional_fields['vehicle_number'],
-                            //         "Model" => $additional_fields['model'],
-                            //         "Gift" => $scratchOffer->txt_description ?? '',
-                            //         "Date" => Carbon::now()->format('Y-m-d'),
-                            //         "Time" => Carbon::now()->format('g:i A')
-                            //     ];
-                            //     $url = 'https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjUwNTY0MDYzMjA0MzM1MjY0NTUzMzUxMzIi_pc';
-                            //     $sendWebhook = new Common();
-                            //     $sendWebhook->postToServiceCall($url,$client_body);                                
-                            // }
-                            // catch(\Exception $e){
-                            //     Log::info('Scratch webhook error');
-                            //     Log::info($e->getMessage());
-                            // }
+                            try{
+                                $dealer = User::select('vchr_user_name','vchr_user_mobile')->find($vendor_id);
+                                $client_body = [
+                                    "Sl_No"=> '=row()-1',
+                                    "Ref_Id" => (string)$customers->pk_int_scratch_customers_id,
+                                    "Dealer" => $dealer->vchr_user_name.'-'.$dealer->vchr_user_mobile,
+                                    "Retailer" => $additional_fields['retailer'],
+                                    "Customer_Name" => (string)$customers->vchr_name,
+                                    "Mobile_Number" => (string)$customers->vchr_mobno,
+                                    "VIN" => $additional_fields['vehicle_number'],
+                                    "Model" => $additional_fields['model'],
+                                    "Gift" => $scratchOffer->txt_description ?? '',
+                                    "Date" => Carbon::now()->format('Y-m-d'),
+                                    "Time" => Carbon::now()->format('g:i A')
+                                ];
+                                $url = 'https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjUwNTY0MDYzMjA0MzM1MjY0NTUzMzUxMzIi_pc';
+                                $sendWebhook = new Common();
+                                $sendWebhook->postToServiceCall($url,$client_body);                                
+                            }
+                            catch(\Exception $e){
+                                Log::info('Scratch webhook error');
+                                Log::info($e->getMessage());
+                            }
 
                             Enquiry::getCRMWebsiteUsers(
                                 EnquiryType::GLSCRATCH,

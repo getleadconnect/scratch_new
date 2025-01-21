@@ -15,12 +15,16 @@ class ScratchWebCustomer extends Model
  const REDEEMED=1;
  const NOT_REDEEMED=0;
  
- protected $fillable=[
+protected $guarded = [];  
+ 
+/* protected $fillable=[
     'user_id',
     'unique_id',
-    'name',    
+    'name',
     'mobile',
     'country_code',
+	'vchr_mobile',
+	'offer_id',
     'offer_list_id',
     'offer_text',
     'bill_no',
@@ -30,5 +34,5 @@ class ScratchWebCustomer extends Model
     'ip_address',
     'branch_id'
 
- ];
+ ];*/
 }

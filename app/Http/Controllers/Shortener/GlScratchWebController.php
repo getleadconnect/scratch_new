@@ -234,15 +234,23 @@ class GlScratchWebController extends Controller
 		
         $mobile = $request->country_code . $request->mobile;
 		$otp_verify_status=Variables::getScratchBypass($request->vendor_id);
+		
+		$type_id= ScratchOffer::where('pk_int_scratch_offers_id', $request->offer_id)->where('int_status',1)->pluck('type_id')->first();
         
 		if($otp_verify_status=="Disabled")
 		{
             $customer = new ScratchWebCustomer();
-            $customer->fill($request->all());
+            //$customer->fill($request->all());
+			$customer->user_id = $request->vendor_id;
+			$customer->name = $request->name;
+			$customer->country_code = $request->country_code;
+			$customer->mobile = $request->mobile;
+			$customer->vchr_mobile = $mobile;
 			$customer->status = ScratchWebCustomer::NOT_SCRATCHED;
             $customer->redeem = ScratchWebCustomer::NOT_REDEEMED;
             $customer->email = $request->email;
             $customer->branch_id = $request->branch;
+			$customer->bill_no = $request->bill_no;
 
             $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
                           ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
@@ -266,6 +274,7 @@ class GlScratchWebController extends Controller
                 $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                 $customer->offer_text = $offerListing->txt_description;
 				$customer->redeem_source='web';
+				$customer->type_id=$type_id;
                 //$offerListing->int_scratch_offers_balance--;
                 //$offerListing->save();
                 $customer->save();
@@ -292,12 +301,17 @@ class GlScratchWebController extends Controller
             if (!empty($otpOld)) {
                 if ($otpOld->otp == $requestOtp) {
                     $customer = new ScratchWebCustomer();
-                    $customer->fill($request->all());
-                    $customer->status = ScratchWebCustomer::NOT_SCRATCHED;
-					
-                    $customer->redeem = ScratchWebCustomer::NOT_REDEEMED;
-                    $customer->email = $request->email;
-                    $customer->branch_id = $request->branch;
+                    //$customer->fill($request->all());
+					$customer->name = $request->name;
+					$customer->user_id = $request->vendor_id;
+					$customer->country_code = $request->country_code;
+					$customer->mobile = $request->mobile;
+					$customer->vchr_mobile = $mobile;
+					$customer->status = ScratchWebCustomer::NOT_SCRATCHED;
+					$customer->redeem = ScratchWebCustomer::NOT_REDEEMED;
+					$customer->email = $request->email;
+					$customer->branch_id = $request->branch;
+					$customer->bill_no = $request->bill_no;
 
                     $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
                                     ->where('int_scratch_offers_balance','>', '0')->where('int_status',1)
@@ -320,6 +334,8 @@ class GlScratchWebController extends Controller
                         $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
                         $customer->offer_text = $offerListing->txt_description;
 						$customer->redeem_source='web';
+						$customer->type_id=$type_id;
+						
                         //$offerListing->int_scratch_offers_balance--;
                         //$offerListing->save();
                         $customer->save();

@@ -13,12 +13,13 @@ use App\Facades\FileUpload;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements JWTSubject
 {
 	
 //implements JWTSubject
-    use Notifiable;
+	use Notifiable, HasApiTokens;
     use SoftDeletes;
 
     /**
