@@ -425,6 +425,13 @@ public function generateQrcodePdf(Request $request)
 			$filename="qr_codes-".date('Ymdhis').".pdf";
 			return $pdf->download($filename);
 		}
+		else
+		{
+			Session::flash('fail','Qr image were not found.');
+			return back();
+		}
+		
+		
 	}
 	catch(\Exception $e)
 	{
