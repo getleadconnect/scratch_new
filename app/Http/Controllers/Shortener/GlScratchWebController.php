@@ -251,6 +251,7 @@ class GlScratchWebController extends Controller
             $customer->email = $request->email;
             $customer->branch_id = $request->branch;
 			$customer->bill_no = $request->bill_no;
+			$customer->short_code = $request->short_code;
 
             $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
                           ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
@@ -312,6 +313,7 @@ class GlScratchWebController extends Controller
 					$customer->email = $request->email;
 					$customer->branch_id = $request->branch;
 					$customer->bill_no = $request->bill_no;
+					$customer->short_code = $request->short_code;
 
                     $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
                                     ->where('int_scratch_offers_balance','>', '0')->where('int_status',1)
@@ -372,12 +374,13 @@ class GlScratchWebController extends Controller
         $customer->status = ScratchWebCustomer::SCRATCHED;
         $uniqueId = $customer->unique_id;
         $offetText = $customer->offer_text;
+					
 		
         /** .... Send email ...*/
         if ($offerListing->int_winning_status == ScratchOffersListing::WIN) 
 		{
 
-            if ($customer->email != NULL) {
+            /*if ($customer->email != NULL) {
                 try{
                     $content = $customer->name . ' Congratulations!! You have won ' . $offetText . '.And Your Redeem Id is ' . $uniqueId . '. Getlead';
                     $data = [
@@ -392,16 +395,21 @@ class GlScratchWebController extends Controller
                     \Log::info($e->getMessage());
                 }
             } 
-			else
-			{
-				
-			}
+			*/
+			
         }
 
         $offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->where('int_scratch_offers_balance','>', '0')->first();
         if($offerListing){
             $offerListing->int_scratch_offers_balance--;
             $offerListing->save();
+			
+			$sl=ShortLink::where('code',$customer->short_code)->first();
+			if($sl->link_type=="Multiple")
+			{
+				$sl->status=0;
+				$sl->save();
+			}
         }
 
         $flag = $customer->save();

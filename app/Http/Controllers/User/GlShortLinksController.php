@@ -45,10 +45,8 @@ class GlShortLinksController extends Controller
 	
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
 	 return view('users.links.gl_short_links',compact('offers','subscription'));
-	 
   }
-   
- 
+    
   
   public function getShortLinks()
     {
@@ -133,6 +131,94 @@ public function addLink(Request $request)
 	$offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
 	return view('users.links.add_short_link',compact('offers','offer_id'));
 }
+
+public function generateLinks(Request $request)
+{
+	$offer_id='';
+	if($request->has('offer_id'))
+		$offer_id=$request->offer_id;
+	
+	$user_id=User::getVendorId();
+	$offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
+	return view('users.links.generate_links',compact('offers','offer_id'));
+}
+
+public function saveGeneratedMultipleLinks(Request $request)
+{
+	
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|max:3|min:3',
+			'offer_id'=>'required',
+			'link_count'=>'required'
+        ]);
+		
+        if ($validator->fails()) {
+			return response()->json(['msg' =>$validator->messages()->first(), 'status' => false]);
+        }
+
+		$sol=ScratchOffersListing::select(\DB::raw('SUM(int_scratch_offers_balance) as gift_sum'),\DB::raw('count(*) as list_count'))
+		->where('fk_int_scratch_offers_id',$request->offer_id)->first();
+		
+		if($sol->list_count<=0)
+			return response()->json(['msg' =>'Offer gift listing not found!"' , 'status' => false]);
+		
+		if($request->link_count>$sol->gift_sum)
+			return response()->json(['msg' =>'Insufficient gift counts. Available gift is '.$sol->gift_sum.')' , 'status' => false]);
+		
+
+		$slink=ShortLink::where('vendor_id',USER::getVendorId())->where('code','like',strtoupper($request->code)."%")->first();
+		if($slink)
+		{
+			return response()->json(['msg' =>'Code already exist.!' , 'status' => false]);
+		}
+		else
+		{
+			try{
+				$lcount=$request->link_count;
+				for($x=1;$x<=$lcount;$x++)
+				{
+					$short_code=strtoupper($request->code).$x;
+					$user_id=User::getVendorId();
+					
+					$filename="qr_codes/".$short_code.'-'.time().'.png';
+					$path = public_path('uploads/'.$filename);
+					$short_link=env('SHORT_LINK_DOMAIN') . '/'.$user_id."/". $short_code;
+					
+					$result=$this->generateQrCode($short_link,$path);   //generate qrcode for scan link
+
+					$link = new  ShortLink();
+					$link->vendor_id = $user_id;
+					$link->link = $short_link;
+					$link->code = $short_code;
+					$link->offer_id = $request->offer_id;
+					$link->custom_field = $request->custom_field;
+					$link->bill_number_only_apply_from_list = $request->custom_field; //bill no
+					$link->email_required = $request->email_required;
+					$link->branch_required = $request->branch_required;
+					$link->status = ShortLink::ACTIVE;
+					$link->link_type = "Multiple";
+					$link->qrcode_file=$filename;
+					$flag = $link->save();
+				}
+				if ($flag) {
+					return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
+				}
+				else
+				{
+					FileUpload::deleteFile($filename,'local');
+					return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
+				}
+			}
+			catch(\Exception $e)
+			{
+				return response()->json(['msg' =>$e->getMessage(), 'status' => false]);	
+			}
+		}
+	
+	
+	
+}
+
 
 
 

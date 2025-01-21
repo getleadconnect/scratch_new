@@ -127,7 +127,8 @@ var KTLoginGeneral = function() {
             offer_id:$("#offer_id").val(),
             user_id:user.pk_int_user_id,
 			scratch_otp_enabled:$("#scratch_otp_enabled").val(),
-            vendor_id: $("#vendor_id").val()
+            vendor_id: $("#vendor_id").val(),
+			short_code: $("#short_link_code").val()
         }
 			
 		var otp_verify_status=$("#scratch_otp_enabled").val();
@@ -332,6 +333,7 @@ var KTLoginGeneral = function() {
                     var user_id = user.pk_int_user_id;
                     var name = $('#full_name').val();
 					var token=$("#_csrf_token").val();
+					var short_code=$("#short_link_code").val();
 
                 $.ajax({
                     type:'POST',
@@ -345,12 +347,10 @@ var KTLoginGeneral = function() {
                         country_code: country_code,
                         offer_id: offer_id,
                         vendor_id: vendor_id,
+						short_code:short_code,
                         link : window.location.href,
                         bill_no: bill_no,
                         custom_field: custom_field,
-                        company_name: $('#company_name').val(),
-                        insurance: $('#insurance').val(),
-                        event_name: $('#event_name').val(),
                     },
                     success:function(data) {
                         if(data.status == true)
