@@ -130,6 +130,8 @@ Route::controller(GlShortLinksController::class)->group(function() {
 	Route::get('/view-click-link-history/{id}', 'viewWebClickLinkHistory')->name('view-click-link-history');
 	Route::get('/delete-link/{id}', 'destroy')->name('delete-link');
 	
+	Route::get('/generate-links', 'generateLinks')->name('generate-links');
+	Route::post('/generate-multiple-links', 'saveGeneratedMultipleLinks')->name('generate-multiple-links');
 	
 	Route::get('/generate-qrcode', 'reGenerateQrcode')->name('generate-qrcode');
 });

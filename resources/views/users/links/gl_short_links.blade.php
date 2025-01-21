@@ -45,10 +45,14 @@
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
 				  @if($subscription==true)
-				     <button type="button" class="btn btn-gl-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Links</button>
+					 <button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
+				     <button type="button" class="btn btn-gl-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
 				  @else
-				     <button type="button" class="btn btn-gl-primary btn-xs link-add-err"><i class="fa fa-plus"></i>&nbsp;Add Links</button>
+					<button type="button" class="btn btn-primary btn-xs link-add-err" ><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>    
+					<button type="button" class="btn btn-gl-primary btn-xs link-add-err"><i class="fa fa-plus"></i>&nbsp;Add Links</button>
 				  @endif
+				  
+				  
 				
 				  </div>
 
@@ -92,8 +96,7 @@
                    </div><!--end row-->
                 </div>
               </div>
-			  
-			
+					
 	
 	
 	
@@ -108,7 +111,6 @@
     </div>
 	
 	
-	
 <div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="add-link" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
           <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Add gl-link</h5>
@@ -119,7 +121,20 @@
   
 
             </div>
+</div>
+	
+	
+<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="add-multiple-links" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
+          <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Generate multiple links</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+          </div>
+			<div class="offcanvas-body">
+  
+  
+            </div>
     </div>
+	
 
 
 <div class="modal fade" id="add-gifts-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -220,6 +235,24 @@ $(document).on('click','.link-add',function()
 			}
 		});
 });
+
+$(document).on('click','.link-multiple',function()
+{
+	var Result=$("#add-multiple-links .offcanvas-body");
+
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('users/generate-links')}}",
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(res)
+			{
+			   Result.html(res);
+			}
+		});
+});
+
+
 
 $(document).on('click','.gen-qrcode',function()
 {
