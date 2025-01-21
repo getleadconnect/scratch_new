@@ -1,0 +1,396 @@
+{
+	"info": {
+		"_postman_id": "6d34cb8a-534f-4808-af12-6e4a64ae766c",
+		"name": "scratch_new",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5650499"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:8000/api/user/login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "mobile",
+							"value": "1234567898",
+							"type": "text"
+						},
+						{
+							"key": "country_code",
+							"value": "91",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/user/get-offers",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 7|qY1CYL0Xi3n1p2Z1IviftEDMNNU9OmpSuC1Wa8tRa3c8602a",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1631",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/get-offers",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"get-offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/user/send-otp",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 7|qY1CYL0Xi3n1p2Z1IviftEDMNNU9OmpSuC1Wa8tRa3c8602a",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1631",
+							"type": "text"
+						},
+						{
+							"key": "campaign_id",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Shaji",
+							"type": "text"
+						},
+						{
+							"key": "country_code",
+							"value": "91",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "9995338385",
+							"type": "text"
+						},
+						{
+							"key": "type_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "bill_no",
+							"value": "12365",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/send-otp",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"send-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/user/verify-otp",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 7|qY1CYL0Xi3n1p2Z1IviftEDMNNU9OmpSuC1Wa8tRa3c8602a",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1631",
+							"type": "text"
+						},
+						{
+							"key": "otp",
+							"value": "5088",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "919995338385",
+							"type": "text"
+						},
+						{
+							"key": "campaign_id",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/verify-otp",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"verify-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/user/get-branches",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 7|qY1CYL0Xi3n1p2Z1IviftEDMNNU9OmpSuC1Wa8tRa3c8602a",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1631",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/get-branches",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"get-branches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/user/scratch-customer",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 8|m2iKmmskF0plbth8xpBxCQN7kIRNEwyjIiLDdcT407074fff",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1631",
+							"type": "text"
+						},
+						{
+							"key": "campaign_id",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "offer_listing_id",
+							"value": "43",
+							"type": "text"
+						},
+						{
+							"key": "customer_name",
+							"value": "shaji-1",
+							"type": "text"
+						},
+						{
+							"key": "country_code",
+							"value": "91",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "9995338385",
+							"type": "text"
+						},
+						{
+							"key": "type_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "bill_no",
+							"value": "null",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "null",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "branch",
+							"value": "null",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/scratch-customer",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"scratch-customer"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
