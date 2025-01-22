@@ -12,6 +12,7 @@
   <link href="{{url('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
   <link href="{{url('assets/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/plugins/datatable/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" />
+  
   <link href="{{url('assets/plugins/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/plugins/toastr/css/toastr.min.css')}}" rel="stylesheet" />
   
@@ -213,6 +214,7 @@
   <script src="{{url('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
   <script src="{{url('assets/plugins/datatable/js/dataTables.bootstrap5.min.js')}}"></script>
   <script src="{{url('assets/js/table-datatable.js')}}"></script>
+  
   
   <!--<script src="assets/plugins/summernote/summernote-bs4.min.js"></script>-->
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>

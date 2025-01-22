@@ -134,6 +134,10 @@ Route::controller(GlShortLinksController::class)->group(function() {
 	
 	Route::get('/generate-qrcode', 'reGenerateQrcode')->name('generate-qrcode');
 	Route::post('/generate-qrcode-pdf', 'generateQrcodePdf')->name('generate-qrcode-pdf');
+	
+	Route::post('/delete-multiple-links', 'deleteMultipleLinks')->name('delete-multiple-links');
+	
+	
 });
 
 Route::controller(ScratchWebController::class)->group(function() {

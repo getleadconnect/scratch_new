@@ -44,8 +44,12 @@
                   <h6 class="mb-0 pt5"><i class="fa fa-link"></i> Web links</h6>
 				  </div>
 				  <div class="col-lg-6 col-xl-6 col-xxl-6 col-6 text-right">
+
+				  <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->pk_int_user_id}}">
+				  
+				  <button class="btn btn-gl-primary btn-xs" id="delele_multiple" ><i class="fa fa-trash"></i>&nbsp;Delete</button>&nbsp;&nbsp;
 				  @if($subscription==true)
-					 <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-plus"></i>&nbsp;Qr-Code PDF</button>
+					 <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-qrcode"></i>&nbsp;Qr-Code PDF</button>
 					 &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
 				     &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
 				  @else
@@ -70,7 +74,8 @@
 	
                              <table id="datatable" class="table align-middle" style="width:100% !important;" >
                                <thead class="thead-semi-dark">
-                                 <tr>
+                                <tr>
+								<th style="width:30px;"><input type="checkbox" id="chkbox-all" class="dt-checkboxes chkbox-all" name="chkbox_all"></th>
                                 <th>Sl No</th>
                                 <th>Offer Name</th>
                                 <th>Link</th>
@@ -241,8 +246,18 @@ var table = $('#datatable').DataTable({
                //data.search = $('input[type="search"]').val();
 		    },
         },
-
+				
         columns: [
+			{	
+				targets: 0,
+                data: null,
+				className: 'text-center',
+				searchable: false,
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return '<input type="checkbox" id="' + data.chkbox + '" class="dt-checkboxes" name="checkboxes" value="' + data.chkbox + '">';
+				},
+			},
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
 			{"data": "offer" },
 			{"data": "link" },
@@ -255,7 +270,6 @@ var table = $('#datatable').DataTable({
 			{"data": "status" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],
-
 });
 
 
@@ -351,7 +365,7 @@ $("#datatable tbody").on('click','.btn-act-deact',function()
 	Swal.fire({
 	  title: optText+"?",
 	  text: "You want to "+opt_text+" this link?",
-	  icon: "warning",
+	  icon: "question",
 	  showCancelButton: true,
 	  confirmButtonColor: "#3085d6",
 	  cancelButtonColor: "#d33",
@@ -391,7 +405,7 @@ $("#datatable tbody").on('click','.link-del',function()
 	  Swal.fire({
 	  title: "Are you sure?",
 	  text: "You want to delete this link?",
-	  icon: "warning",
+	  icon: "question",
 	  showCancelButton: true,
 	  confirmButtonColor: "#3085d6",
 	  cancelButtonColor: "#d33",
@@ -441,6 +455,76 @@ function fileValidation()
 			return true;
 		}
 }
+
+$("#chkbox-all").click(function()
+{
+	if($(this).is(':checked'))
+	{
+		$(table.$('input[name="checkboxes"]').each(function () {
+			$(this).prop('checked',true);
+		}));
+	}
+	else
+	{
+		$(table.$('input[name="checkboxes"]:checked').each(function () {
+			$(this).prop('checked',false);
+		}));
+	}
+	
+});
+
+$(document).on('click','#delele_multiple',function()
+{
+	var selectedValues=[];
+	$(table.$('input[name="checkboxes"]:checked').each(function () {
+        //console.log($(this).val());
+		selectedValues.push($(this).val());
+    }));
+	if(selectedValues.length>0)
+	{
+		var linkids=selectedValues.toString();
+
+			Swal.fire({
+				  title: "Are you sure?",
+				  text: "You want to delete selected links?",
+				  icon: "question",
+				  showCancelButton: true,
+				  confirmButtonColor: "#3085d6",
+				  cancelButtonColor: "#d33",
+				  confirmButtonText: "Yes, Delete it!"
+				}).then((result) => {
+				  if (result.isConfirmed) {
+
+					  jQuery.ajax({
+						type: "POST",
+						url: BASE_URL+"/users/delete-multiple-links",
+						dataType: 'json',
+						data: {_token:"{{csrf_token()}}",link_ids:linkids},
+						success: function(res)
+						{
+						   if(res.status==true)
+						   {
+							   toastr.success(res.msg);
+							   $('#datatable').DataTable().ajax.reload(null, false);
+							   $("#chkbox-all").prop('checked',false);
+						   }
+						   else
+						   {
+							 toastr.error(res.msg); 
+						   }
+						}
+					  });
+				  }
+				});
+
+	}
+	else
+	{
+		toastr.error("Please select data from the list!");
+	}
+		
+});
+
 	
 
 </script>
