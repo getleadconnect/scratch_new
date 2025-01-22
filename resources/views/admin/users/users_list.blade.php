@@ -200,7 +200,6 @@
     </div>
 
 
-
 <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xxl">
 		<div class="modal-content">
@@ -210,15 +209,61 @@
 			</div>
 			
 			<div class="modal-body">
-			
 
-	
+
 				<div class="modal-footer">
 							<div class="col-lg-12 col-xl-12 col-xxl-12 text-end">
 							<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
 							<button class="btn btn-primary" type="submit"> Submit </button>
 							</div>
 				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="change-pass-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<div class="modal-body">
+			
+				<form id="formChangePassword">
+				@csrf
+					<input type="hidden" name="user_id" id="user_id">
+					
+					<div class="row mb-2" >
+						<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+							<label for="address" class="form-label">Password</label>
+							<input type="text" class="form-control"  name="password" id="password" placeholder="Password" required>
+						</div>
+					</div>
+
+					<div class="row mb-2" >
+						<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+							<label>Confirm Password<span class="required">*</span></label>
+							<input type="text" class="form-control"  name="confirm_password" id="confirm_password" value="" placeholder="confirm Password" required>
+						</div>
+					</div>
+					<div class="row mb-2" >
+						<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+							<label id="msg_err" class="text-red"></label><label id="msg" class="text-success"></label>
+						</div>
+					</div>
+		
+					<div class="modal-footer mt-3">
+								<div class="col-lg-12 col-xl-12 col-xxl-12 text-end">
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
+								<button class="btn btn-primary" type="submit"> Submit </button>
+								</div>
+					</div>
+				</form>
 				
 			</div>
 		</div>
@@ -307,8 +352,7 @@ var table = $('#datatable').DataTable({
 
 });
 
-
-				
+			
 var addValidator=$('#formAddUser').validate({ 
 	
 	rules: {
@@ -387,7 +431,9 @@ $('#datatable tbody').on('click','.delete-user',function()
 	});
 
 });
- 
+
+
+
 
 $('#datatable tbody').on('click','.edit-user',function()
 {
@@ -450,6 +496,59 @@ $("#datatable tbody").on('click','.btn-act-deact',function()
 	});
 
 });
+
+$('#datatable tbody').on('click','.change-pass',function()
+{
+	var id=$(this).attr('id');
+	
+	$('#formChangePassword')[0].reset();
+	$("#user_id").val(id);
+	
+});
+ 
+ 
+var validator=$('#formChangePassword').validate({ 
+	
+	rules: {
+		password: {required: true,minlength:6, maxlength:20},
+		confirm_password: {required: true,minlength:6, maxlength:20,
+		equalTo: "#password"
+		},
+	},
+
+	submitHandler: function(form) 
+	{
+
+		if($("#password").val()!=$("#confirm_password").val())
+		{
+			$("#msg_err").html("Password does not match!!!");
+		}
+		else
+		{
+			var code=phone_number.getSelectedCountryData()['dialCode'];
+			$("#country_code").val(code);
+			
+			$.ajax({
+			url: "{{ url('admin/change-user-password') }}",
+			method: 'POST',
+			data: $('#formChangePassword').serialize(),
+			success: function(result){
+				if(result.status == 1)
+				{
+					$("#msg_err").html('');
+					toastr.success(result.msg);
+					$('#formChangePassword')[0].reset();
+					$("#change-pass-modal").modal('hide');
+				}
+				else
+				{
+					toastr.error(result.msg);
+				}
+			}
+			});
+		}
+	}
+ });
 
 
 </script>

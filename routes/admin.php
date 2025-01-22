@@ -36,6 +36,8 @@ Route::controller(UserController::class)->group(function() {
 	//Route::get('/delete-scratch-count/{id}/{uid}', 'deleteScratchCount')->name('delete-scratch-count');
 	Route::get('/delete-scratch-count', 'deleteScratchCount')->name('delete-scratch-count');
 	Route::post('/add-subscription', 'addSubscription')->name('add-subscription');
+	
+	Route::post('/change-user-password', 'changeUserPassword')->name('change-user-password');
 		
 });
 

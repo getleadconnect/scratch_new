@@ -105,31 +105,34 @@ class ScratchAdImageController extends Controller
 					
 					$path = 'ads_images/';
 
-            		$files = $request->file('image');
+            		$file = $request->file('image');
 					
-            		foreach($files as $file)
-            		{
-            			$ads = new Scratchads();
-				        $fileName="";
-                		$extension = $file->getClientOriginalExtension();
-                		$fileName = Str::random(5)."-".date('his')."-".Str::random(3).".".$extension;
-						
-                        FileUpload::uploadFile($file, $path,$fileName,'local');
-                		$ads->image = $path.$fileName;
-                		$ads->created_by = $userId;
-                		$ads->user_id = User::getVendorId();
-                		$ads->status = Scratchads::ACTIVE;
-                		$flag=$ads->save();
-                	}
+					$ads = new Scratchads();
+					$fileName="";
+					$extension = $file->getClientOriginalExtension();
+					$fileName = Str::random(5)."-".date('his')."-".Str::random(3).".".$extension;
+					
+					FileUpload::uploadFile($file, $path,$fileName,'local');
+					$ads->image = $path.$fileName;
+					$ads->created_by = $userId;
+					$ads->user_id = User::getVendorId();
+					$ads->status = Scratchads::ACTIVE;
+					$flag=$ads->save();
+					
+					if($flag)
+					{
+						 return response()->json(['msg'=>'Scratch Ads Image successfully added.', 'status'=>true]);
+					}
+					else
+					{
+						 return response()->json(['msg'=>'Something went wrong, please try again later.', 'status'=>false]);
+					}
+
             	}
-                if($flag)
-                {
-                     return response()->json(['msg'=>'Scratch Ads Image successfully uploaded.', 'status'=>true]);
-                }
-                else
-                {
-                     return response()->json(['msg'=>'Something went wrong, please try again later.', 'status'=>false]);
-                }
+				else
+				{
+					 return response()->json(['msg'=>'Image not found, Try again.', 'status'=>false]);
+				}
                 
             }
             catch(\Exception $e)
@@ -177,7 +180,7 @@ class ScratchAdImageController extends Controller
 
 					FileUpload::deleteFile($ads->image,'local');
                     $ads->delete();
-                    return response(['msg' => 'Scratch Ads image has been deleted.', 'status' => true]);
+                    return response(['msg' => 'Ads image has been deleted.', 'status' => true]);
 
                 }
                 else
@@ -190,8 +193,7 @@ class ScratchAdImageController extends Controller
           return response(['msg' => 'Something Went Wrong', 'status' => false]);
 
             }
-
-        
     }
+
 
 }

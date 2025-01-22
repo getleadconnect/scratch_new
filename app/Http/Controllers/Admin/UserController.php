@@ -166,8 +166,9 @@ class UserController extends Controller
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item edit-user" href="javascript:void(0)" id="'.$row->pk_int_user_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-user"  ><i class="lni lni-pencil-alt"></i> Edit</a></li>
                               <li><a class="dropdown-item delete-user" href="javascript:void(0)" id="'.$row->pk_int_user_id.'"><i class="lni lni-trash"></i> Delete</a></li>
-							  <li><a class="dropdown-item view-user" href="'.route('admin.user-profile',$row->pk_int_user_id).'" id="'.$row->pk_int_user_id.'"><i class="lni lni-eye"></i> View</a></li>'
-							  .$btn.
+							  <li><a class="dropdown-item view-user" href="'.route('admin.user-profile',$row->pk_int_user_id).'" id="'.$row->pk_int_user_id.'"><i class="lni lni-eye"></i> View</a></li>
+							  <li><a class="dropdown-item change-pass" href="javascript:;" id="'.$row->pk_int_user_id.'" data-bs-toggle="modal" data-bs-target="#change-pass-modal"><i class="lni lni-lock"></i> Change Password</a></li>'
+							   .$btn.
 							  '</ul>
                         </div>';
 			return $action;
@@ -505,6 +506,33 @@ public function deleteScratchCount(Request $request)
       
     }
 
+public function changeUserPassword(Request $request)
+{
+			$npass=$request->passowrd;
+			$user_id=$request->user_id;
+
+			try{
+				
+				$user=User::where('pk_int_user_id',$user_id)->first();
+				
+				if($user)
+        		{   
+					$user->password=\Hash::make($npass);
+					$result=$user->save();
+					return response()->json(['msg'=>'Password successfully changed.','status'=>true]);
+        		}
+        		else
+        		{
+					return response()->json(['msg'=>'User were not found!','status'=>false]);
+        		}
+	
+            }
+            catch(\Exception $e)
+            {
+                return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
+            }
+      
+    }
 
 
 

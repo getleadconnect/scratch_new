@@ -77,11 +77,8 @@ Route::controller(CampaignController::class)->group(function() {
 
 	Route::get('/offer-activate-deactivate/{opt}/{id}', 'offerActivateDeactivate')->name('offer-activate-deactivate');
 	Route::post('/update-image', 'uploadOfferGiftImage')->name('update-image');
-	
-	
-	
+		
 });
-
 
 
 Route::controller(CampaignDetailController::class)->group(function() {
@@ -222,7 +219,7 @@ Route::controller(GeneralSettingsController::class)->group(function() {
 
 // Scrtach web routes -------------------------------------------------------------------------------------------->
 
-//Route::domain(env('SHORT_LINK_DOMAIN'))->namespace('Shortener')->group(function () 
+//Route::domain(env('SHORT_LINK_DOMAIN'))->namespace('Shortener')->group(function() 
 //{
 
     Route::get('scratch-form', 'App\Http\Controllers\Shortener\ShortenerController@form');
@@ -237,7 +234,6 @@ Route::controller(GeneralSettingsController::class)->group(function() {
     Route::post('scr/gl-scratched/{id}/{web_api?}', 'App\Http\Controllers\Shortener\GlScratchWebController@glScratched')->name('scratch-scratched');
     Route::get('w/{code}', 'App\Http\Controllers\Shortener\WhatsappLinkController@index')->name('shorter-wap-link');
     Route::get('wa/{code}', 'App\Http\Controllers\Shortener\GlScratchWebController@gotoApiScratch')->name('go-to-api-scratch');
-
 
 	Route::get('sc/get-branch-autocomplete/{user_id}', 'App\Http\Controllers\Shortener\GlScratchWebController@getBranchAutocomplete')->name('get-branch-autocomplete');
 

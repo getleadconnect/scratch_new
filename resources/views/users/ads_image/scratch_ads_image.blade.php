@@ -53,19 +53,17 @@
 					  <div class="row">
 					  <div class="col-lg-5 col-xl-5 col-xxl-5">
 					  
-							  <h6 class="mb-3"> Add Image </h6>
+							  <h6 class="mb-3"> Add Image</h6>
 							  
 							<!--  <form method="POST" id="SaveAdsImage" action="{{url('users/save-ads-image')}}"enctype="multipart/form-data">--->
 							
 							<form id="SaveAdsImage" enctype="multipart/form-data">
 								@csrf
 							  <div class="mb-2 row">
-							  
-									
 																  
 									<div class="col-lg-11 col-xl-11 col-xxl-11 mt-2">
-										<label for="example-text-input" class="col-form-label">Select Image</label>
-										<input class="form-control" type="file" name="image[]" multiple required>
+										<label for="example-text-input" class="col-form-label">Select Image (Size Max:500Mb) </label>
+										<input class="form-control" type="file" name="image" id="image" required>
 										</div>
 									<div class="col-lg-11 col-xl-11 col-xxl-11">
 									<img class="mb-2 mt-2" id="img_output" src="" style="width:150px;">
@@ -158,8 +156,17 @@ var table = $('#datatable').DataTable({
 });
 
 
-/*image.onchange = evt => {
+image.onchange = evt => {
   const [file] = image.files
+
+	var size=file.size;
+	if(size>524288)
+	{
+		alert("Image size too large. Maximum 500Kb only");
+		$(this).val('');
+	}
+	else
+	{
 
         var allowedExtensions="";
 	    allowedExtensions = /(\.jpg|\.jpeg|\.jpe|\.png)$/i; 
@@ -177,12 +184,11 @@ var table = $('#datatable').DataTable({
 				img_output.src = URL.createObjectURL(file)
 			  }
 		}  
+	}
 }
-*/
 
  $(document).on('submit', '#SaveAdsImage', function(event) {
            event.preventDefault();
-  			alert("ok");
 			$.ajax({
                     url: BASE_URL + '/users/save-ads-image',
                     type: 'POST',
@@ -205,8 +211,8 @@ var table = $('#datatable').DataTable({
                 })
                  .always(function(com) {
             });
-
        });
+
 
 $('#datatable tbody').on('click','.ads-delete',function()
 {
@@ -246,7 +252,6 @@ $('#datatable tbody').on('click','.ads-delete',function()
 	});
 
 });
-
 
 
 $("#datatable tbody").on('click','.btn-act-deact',function()
