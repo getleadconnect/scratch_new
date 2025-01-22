@@ -11,7 +11,7 @@
 }
 .card-info p
 {
-	font-size:20px;
+	font-size:18px;
 }
 
 </style>
@@ -121,7 +121,7 @@
 						  </div>
 						  <div class="ms-auto fs-2 text-primary">
 							@if($usr->subscription_start_date!='' && $usr->subscription_end_date!='')
-							<label class="mb-0 mt-3 text-primary fs-6">[ {{date_create($usr->subscription_start_date)->format('d-m-Y')}}
+							<label class="mb-0 mt-3 text-primary fs-7">[ {{date_create($usr->subscription_start_date)->format('d-m-Y')}}
 								&nbsp;&nbsp;<span class="text-red">=></span>&nbsp;&nbsp;
 							{{date_create($usr->subscription_end_date)->format('d-m-Y')}} ] 
 							</label>

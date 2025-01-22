@@ -21,15 +21,7 @@
                 <div class="menu-title">Dashboard</div>
               </a>
             </li>
-			
-			<li>
-              <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
-                <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/gallery.png')}}" style="width:20px;">
-                </div>
-                <div class="menu-title">Ads Images</div>
-              </a>
-            </li> 
+
 			
 			<li>
               <a href="{{url('users/campaigns')}}" title="Campaigns">
@@ -42,14 +34,14 @@
             </li>
 			
 			<li>
-              <a href="{{url('users/gifts-list')}}" title="Campaigns">
+              <a href="{{url('users/scratch-web-customers')}}" title="Campaigns">
                 <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/trophy-star.png')}}" style="width:18px;">
+				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
                 </div>
-                <div class="menu-title">Gifts List</div>
+                <div class="menu-title">Customers List</div>
               </a>
             </li>
-						
+			
 			<li>
               <a href="{{url('users/redeem-scratch')}}" title="Campaigns">
                 <div class="parent-icon">
@@ -70,15 +62,22 @@
             </li>
 			
 			<li>
-              <a href="{{url('users/scratch-web-customers')}}" title="Campaigns">
+              <a href="{{url('users/gifts-list')}}" title="Campaigns">
                 <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
+				<img src="{{asset('assets/images/icons/trophy-star.png')}}" style="width:18px;">
                 </div>
-                <div class="menu-title">Customers List</div>
+                <div class="menu-title">Gifts List</div>
               </a>
             </li>
 			
-			
+			<li>
+              <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/gallery.png')}}" style="width:20px;">
+                </div>
+                <div class="menu-title">Ads Images</div>
+              </a>
+            </li> 
 
             <li>
               <a href="javascript:;" class="has-arrow" title="Options">

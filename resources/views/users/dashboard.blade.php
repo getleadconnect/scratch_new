@@ -105,7 +105,7 @@
 			  <div class="">
 				<h6 class="mb-1">Subscription : <span class="@if($sub['subscription']!='Active') text-red @else text-green @endif " >{{strtoupper($sub['subscription'])}}</span></h6>
 				@if($sub['subscription']!="Expired" and $sub['start_date']!="" and $sub['end_date']!="")
-				<h6 class="mb-1" style="color:#5959eb">{{$sub['start_date']}}&nbsp;&nbsp;=>&nbsp;&nbsp;{{$sub['end_date']}}</h6>
+				<p class="mb-1" style="font-size:14px;color:#5959eb">{{$sub['start_date']}}&nbsp;&nbsp;=>&nbsp;&nbsp;{{$sub['end_date']}}</p>
 				@endif
 			  </div>
 			  <div class="ms-auto fs-2 text-primary">
