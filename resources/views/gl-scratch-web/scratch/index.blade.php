@@ -65,8 +65,8 @@ input[type="number"]::-ms-reveal {
                 <div class="carousel-item active">
                     @if($offer->mobile_image)
                     <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
-					@elseif($user->vchr_logo)
-                    <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
+					@elseif($offer->vchr_scratch_offers_image)
+                    <img src="{{ Storage::disk('local')->url($offer->$offer->vchr_scratch_offers_image) }}" class="d-block img-fluid"/>
 					@else
                         <img src="{{url('glscratch-web/assets/media/logos/logo-mini-2-md.png')}}"
                             class="d-block img-fluid"/>
@@ -90,9 +90,9 @@ input[type="number"]::-ms-reveal {
               <div class="carousel-item active">
                 @if($offer->mobile_image)
                     <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
-                @elseif($user->vchr_logo)
-                    <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
-                @else
+					@elseif($offer->vchr_scratch_offers_image)
+                    <img src="{{ Storage::disk('local')->url($offer->$offer->vchr_scratch_offers_image) }}" class="d-block img-fluid"/>
+					@else
                     <img src="{{url('glscratch-web/assets/media/logos/logo-mini-2-md.png')}}"
                         class="d-block img-fluid"/>
                 @endif
