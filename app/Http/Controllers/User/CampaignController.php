@@ -92,12 +92,12 @@ class CampaignController extends Controller
                     $image = $request->file('offer_image');
                     $name = rand(10, 100). date_timestamp_get(date_create()). '.' . $image->getClientOriginalExtension();
                     FileUpload::uploadFile($image, $path,$name,'local');
-
+					$fname=$path.$name;
 				$data=[
 					'fk_int_user_id'=>$user_id,
 					'vchr_scratch_offers_name'=>$request->offer_name,
-					'vchr_scratch_offers_image'=>$path.$name,
-					'mobile_image'=>$path.$name,
+					'vchr_scratch_offers_image'=>$fname,
+					'mobile_image'=>$fname,
 					'type_id'=>$request->offer_type,
 					'end_date'=>$request->campaign_end_date,
 					'int_status'=>1,

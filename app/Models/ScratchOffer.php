@@ -25,6 +25,7 @@ class ScratchOffer extends Model
         'fk_int_user_id', 
         'int_status',
         'vchr_scratch_offers_image',
+		'mobile_image',
 		'end_date',
         'type_id',
 	];
