@@ -50,17 +50,12 @@
 				  <div class="col-lg-12 col-xl-12 col-xxl-12">
 				  <form id="searchCustomer" >
 				  @csrf
-					  <div class="row" style="padding:3px 10px 10px 10px;" >
+					  <div class="row mt-3" style="padding:3px 10px 10px 10px;" >
 						<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
-						<nav class="navbar navbar-expand gap-3">
-						
-							<!--<div class="position-absolute top-50 translate-middle-y search-icon ms-3">
-							<i class="bi bi-search"></i></div> -->
-							<input class="form-control" name="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Code/Mobile" >
-						</nav>
+							<input class="form-control" name="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Unique Id/Mobile" >
 						</div>
 						<div class="col-lg-2 col-xl-2 col-xxl-2">
-							<button type="submit" class="mt-2 btn btn-secondary" style="height:45px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
+							<button type="submit" class="btn btn-secondary" style="height:50px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
 						</div>
 					   </div>
 				   </form>
