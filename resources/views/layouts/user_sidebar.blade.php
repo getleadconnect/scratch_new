@@ -23,6 +23,15 @@
             </li>
 			
 			<li>
+              <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/gallery.png')}}" style="width:20px;">
+                </div>
+                <div class="menu-title">Ads Images</div>
+              </a>
+            </li> 
+			
+			<li>
               <a href="{{url('users/campaigns')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/megaphone.png')}}" style="width:20px;">
@@ -69,14 +78,7 @@
               </a>
             </li>
 			
-			<!--<li>
-              <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
-                <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/gallery.png')}}" style="width:20px;">
-                </div>
-                <div class="menu-title">Ads Images</div>
-              </a>
-            </li> -->
+			
 
             <li>
               <a href="javascript:;" class="has-arrow" title="Options">

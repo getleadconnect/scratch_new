@@ -442,7 +442,6 @@ class GlScratchWebController extends Controller
             $expired = true;
              return view('gl-scratch-web.short-link.scratch-new-design',compact(['user','offer','offerList','expired']));
         }
-        
     }
 
 	
