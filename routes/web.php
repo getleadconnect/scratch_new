@@ -219,9 +219,8 @@ Route::controller(GeneralSettingsController::class)->group(function() {
 
 // Scrtach web routes -------------------------------------------------------------------------------------------->
 
-//Route::domain(env('SHORT_LINK_DOMAIN'))->namespace('Shortener')->group(function() 
-//{
-
+Route::domain(env('SHORT_LINK_DOMAIN'))->namespace('Shortener')->group(function() 
+{
     Route::get('scratch-form', 'App\Http\Controllers\Shortener\ShortenerController@form');
     Route::get('scratch/terms', 'App\Http\Controllers\Shortener\ShortenerController@terms')->name('shorter-link.terms');
     Route::get('scratch/thank-you', 'App\Http\Controllers\Shortener\ShortenerController@thankyou')->name('shorter-link.thank-you');
@@ -237,6 +236,6 @@ Route::controller(GeneralSettingsController::class)->group(function() {
 
 	Route::get('sc/get-branch-autocomplete/{user_id}', 'App\Http\Controllers\Shortener\GlScratchWebController@getBranchAutocomplete')->name('get-branch-autocomplete');
 
-//});
+});
 
 
