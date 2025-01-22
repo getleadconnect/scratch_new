@@ -53,7 +53,7 @@
 					 &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
 				     &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
 				  @else
-					<button class="btn btn-primary btn-xs link-add-err" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-plus"></i>&nbsp;Qr-Code PDF</button>
+					<button class="btn btn-primary btn-xs link-add-err" ><i class="fa fa-plus"></i>&nbsp;Qr-Code PDF</button>
 					<button type="button" class="btn btn-primary btn-xs link-add-err" ><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>    
 					<button type="button" class="btn btn-gl-primary btn-xs link-add-err"><i class="fa fa-plus"></i>&nbsp;Add Links</button>
 				  @endif
