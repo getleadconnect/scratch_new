@@ -508,7 +508,7 @@ public function deleteScratchCount(Request $request)
 
 public function changeUserPassword(Request $request)
 {
-			$npass=$request->passowrd;
+			$npass=$request->password;
 			$user_id=$request->user_id;
 
 			try{
@@ -517,7 +517,7 @@ public function changeUserPassword(Request $request)
 				
 				if($user)
         		{   
-					$user->password=\Hash::make($npass);
+					$user->password=Hash::make($npass);
 					$result=$user->save();
 					return response()->json(['msg'=>'Password successfully changed.','status'=>true]);
         		}

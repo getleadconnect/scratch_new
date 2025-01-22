@@ -84,7 +84,6 @@
 									<th>Mobile</th>
 									<th>Email</th>
 									<th>Company</th>
-									<th>Address</th>
 									<th>Location</th>
 									<th>Created At</th>
 									<th>Status</th>
@@ -139,8 +138,8 @@
 			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label for="location" class="form-label">Location<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="location" id="location" placeholder="Location" required >
+					<label for="location" class="form-label">Location</label>
+					<input type="text" class="form-control"  name="location" id="location" placeholder="Location">
 				</div>
 			</div>
 			
@@ -157,8 +156,6 @@
 					<input type="text" class="form-control"  name="designation" id="designation" placeholder="designation" >
 				</div>
 			</div>
-
-			
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -343,7 +340,6 @@ var table = $('#datatable').DataTable({
 			{"data": "mobile" },
 			{"data": "email" },
 			{"data": "company" },
-			{"data": "address" },
 			{"data": "location" },
 			{"data": "cdate" },
 			{"data": "status" },
