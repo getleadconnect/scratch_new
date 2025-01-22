@@ -50,7 +50,8 @@ input[type="number"]::-ms-reveal {
       <div class="container">
         <div id="carouselExampleIndicators" class="carousel slide desktop" data-ride="carousel">
           <div class="kt-login-head">
-            <div class="kt-login__logo "> <a href="javascript:;" class="kt-link kt-link--light kt-login__account-link"> <img src="{{asset('glscratch-web/assetsold/new/media/logos/brand.png')}}" class="img-fluid invisible" width="120"> </a> </div>
+            <div class="kt-login__logo "> <a href="javascript:;" class="kt-link kt-link--light kt-login__account-link">
+			<img src="{{asset('glscratch-web/assetsold/new/media/logos/brand.png')}}" class="img-fluid invisible" width="120"> </a> </div>
             <h3 class="kt-login__title">
               Find your<br> 
               Digital scratch card</h3>
@@ -62,11 +63,11 @@ input[type="number"]::-ms-reveal {
           </ol> --}}
           <div class="carousel-inner">
                 <div class="carousel-item active">
-                    @if($offer->vchr_scratch_offers_image)
-                        <img src="{{  Storage::disk('local')->url($offer->vchr_scratch_offers_image) }}" class="d-block img-fluid"/>
-                    @elseif($user->vchr_logo)
-                        <img src="{{ Storage::disk('local')->url('uploads/user-profile/' . $user->vchr_logo) }}" class="d-block img-fluid"/>
-                    @else
+                    @if($offer->mobile_image)
+                    <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
+					@elseif($user->vchr_logo)
+                    <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
+					@else
                         <img src="{{url('glscratch-web/assets/media/logos/logo-mini-2-md.png')}}"
                             class="d-block img-fluid"/>
                     @endif
@@ -90,7 +91,7 @@ input[type="number"]::-ms-reveal {
                 @if($offer->mobile_image)
                     <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
                 @elseif($user->vchr_logo)
-                    <img src="{{ Storage::disk('local')->url('uploads/user-profile/' . $user->vchr_logo) }}" class="d-block img-fluid"/>
+                    <img src="{{ Storage::disk('local')->url($offer->mobile_image) }}" class="d-block img-fluid"/>
                 @else
                     <img src="{{url('glscratch-web/assets/media/logos/logo-mini-2-md.png')}}"
                         class="d-block img-fluid"/>
