@@ -67,7 +67,6 @@ class User extends Authenticatable implements JWTSubject
         'email' => 'required|email|unique:tbl_users,email',
         'mobile' => 'required|numeric|digits_between:8,15|unique:tbl_users,vchr_user_mobile',
         'password' => 'required|min:6',
-		'location'=>'required'
         // 'password_confirmation' => 'required_with:password|confirmed|min:6'
     ];
 
@@ -79,7 +78,6 @@ class User extends Authenticatable implements JWTSubject
         'email.email' => 'Incorrect Email format',
         'mobile.required' => 'Mobile Number is required',
         'mobile.numeric' => 'Enter number in correct format ',
-		'location.required'=>'Location required'
     ];
 	
 	
@@ -87,7 +85,6 @@ class User extends Authenticatable implements JWTSubject
         'user_name_edit' => 'required|max:25',
         'email_edit' => 'required',
         'mobile_edit' => 'required|numeric|digits_between:8,15',
-		'location_edit'=>'required'
     ];
 	
  
@@ -97,7 +94,6 @@ class User extends Authenticatable implements JWTSubject
         'email_edit.email' => 'Incorrect Email format',
         'mobile_edit.required' => 'Mobile Number is required',
         'mobile_edit.numeric' => 'Enter number in correct format ',
-		'location_edit.required'=>'Location required'
     ];
 
 
