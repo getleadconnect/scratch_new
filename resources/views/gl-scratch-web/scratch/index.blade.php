@@ -146,7 +146,7 @@ input[type="number"]::-ms-reveal {
                             <input type="hidden" id="offer_id" value="{{$shortlink->offer_id}}" name="offer_id">
                             <input type="hidden" id="vendor_id" value="{{$shortlink->vendor_id}}" name="vendor_id">
 							<input type="hidden" id="scratch_otp_enabled" value="{{$scratch_otp_enabled}}" name="scratch_otp_enabled">
-							<input type="text" name="short_link_code" id="short_link_code" value="{{$shortlink->code}}">
+							<input type="hidden" id="short_link_code" value="{{$shortlink->code}}" name="short_link_code">
 														
                             @if($shortlink->email_required == 1)
                                 <div class="input-group">
