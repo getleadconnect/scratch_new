@@ -336,7 +336,7 @@ $("#datatable tbody").on('click','.btn-act-deact',function()
 	Swal.fire({
 	  title: optText+"?",
 	  text: "You want to "+opt_text+" this campaign?",
-	  icon: "warning",
+	  icon: "question",
 	  showCancelButton: true,
 	  confirmButtonColor: "#3085d6",
 	  cancelButtonColor: "#d33",

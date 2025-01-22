@@ -54,6 +54,11 @@ class GlShortLinksController extends Controller
         		
         return DataTables::of($links)
 			->addIndexColumn()
+			->addColumn('chkbox', function ($links) 
+			{
+				$chk=$links->id;
+				return $chk;
+			})
 			->addColumn('offer', function ($links) 
 			{
 				$links->offer = $links->ScratchOffer ? $links->ScratchOffer->vchr_scratch_offers_name : 'N/A';
@@ -215,8 +220,6 @@ public function saveGeneratedMultipleLinks(Request $request)
 			}
 		}
 	
-	
-	
 }
 
 
@@ -314,6 +317,36 @@ public function destroy($id)
 	}
 }	
 
+public function deleteMultipleLinks(Request $request)
+{
+	
+	try
+	{
+		$link_ids=$request->link_ids;
+		$lnk_ids=explode(",",$link_ids);
+		
+		$user_id=User::getVendorId();
+		$links=ShortLink::whereIn('id',$lnk_ids)->get();
+
+		if($links)
+		{
+			foreach($links as $row)
+			{
+				FileUpload::deleteFile($row->qrcode_file,'local');
+				$result=$row->delete();
+			}
+			return response()->json(['msg'=>'Short link successfully removed.','status'=>true]);
+		}
+		else
+		{
+			return response()->json(['msg'=>'Something wrong, Try again.','status'=>false]);
+		}
+	}
+	catch(\Exception $e)
+	{
+		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
+	}
+}	
 
 public function reGenerateQrcode(Request $request)
 {
@@ -439,8 +472,6 @@ public function generateQrcodePdf(Request $request)
 		return false; 
 	}
 }
-
-
 
 
 //web click link history -------------------------------------------------
