@@ -347,10 +347,18 @@ public function userProfile($user_id)
 		  return $q;
 	  })->first();
 	
-	$subscription='Active';
+	
 	if($usr->subscription_end_date<date('Y-m-d') && $usr->subscription_end_date!='')
 	{
 		$subscription="Expired";
+	}
+	else if($usr->subscription_end_date=='' && $usr->subscription_end_date=='')
+	{
+		$subscription='No Subscription';
+	}
+	else
+	{
+		$subscription='Active';
 	}
 
 	$data['tot_count']=ScratchCount::getTotalScratchCount($user_id);

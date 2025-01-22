@@ -150,12 +150,12 @@
 				</div>
 			</div>
 			
-			<div class="row mb-2" >
+			<!--<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="email" class="form-label">Desgination</label>
 					<input type="text" class="form-control"  name="designation" id="designation" placeholder="designation" >
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -354,7 +354,7 @@ var addValidator=$('#formAddUser').validate({
 	rules: {
 		user_name: {required: true,},
 		email: {required: true,},
-		location: {required: true,},
+		//location: {required: true,},
 		password: {required: true,minlength:6, maxlength:15},
 		mobile: {required: true,},
 	},
