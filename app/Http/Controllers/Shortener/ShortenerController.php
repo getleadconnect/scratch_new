@@ -45,7 +45,7 @@ class ShortenerController extends Controller
                 $shortlink = $shortlink->where('vendor_id',$user_id)->where('status',ShortLink::ACTIVE)->first();
 		
 				if(!$shortlink){
-                    $messageText = "Oops!! This link is inactive.";
+                    $messageText = "Oops!! This link is invalid.";
                     return view('gl-scratch-web.short-link.invalid',compact('messageText'));
                 }
 				
