@@ -35,4 +35,5 @@ protected $guarded = [];
     'branch_id'
 
  ];*/
+  
 }

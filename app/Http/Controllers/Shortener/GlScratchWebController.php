@@ -373,8 +373,7 @@ class GlScratchWebController extends Controller
                         $customer->offer_text = $offerListing->txt_description;
 						$customer->redeem_source='web';
 						$customer->type_id=$type_id;
-						
-                        //$offerListing->int_scratch_offers_balance--;
+						//$offerListing->int_scratch_offers_balance--;
                         //$offerListing->save();
                         $customer->save();
                         $offerListing->customer_id = $customer->id;
