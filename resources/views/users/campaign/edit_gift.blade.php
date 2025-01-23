@@ -39,7 +39,7 @@
 						
 			<div class="mb-2 row">
 			    <div class="col-lg-8 col-xl-8 col-xxl-8">
-				<label for="example-text-input" class="col-form-label">Image</label>
+				<label for="example-text-input" class="col-form-label">Image(Max:500mb, Size 450x450) </label>
 				<input class="form-control" type="file" name="gift_image_edit" id="gift_image_edit" >
 				</div>
 				<div class="col-lg-3 col-xl-3 col-xxl-3">

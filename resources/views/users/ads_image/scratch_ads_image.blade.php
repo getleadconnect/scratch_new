@@ -62,7 +62,7 @@
 							  <div class="mb-2 row">
 																  
 									<div class="col-lg-11 col-xl-11 col-xxl-11 mt-2">
-										<label for="example-text-input" class="col-form-label">Select Image (Size Max:500Mb) </label>
+										<label for="example-text-input" class="col-form-label">Select Image ((Max:500mb, Size 450x350) </label>
 										<input class="form-control" type="file" name="image" id="image" required>
 										</div>
 									<div class="col-lg-11 col-xl-11 col-xxl-11">
