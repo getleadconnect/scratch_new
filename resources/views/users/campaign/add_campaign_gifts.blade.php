@@ -72,7 +72,7 @@
 								<th>Gift_Count</th>
 								<th>Description</th>
 								<th>Status</th>
-								<th>Image(Max :500kb)</th>
+								<th>Image(<small>Max:500mb, Size 450x450</small>)</th>
 								<th></th>
 								<th>Action</th>
 							</tr>
