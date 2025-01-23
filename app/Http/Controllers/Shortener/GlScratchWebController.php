@@ -140,7 +140,22 @@ class GlScratchWebController extends Controller
             }
         }
 
-           $check_num = ScratchWebCustomer::join('tbl_scratch_offers_listing', 'tbl_scratch_offers_listing.pk_int_scratch_offers_listing_id', '=', 'scratch_web_customers.offer_list_id')
+
+		/*if($request->user_id == 1815){ // for hilite
+            $check_num = ScratchWebCustomer::join('tbl_scratch_offers_listing', 'tbl_scratch_offers_listing.pk_int_scratch_offers_listing_id', '=', 'scratch_web_customers.offer_list_id')
+                    ->join('short_links', 'short_links.offer_id', '=', 'tbl_scratch_offers_listing.fk_int_scratch_offers_id')
+                    ->where(function($q){
+                        if(request()->has('offer_id'))
+                            $q->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id', request('offer_id'));
+                            $q->where('scratch_web_customers.country_code', request('country_code'))
+                                ->where('scratch_web_customers.mobile', request('mobile')); 
+                            
+                            $q->whereDate('scratch_web_customers.created_at',now());
+                    })
+                    ->where('scratch_web_customers.user_id', request('vendor_id'))
+                    ->first();
+        }else{
+            $check_num = ScratchWebCustomer::join('tbl_scratch_offers_listing', 'tbl_scratch_offers_listing.pk_int_scratch_offers_listing_id', '=', 'scratch_web_customers.offer_list_id')
                     ->join('short_links', 'short_links.offer_id', '=', 'tbl_scratch_offers_listing.fk_int_scratch_offers_id')
                     ->where(function($q){
                         if(request()->has('offer_id'))
@@ -149,13 +164,33 @@ class GlScratchWebController extends Controller
                                 ->where('scratch_web_customers.mobile', request('mobile'));    
                     })
                     ->where('scratch_web_customers.user_id', request('vendor_id'))
-					->whereDate('scratch_web_customers.created_at',now())
                     ->first();
-	   
- 		
+        }
+		
+		if($check_num && $request->mobile != '9048333535'){
+            if($request->user_id == 1815) // for hilite
+                return response()->json(['msg' => "Your chance for today is done, Kindly visit us again tomorrow to win exciting prizes", 'status' => false]);
+            else
+                return response()->json(['msg' => "You have already used up your chance.Please try with a different number", 'status' => false]);
+        }
+		
+		*/
+
+		$check_num = ScratchWebCustomer::join('tbl_scratch_offers_listing', 'tbl_scratch_offers_listing.pk_int_scratch_offers_listing_id', '=', 'scratch_web_customers.offer_list_id')
+			->join('short_links', 'short_links.offer_id', '=', 'tbl_scratch_offers_listing.fk_int_scratch_offers_id')
+			->where(function($q){
+				if(request()->has('offer_id'))
+					$q->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id', request('offer_id'));
+					$q->where('scratch_web_customers.country_code', request('country_code'))
+						->where('scratch_web_customers.mobile', request('mobile'));    
+			})
+			->where('scratch_web_customers.user_id', request('vendor_id'))
+			->first();
+		
+
 		if($check_num)
 		{
-            return response()->json(['msg' => "Your chance for today is done, Kindly visit us again tomorrow to win exciting prizes", 'status' => false]);
+            return response()->json(['msg' => "You have already used up your chance.Please try with a different number", 'status' => false]);
 		}
 		
 		$mobile = $request->country_code . $request->mobile;
@@ -199,6 +234,7 @@ class GlScratchWebController extends Controller
         }
 
     }
+	
 	
     public function verifyOTP(Request $request)
     {

@@ -50,7 +50,7 @@
                 </div>
                 <div class="card-body">
 
-                   <div class="row mt-3">
+                 <div class="row mt-3">
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100 mt-2">
 						
@@ -70,6 +70,43 @@
                     </div>
                    </div><!--end row-->
                 </div>
+
+				
+				<div class="row">
+                     <div class="col-12 col-lg-12 d-flex">
+                      <div class="card  shadow-none w-100">
+						
+						
+						<div class="row mt-3">
+						<div class="col-12 col-lg-12">
+						<p>Export Customer details to CRM</p>
+						<div class="d-flex">
+						<p class="ps-3 pt-2">●&nbsp; Push your customer details to CRM Yes/No?</p>&nbsp;&nbsp; 
+						<div class="form-check form-switch">
+							<input class="form-check-input" style="width:70px;height:30px;" id="otp_bypass" type="checkbox" id="flexSwitchCheckChecked"
+							 value="{{$data['otp_bypass_value']}}" @if($data['otp_bypass_value']=='Enabled') checked @endif >
+						</div>	
+						</div>
+						</div>
+												
+						<div class="col-6 col-lg-6">
+						<div style="padding-left:30px;">
+							<p class="pt-2">Enter Your CRM Account API token here</p> 
+							<input type ="text" class="form-control" name="gerleadcrm_api" id="getleadcrm_api"  required>
+							<button type ="submit" class="btn btn-primary mt-3" > Submit </button>
+						</div>
+						</div>
+						
+						
+						</div>
+						
+									
+                    </div>
+                   </div><!--end row-->
+                </div>
+				
+				
+				
               </div>
 		
 		
