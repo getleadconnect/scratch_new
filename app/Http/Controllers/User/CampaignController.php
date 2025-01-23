@@ -40,6 +40,7 @@ class CampaignController extends Controller
 	 $user_id=User::getVendorId();
 	 
 	 $subscription=$this->checkUserStatus($user_id);
+	  
 	 
 	 $type=ScratchType::where('status',1)->get(); 
 	 $sbal_count=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
