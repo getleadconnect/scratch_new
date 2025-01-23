@@ -14,6 +14,7 @@ use App\Models\ScratchCount;
 use App\Models\User;
 use App\Models\ShortLink;
 
+use App\Models\ScratchWebCustomer;
 use App\Traits\GeneralTrait;
 
 use Validator;
@@ -33,6 +34,56 @@ class CampaignController extends Controller
   {
      //$this->middleware('admin');
   }
+  
+  public function Test()
+  {
+		$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', 128)
+                          ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
+                          ->inRandomOrder()->first();
+	   
+	    $total_gift=ScratchOffersListing::getTotalGiftCount(128);
+	    $top_gift=ScratchOffersListing::getTopGiftCount(128);
+	    
+		$tg_cnt=ScratchWebCustomer::getHeighPriceGiftCount(128);
+		$diff=($total_gift/$top_gift)*$tg_cnt;
+		
+		$total_cutomers=ScratchWebCustomer::getTotalCustomerCount(128);
+		
+		if($offerListing->int_gift_type==3)
+		{
+			if($total_cutomers<$diff)
+			{
+				$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', 128)
+                          ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
+                          ->inRandomOrder()->first();
+				$diff=$diff."ok";
+			}
+		}
+		
+			$customer= new ScratchWebCustomer();
+		
+			$customer->user_id = 1634;
+			$customer->name = "test";
+			$customer->country_code = 91;
+			$customer->mobile = '1234567898';
+			$customer->vchr_mobile = '911234567898';
+			$customer->status = 1;
+            $customer->redeem = 0;
+            $customer->email = "t1@gmail.com";
+            $customer->branch_id = null;
+			$customer->bill_no = null;
+			$customer->short_code = 'TES';
+			$customer->unique_id = 'TES1';
+			$customer->offer_id =$offerListing->fk_int_scratch_offers_id;
+            $customer->offer_list_id = $offerListing->pk_int_scratch_offers_listing_id;
+            $customer->offer_text = $offerListing->txt_description;
+			$customer->redeem_source='web';
+			$customer->type_id=2;
+            $customer->save();
+
+		dd($offerListing->int_gift_type,$offerListing->txt_description,$diff,$tg_cnt,$total_cutomers);
+  }
+  
   
   public function index()
   {
