@@ -37,15 +37,7 @@ class ShortenerController extends Controller
     public function index($id,$code)
     {
 		$user_id=$id;
-		
-		$result=$this->checkUserStatus($id);
-		
-		if($result==false)
-		{
-			$messageText = "Oops!! This link is expired!!!.";
-			return view('gl-scratch-web.short-link.invalid',compact('messageText'));
-		}
-		
+
 		$messageText = "Oops this link is Invalid";
 		$shortlink=ShortLink::where('vendor_id',$user_id)->where('code',$code);
         if((clone $shortlink)->first()){

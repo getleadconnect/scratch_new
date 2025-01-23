@@ -41,13 +41,11 @@ class GlShortLinksController extends Controller
   {
 	 
 	 $user_id=User::getVendorId();
-	 $subscription=$this->checkUserStatus($user_id);
 	
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
-	 return view('users.links.gl_short_links',compact('offers','subscription','user_id'));
+	 return view('users.links.gl_short_links',compact('offers','user_id'));
   }
-    
-  
+      
   public function getShortLinks()
     {
         $links = ShortLink::where("vendor_id", User::getVendorId())->where('type', ShortLink::GL_SCRATCH)->orderBy('id', 'Desc')->get();
@@ -237,6 +235,13 @@ public function store(Request $request)
         if ($validator->fails()) {
 			return response()->json(['msg' =>$validator->messages()->first(), 'status' => false]);
         }
+
+		$gift_cnt=ScratchOffersListing::where('int_scratch_offers_id',$request->offer_id)->where('int_status',1)->count();
+		if($gift_cnt<=0)
+		{
+			return response()->json(['msg' =>'Offer gift listing not found!' , 'status' => false]);
+		}
+
 
 		$slink=ShortLink::where('vendor_id',USER::getVendorId())->where('code',strtoupper($request->code))->first();
 		if($slink)

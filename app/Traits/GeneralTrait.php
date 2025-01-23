@@ -42,6 +42,7 @@ trait GeneralTrait
 			Session::flash('msg_swal',"Re-new your subscription.");
 			$result=false;
 		 }
+		 
 		 else if($scnt=='' || $scnt<=0)
 		 {
 			Session::put('msg_title','Insufficient Scratches.');
@@ -53,6 +54,22 @@ trait GeneralTrait
 	}
 	
 	
+	public function checkScratchCountStatus($id)
+	{
+		$user_id=$id;
+		$scnt=ScratchCount::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
+		$result=true;
+		if($scnt=='' || $scnt<=0)
+		 {
+			Session::put('msg_title','Insufficient Scratches.');
+			Session::flash('msg_swal',"Purchase scratches now.");
+			$result=false;
+		 }
+		
+		 return $result;
+	}
+	
+		
 	public function checkCampaignExpired($campaign_id)
 	{
 		$sof=ScratchOffer::where('pk_int_scratch_offers_id',$campaign_id)->first();
