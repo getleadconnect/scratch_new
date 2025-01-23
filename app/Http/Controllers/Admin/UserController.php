@@ -67,7 +67,6 @@ class UserController extends Controller
 					'int_status'=>User::ACTIVATE,
 					'int_role_id'=>User::USERS
 				];
-
 				
 				$result=User::create($data);
 				$user_id=$result->pk_int_user_id;
