@@ -74,7 +74,7 @@ class UserController extends Controller
 
 				$sdata=[
 					'vchr_settings_type'=>"scratch_otp_enabled",
-					'vchr_settings_value'=>"Disabled",
+					'vchr_settings_value'=>"Enabled",
 					'fk_int_user_id'=>$user_id,
 					'int_status'=>1,
 				];
