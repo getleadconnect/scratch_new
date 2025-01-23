@@ -36,6 +36,7 @@ class CampaignController extends Controller
   
   public function index()
   {
+	 	 
 	 $user_id=User::getVendorId();
 	 
 	 $subscription=$this->checkUserStatus($user_id);

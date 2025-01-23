@@ -53,7 +53,7 @@ trait GeneralTrait
 		 return $result;
 	}
 	
-	
+		
 	public function checkScratchCountStatus($id)
 	{
 		$user_id=$id;
@@ -69,7 +69,7 @@ trait GeneralTrait
 		 return $result;
 	}
 	
-		
+			
 	public function checkCampaignExpired($campaign_id)
 	{
 		$sof=ScratchOffer::where('pk_int_scratch_offers_id',$campaign_id)->first();
