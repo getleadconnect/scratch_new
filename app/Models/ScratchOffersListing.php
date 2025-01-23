@@ -38,6 +38,5 @@ class ScratchOffersListing extends Model
         'offers_count.numeric' => 'Offer Count must be numeric',
         'description.required' => 'Description is required',
     ];
-
-	
+		
 }
