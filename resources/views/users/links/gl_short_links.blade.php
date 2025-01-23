@@ -249,7 +249,7 @@ var table = $('#datatable').DataTable({
 				orderable: false,
 				render: function (data, type, full, meta) {
 					return '<input type="checkbox" id="' + data.chkbox + '" class="dt-checkboxes" name="checkboxes" value="' + data.chkbox + '">';
-				},
+				 },
 			},
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
 			{"data": "offer" },
@@ -263,6 +263,7 @@ var table = $('#datatable').DataTable({
 			{"data": "status" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],
+
 });
 
 

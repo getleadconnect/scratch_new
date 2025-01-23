@@ -53,7 +53,7 @@ a {
 .top-header .navbar{
     position: fixed;
     top: 0;
-    left: 300px;
+    left: 270px;
     right: 0;
     background-color: #f7f8fa;
     border-bottom: 1px solid #e2e3e4;
@@ -419,7 +419,7 @@ a {
 .footer {
     position: absolute;
 	position: fixed;
-    left: 300px;
+    left: 270px;
     right: 0;
     bottom: 0;
     padding: 0.7rem;
@@ -437,7 +437,7 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    width: 300px;
+    width: 270px;
     height: 100%;
     background-color: #f7f8fa;
     background-clip: padding-box;
@@ -448,7 +448,7 @@ a {
 
 
 .sidebar-wrapper .sidebar-header {
-    width: 300px;
+    width: 270px;
     height: 60px;
     display: flex;
     align-items: center;
@@ -697,7 +697,7 @@ a {
 /* Page Content */
 
 .page-content {
-    margin-left: 300px;
+    margin-left: 270px;
     margin-top: 35px;
     padding: 1rem 1rem 2.5rem 1rem;
     transition: all .2s;
@@ -1695,7 +1695,7 @@ a {
     
     .sidebar-wrapper {
     
-        left: -300px;
+        left: -270px;
     }
 
   
@@ -1777,7 +1777,7 @@ a {
     border-top-left-radius: .25rem
 }
 .email-sidebar {
-    left: -300px
+    left: -270px
 }
 .email-content {
     margin-left: 0
