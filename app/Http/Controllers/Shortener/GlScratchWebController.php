@@ -288,12 +288,7 @@ class GlScratchWebController extends Controller
             $customer->branch_id = $request->branch;
 			$customer->bill_no = $request->bill_no;
 			$customer->short_code = $request->short_code;
-			
-			
-			$sum_count=ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)->sum('int_scratch_offers_count');
-            
-			
-			
+
             $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->offer_id)
                           ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
                           ->inRandomOrder()->first();
