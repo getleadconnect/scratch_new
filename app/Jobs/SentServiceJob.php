@@ -14,15 +14,13 @@ class SentServiceJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $url,$postData,$headers;
+    public $postData;
     /**
      * Create a new job instance.
      */
-    public function __construct($url,$postData,$headers)
+    public function __construct($data)
     {
-        $this->url = $url;
-        $this->postData = $postData;
-        $this->headers = $headers;
+        $this->postData = $data;
     }
 
     /**
@@ -30,19 +28,36 @@ class SentServiceJob implements ShouldQueue
      */
     public function handle()
     {
-        $client = new Client();
-        try {
-            $response = $client->request('POST', $this->url, [
-                'json' => $this->postData,
-                'headers' => $this->headers,
-            ]);
-            
-			$result=(string) $response->getBody();
-			return $result;
-			
-        } catch (\Exception $e) {
-            Log::info('Sent service job failed: ' . $e->getMessage());
-            return $e->getMessage();
-        }
+		try{
+	
+		$endpoint = "https://app.getlead.co.uk/api/gl-website-contacts";
+		$client = new \GuzzleHttp\Client();
+
+				$params=[
+					"token"=>$this->postData['token'],
+					"name"=>$this->postData['name'],
+					"countrycode"=>$this->postData['country_code'],
+					"mobileno"=>$this->postData['mobileno'],
+					"email"=>$this->postData['email'],
+					"feedback"=>null,
+					"source"=>$this->postData['source'],
+					"Referred By"=>null,
+					"company_name"=>$this->postData['company_name'],
+					"address"=>$this->postData['address']??null,
+					"remarks"=>$this->postData['remarks']??null,
+				];
+					
+		$response = $client->request('GET', $endpoint, ['query' => $params]);
+		$statusCode = $response->getStatusCode();
+		$content=json_decode($response->getBody()->getContents(), true);
+
+		return $content;
+		
+		}
+		catch(\Exception $e)
+		{
+			\Log::info("customer details send failed -> ".$e->getMessage());
+		}
     }
+	
 }

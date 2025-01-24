@@ -18,6 +18,7 @@ use App\Models\ScratchWebCustomer;
 use App\Models\ShortLinkHistory;
 use App\Models\ScratchBranch;
 use App\Models\User;
+use App\Models\Settings;
 
 use App\Models\GlApiTokens;
 use App\Models\UserOtp;
@@ -27,6 +28,8 @@ use App\Common\Variables;
 use App\Common\WhatsappSend;
 use App\Services\WhatsappService;
 use App\Jobs\SendEmailJob;
+use App\Services\CrmApiService;
+use App\Jobs\SentCrmServiceJob;
 
 use Carbon\Carbon;
 use Jenssegers\Agent\Agent;
@@ -40,6 +43,8 @@ use Session;
 class GlScratchWebController extends Controller
 {
 
+   use  CrmApiService;
+ 
     public function shortenLink($code)
     {
         $shortlink = ShortLink::where('code', $code)->where('status', ShortLink::ACTIVE)->first();
@@ -398,7 +403,6 @@ class GlScratchWebController extends Controller
         /* end SMS verification */
     }
 
-
     public function glScratched($id,$web_api=null)
     {
 
@@ -414,8 +418,7 @@ class GlScratchWebController extends Controller
         /** .... Send email ...*/
         if ($offerListing->int_winning_status == ScratchOffersListing::WIN) 
 		{
-
-            /*if ($customer->email != NULL) {
+           /*if ($customer->email != NULL) {
                 try{
                     $content = $customer->name . ' Congratulations!! You have won ' . $offetText . '.And Your Redeem Id is ' . $uniqueId . '. Getlead';
                     $data = [
@@ -431,9 +434,40 @@ class GlScratchWebController extends Controller
                 }
             } 
 			*/
-			
         }
-
+		
+		//send data to crm -------------------------------
+		
+		try{
+			$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$vendor_id)->first();
+			
+			if($sdt)
+			{
+				if($sdt->vchr_settings_value!="" and $sdt->int_status==1)
+				{
+					$data=[
+					  'token'=>$sdt->vchr_settings_value,
+					  'name'=>$customer->name,
+					  'email'=>$customer->email,
+					  'country_code'=>$customer->country_code,
+					  'mobileno'=>$customer->mobile,
+					  'source'=>'Gl-Scratch',
+					  'company_name'	=>$customer->company_name,
+					];
+					
+					//------send partner to crm-----
+					$send_response=$this->sendCustomerDetailsToCrm($data);
+					//------------------------------
+					//dispatch(new SentCrmServiceJob($data));
+				}
+			}
+		}Catch(\Exception $e)
+		{
+			\Log::info($e->getMessage());
+		}
+		
+		//-------------------------------------------------
+		
         $offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->where('int_scratch_offers_balance','>', '0')->first();
         if($offerListing){
             $offerListing->int_scratch_offers_balance--;
