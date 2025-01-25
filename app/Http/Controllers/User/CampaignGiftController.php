@@ -57,7 +57,8 @@ public function addGifts($id)
 	}
 	else
 	{
-		
+		$msg=Session::get('msg_title');
+		Session::flash('fail',$msg);
 		return back();
 	}
 }

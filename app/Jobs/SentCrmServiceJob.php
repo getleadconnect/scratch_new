@@ -15,6 +15,7 @@ class SentCrmServiceJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $postData;
+	
     /**
      * Create a new job instance.
      */
@@ -28,6 +29,7 @@ class SentCrmServiceJob implements ShouldQueue
      */
     public function handle()
     {
+		
 		try{
 	
 			$endpoint = "https://app.getlead.co.uk/api/gl-website-contacts";
