@@ -115,6 +115,8 @@ Route::controller(CampaignGiftController::class)->group(function() {
 });*/
 
 
+
+
 Route::controller(GlShortLinksController::class)->group(function() {
 
 	Route::get('/gl-links', 'index')->name('gl-links');
@@ -135,7 +137,9 @@ Route::controller(GlShortLinksController::class)->group(function() {
 	Route::post('/generate-qrcode-pdf', 'generateQrcodePdf')->name('generate-qrcode-pdf');
 	
 	Route::post('/delete-multiple-links', 'deleteMultipleLinks')->name('delete-multiple-links');
-	
+	Route::get('/get_unique_number_code/{no}', 'getUniqueNumberCode')->name('get_unique_number_code');
+	Route::get('/get_unique_alphabets_code/{no}', 'getUniqueAlphabetsCode')->name('get_unique_alphabets_code');
+
 	
 });
 
@@ -152,6 +156,8 @@ Route::controller(ScratchWebController::class)->group(function() {
 	Route::post('/export-web-customers-list', 'exportWebCustomersList')->name('export-web-customers-list');
 	Route::get('/redeem-scratch', 'redeemScratch')->name('redeem-scratch');
 	Route::post('/redeem-scratch-now', 'redeemScratchNow')->name('redeem-scratch-now');
+	
+	
 });
 
 
@@ -224,8 +230,8 @@ Route::controller(GeneralSettingsController::class)->group(function() {
 
 // Scrtach web routes -------------------------------------------------------------------------------------------->
 
-Route::domain(env('SHORT_LINK_DOMAIN'))->group(function() 
-{
+//Route::domain(env('SHORT_LINK_DOMAIN'))->group(function() 
+//{
     Route::get('scratch-form', 'App\Http\Controllers\Shortener\ShortenerController@form');
     Route::get('scratch/terms', 'App\Http\Controllers\Shortener\ShortenerController@terms')->name('shorter-link.terms');
     Route::get('scratch/thank-you', 'App\Http\Controllers\Shortener\ShortenerController@thankyou')->name('shorter-link.thank-you');
@@ -241,6 +247,6 @@ Route::domain(env('SHORT_LINK_DOMAIN'))->group(function()
 
 	Route::get('sc/get-branch-autocomplete/{user_id}', 'App\Http\Controllers\Shortener\GlScratchWebController@getBranchAutocomplete')->name('get-branch-autocomplete');
 
-});
+//});
 
 

@@ -180,6 +180,8 @@ public function saveGeneratedMultipleLinks(Request $request)
 				$lcount=$request->link_count;
 				for($x=1;$x<=$lcount;$x++)
 				{
+					
+					
 					$short_code=strtoupper($request->code).$x;
 					$user_id=User::getVendorId();
 					
@@ -499,6 +501,53 @@ public function generateQrcodePdf(Request $request)
             ->addIndexColumn()
 			->toJson(true);
     }
+
+
+public function getUniqueNumberCode($numCodes)
+{
+	$maxLength = 7;
+    $codes = [];
+    
+    while (count($codes) < $numCodes) {
+        // Generate a unique ID
+        $code = substr(uniqid(bin2hex(random_bytes(4)), true), -$maxLength);  // Limiting the length to maxLength
+
+        // Ensure the code is unique
+        if (!in_array($code, $codes)) {
+            $codes[] = $code;
+        }
+    }
+    //return $codes;
+	print_r(array_slice($codes, 0, 10));
+}
+
+
+public function getUniqueAlphabetsCode($numCodes)
+{
+	$length=7;
+	$codes = [];
+	$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; // Letters only
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    while (count($codes) < $numCodes) {
+        // Generate a random alphabetic code
+			$randomString='';
+			for ($i = 0; $i < $length; $i++) {
+					$randomString .= $characters[rand(0, $charactersLength - 1)];
+				}
+        // Ensure the code is unique
+        if (!in_array($randomString, $codes)) 
+		{
+            $codes[] = $randomString;
+        }
+    }
+	
+	//return $codes;
+	
+	print_r($codes);
+   
+}
 
 
 }

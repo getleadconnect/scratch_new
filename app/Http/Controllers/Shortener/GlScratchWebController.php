@@ -180,22 +180,24 @@ class GlScratchWebController extends Controller
         }
 		
 		*/
-
-		$check_num = ScratchWebCustomer::join('tbl_scratch_offers_listing', 'tbl_scratch_offers_listing.pk_int_scratch_offers_listing_id', '=', 'scratch_web_customers.offer_list_id')
-			->join('short_links', 'short_links.offer_id', '=', 'tbl_scratch_offers_listing.fk_int_scratch_offers_id')
-			->where(function($q){
-				if(request()->has('offer_id'))
-					$q->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id', request('offer_id'));
-					$q->where('scratch_web_customers.country_code', request('country_code'))
-						->where('scratch_web_customers.mobile', request('mobile'));    
-			})
+		//1634 is luxe lights
+		if(request('vendor_id')!=1634)
+		{
+				$check_num = ScratchWebCustomer::join('tbl_scratch_offers_listing', 'tbl_scratch_offers_listing.pk_int_scratch_offers_listing_id', '=', 'scratch_web_customers.offer_list_id')
+				->join('short_links', 'short_links.offer_id', '=', 'tbl_scratch_offers_listing.fk_int_scratch_offers_id')
+				->where(function($q){
+					if(request()->has('offer_id'))
+						$q->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id', request('offer_id'));
+						$q->where('scratch_web_customers.country_code', request('country_code'))
+							->where('scratch_web_customers.mobile', request('mobile'));    
+				})
 			->where('scratch_web_customers.user_id', request('vendor_id'))
 			->first();
-		
-
-		if($check_num)
-		{
-            return response()->json(['msg' => "You have already used up your chance.Please try with a different number", 'status' => false]);
+			
+			if($check_num)
+			{
+				return response()->json(['msg' => "You have already used up your chance.Please try with a different number", 'status' => false]);
+			}
 		}
 		
 		$mobile = $request->country_code . $request->mobile;
@@ -413,8 +415,7 @@ class GlScratchWebController extends Controller
         $customer->status = ScratchWebCustomer::SCRATCHED;
         $uniqueId = $customer->unique_id;
         $offetText = $customer->offer_text;
-					
-		
+				
         /** .... Send email ...*/
         if ($offerListing->int_winning_status == ScratchOffersListing::WIN) 
 		{
@@ -456,9 +457,9 @@ class GlScratchWebController extends Controller
 					];
 					
 					//------send partner to crm-----
-					$send_response=$this->sendCustomerDetailsToCrm($data);
+					//$send_response=$this->sendCustomerDetailsToCrm($data);
 					//------------------------------
-					//dispatch(new SentCrmServiceJob($data));
+					dispatch(new SentCrmServiceJob($data));
 				}
 			}
 		}Catch(\Exception $e)
@@ -487,6 +488,8 @@ class GlScratchWebController extends Controller
         }
         return response()->json(['msg' => "Sorry Somthing Went Wrong .!! Try again", 'status' => false]);
     }
+	
+	
 	
 
     public function gotoApiScratch($code)

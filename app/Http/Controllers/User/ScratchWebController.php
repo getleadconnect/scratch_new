@@ -183,7 +183,6 @@ public function getAppCustomers(Request $request)
             ->tojson(true);
     }
 
-
     public function redeem($id)
     {
         $flag = ScratchWebCustomer::where('id', $id)->update([
@@ -213,7 +212,7 @@ public function getAppCustomers(Request $request)
 		 //return Excel::download($export, 'test.xlsx');
         return Excel::download(new ScratchWebCustomersList($sdate,$edate,$branch,$campaign), 'scratch_web_customers_list'.'_'.date('Y-m-d').'.'.'xlsx');
     }
-		
+	
 		
 	public function redeemScratch()
 	{
@@ -247,7 +246,6 @@ public function getAppCustomers(Request $request)
 		return View('users.customers.redeem_customer_detail',compact('cust'));
 		
 	}
-	
 	
 	
 }
