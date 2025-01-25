@@ -35,7 +35,7 @@ class ScratchWebController extends Controller
 			
         $user_id = User::getVendorId();
 		
-        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent','scratch_branches.branch_name')
+        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent_name','scratch_branches.branch_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
             ->where('user_id', $user_id)->where('redeem_source','web')
@@ -77,12 +77,11 @@ class ScratchWebController extends Controller
 				return $mob;
             })
 			->addColumn('agent', function ($row) {
-                if ($row->redeemed_agent!="")
-					return $row->redeemed_agent;
+                if ($row->redeemed_agent!=null)
+					return $row->redeemed_agent_name;
 				    return '---';
             })
-			
-			
+
 			->addColumn('status', function ($row) {
                 if($row->status==1)
 					$win="<span class='text-green'>Win</span>";
@@ -113,7 +112,7 @@ public function getAppCustomers(Request $request)
 			
         $user_id = User::getVendorId();
 		
-        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent','scratch_branches.branch_name')
+        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent_name','scratch_branches.branch_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
             ->where('user_id', $user_id)->where('redeem_source','app')
@@ -153,13 +152,13 @@ public function getAppCustomers(Request $request)
                 $mob="+".$row->country_code." ".$row->mobile;
 				return $mob;
             })
+			
 			->addColumn('agent', function ($row) {
                 if ($row->redeemed_agent!="")
-					return $row->redeemed_agent;
+					return $row->redeemed_agent_name;
 				    return '---';
             })
-			
- 			
+
 			->addColumn('status', function ($row) {
                 if($row->status==1)
 					$win="<span class='text-green'>Win</span>";
@@ -185,7 +184,7 @@ public function getAppCustomers(Request $request)
     }
 
 
-    /*public function redeem($id)
+    public function redeem($id)
     {
         $flag = ScratchWebCustomer::where('id', $id)->update([
             'redeem' => ScratchWebCustomer::REDEEMED,
@@ -195,7 +194,7 @@ public function getAppCustomers(Request $request)
             return response()->json(['msg' => "Redeemed Successfully.", 'status' => true]);
         }
         return response()->json(['msg' => "Something Went Wrong !! Try Again Later", 'status' =>false]);
-    }*/
+    }
 
 		
 	public function exportWebCustomersList(Request $request)
@@ -225,15 +224,26 @@ public function getAppCustomers(Request $request)
 	public function redeemScratchNow(Request $request)
 	{
 		$code_mob=$request->code_mobile;
+		$user_id=User::getVendorId();
 		$cust=[];
-		if($code_mob!="")
-		{
-			$cust=ScratchWebCustomer::select('scratch_web_customers.*','tbl_scratch_offers.vchr_scratch_offers_name','scratch_branches.branch_name')
+		
+		$cust1=ScratchWebCustomer::select('scratch_web_customers.*','tbl_scratch_offers.vchr_scratch_offers_name','scratch_branches.branch_name')
 			->leftJoin('tbl_scratch_offers','scratch_web_customers.offer_id','tbl_scratch_offers.pk_int_scratch_offers_id')
 			->leftJoin('scratch_branches','scratch_web_customers.branch_id','scratch_branches.id')
-			->where('unique_id', 'like', "%".$code_mob)
-			->orWhere('mobile', 'like', "%".$code_mob)->first();
+			->where('user_id',$user_id);
+		
+		if($code_mob!="" and is_numeric($code_mob))
+		{
+			$cust1->where('mobile', 'like', "%".$code_mob);
+			
 		}
+		else
+		{
+			$cust1->where('unique_id', 'like', "%".$code_mob);
+		}
+		
+		$cust=$cust1->first();
+		
 		return View('users.customers.redeem_customer_detail',compact('cust'));
 		
 	}
