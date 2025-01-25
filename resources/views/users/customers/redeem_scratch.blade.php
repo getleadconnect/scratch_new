@@ -52,10 +52,11 @@
 				  @csrf
 					  <div class="row mt-3" style="padding:3px 10px 10px 10px;" >
 						<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
-							<input class="form-control" name="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Unique Id/Mobile" >
+							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Unique Id/Mobile" >
 						</div>
 						<div class="col-lg-2 col-xl-2 col-xxl-2">
-							<button type="submit" class="btn btn-secondary" style="height:50px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
+							<button type="submit" class="btn btn-primary" style="height:50px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
+							<button type="button" class="btn btn-secondary ms-3" id="btn_clear" style="height:50px;width:75px;" > Clear</button>
 						</div>
 					   </div>
 				   </form>
@@ -90,6 +91,14 @@
 <script>
 
 BASE_URL ={!! json_encode(url('/')) !!}
+
+
+$("#btn_clear").click(function()
+{
+	$(".customer_details").html('');
+	$("#code_mobile").val('');
+});
+
 
 $("form#searchCustomer").submit(function (event)
  {
