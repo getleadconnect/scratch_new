@@ -37,7 +37,7 @@
 			<tr><td>Offer </td><td>:&nbsp;<label id="lbl_offer" class="text-light-blue" style="font-size:24px;">{{$cust->offer_text}}</label></td></tr>
 
 			@if($cust->redeem==1)
-			<tr><td >Redeemed At</td><td>:&nbsp;{{date_create($cust->updated_at)->format('d-m-Y h:i:s A')}}</td></tr>
+			<tr><td >Redeemed On</td><td>:&nbsp;{{date_create($cust->updated_at)->format('d-m-Y h:i:s A')}}</td></tr>
 			<tr><td colspan=2>
 			 <span class="text-red">Customer already redeemed this scratch. Thank You..!</span>
 			</td></tr>
