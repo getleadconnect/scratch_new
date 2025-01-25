@@ -21,24 +21,23 @@
                 <div class="menu-title">Dashboard</div>
               </a>
             </li>
-			
-			
-			<li>
-              <a href="{{url('users/redeem-history')}}" title="Campaigns">
-                <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
-                </div>
-                <div class="menu-title">App Customers History</div>
-              </a>
-            </li> 
-			
-			
+						
 			<li>
               <a href="{{url('users/scratch-web-customers')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
                 </div>
-                <div class="menu-title">Web Customers History</div>
+                <div class="menu-title">Customers List</div>
+              </a>
+            </li>
+			
+			<li>
+              <a href="{{url('users/redeem-scratch')}}" title="Campaigns">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/win.png')}}" style="width:18px;">
+				
+                </div>
+                <div class="menu-title">Redeem</div>
               </a>
             </li>
 
