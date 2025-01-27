@@ -16,7 +16,7 @@ class Variables
 {
     const ROLE_ADMIN = 1;
     const USER = 2;
-    const STAFF = 3;
+    const SHOPS = 3;
 
     const ACTIVE = 1;
     const DEACTIVE = 0;

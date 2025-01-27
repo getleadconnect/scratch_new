@@ -613,29 +613,100 @@ progress {
 	margin-right: auto;
 	margin-left: auto
 }
-@media (min-width:576px) {
+
+.btn-camera
+{
+	/*display:none;*/
+}
+
+.btn
+	{
+		width:75px;
+		height:45px;
+	}
+
+@media (max-width:380px) {
+	.container, .container-sm {
+		max-width: 740px
+	}
+	
+	.btn
+	{
+		margin-top:10px !important;
+	}
+	
+	.footer{
+		left:0px !important;
+	}
+	
+	.btn-camera
+	{
+		display:inline-block !important;
+	}
+	
+}
+
+@media (max-width:768px) {
 	.container, .container-sm {
 		max-width: 540px
 	}
+	
+	.btn
+	{
+		width:75px;
+		height:45px;
+	}
+	.btn
+	{
+		margin-top:10px !important;
+	}
+	
+	.btn-camera
+	{
+		display:inline-block !important;
+	}
+	
+	.footer{
+		left:0px !important;
+	}
+	
 }
+
+
 @media (min-width:768px) {
 	.container, .container-md, .container-sm {
 		max-width: 720px
+	}
+	
+	.footer{
+		left:0px !important;
 	}
 }
 @media (min-width:992px) {
 	.container, .container-lg, .container-md, .container-sm {
 		max-width: 960px
 	}
+
+	.footer{
+		left:0px !important;
+	}
 }
 @media (min-width:1200px) {
 	.container, .container-lg, .container-md, .container-sm, .container-xl {
 		max-width: 1140px
 	}
+	
+	.footer{
+		left:0px !important;
+	}
 }
 @media (min-width:1400px) {
 	.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
 		max-width: 1320px
+	}
+	
+	.footer{
+		left:0px !important;
 	}
 }
 :root {

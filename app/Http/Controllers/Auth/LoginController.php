@@ -146,9 +146,13 @@ class LoginController extends Controller
 					{
 						return redirect('admin/dashboard');
 					}
-					else if(($user->int_role_id == Variables::USER) || ($user->int_role_id == Variables::STAFF))
+					else if($user->int_role_id == Variables::USER)
 					{
 						 return redirect('users/dashboard');
+					}
+					else if($user->int_role_id == Variables::SHOPS)
+					{
+						 return redirect('shops/dashboard');
 					}
 				}
 				else

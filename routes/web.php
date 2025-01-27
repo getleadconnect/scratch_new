@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\DashboardController;
+
 use App\Http\Controllers\User\CampaignController;
 use App\Http\Controllers\User\CampaignDetailController;
 use App\Http\Controllers\User\CampaignGiftController;
@@ -16,7 +17,7 @@ use App\Http\Controllers\User\ScratchWebController;
 use App\Http\Controllers\User\ScratchAdImageController;
 use App\Http\Controllers\User\ScratchBillController;
 use App\Http\Controllers\User\ScratchOfferBranchController;
-use App\Http\Controllers\User\ScratchStaffUserController;
+use App\Http\Controllers\User\ShopUsersController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\GeneralSettingsController;
 use App\Http\Controllers\User\ForgotPasswordController;
@@ -24,6 +25,9 @@ use App\Http\Controllers\User\ForgotPasswordController;
 use App\Http\Controllers\Shortener\ShortenerController;
 use App\Http\Controllers\Shortener\GlScratchWebController;
 use App\Http\Controllers\Shortener\WhatsappLinkController;
+
+use App\Http\Controllers\Shops\DashboardShopController;
+use App\Http\Controllers\Shops\CustomersHistoryController;
 
 
 Route::get('/', function () {
@@ -53,6 +57,30 @@ Route::post('update-user-password','updateUserPassword')->name('update-user-pass
 
 
 
+Route::group(['prefix'=>'shops','as'=>'shops.','middleware' => 'authware'], function()
+{
+
+Route::controller(DashboardShopController::class)->group(function() {
+	
+	Route::get('/dashboard', 'index')->name('dashboard');
+	
+});
+
+Route::controller(CustomersHistoryController::class)->group(function() {
+
+	Route::get('/customers-history', 'index')->name('customers-history');
+	Route::get('/get-customers-history', 'getCustomers')->name('get-customers-history');
+	Route::get('/scratch-redeem/{id}', 'redeem')->name('scratch-redeem');
+	Route::post('/sractch-history-download', 'downloadHistory')->name('sractch-history-download');	
+	Route::post('/export-web-customers-list', 'exportWebCustomersList')->name('export-web-customers-list');
+	Route::get('/redeem-scratch', 'redeemScratch')->name('redeem-scratch');
+	Route::post('/redeem-scratch-now', 'redeemScratchNow')->name('redeem-scratch-now');
+});
+
+});
+
+
+
 Route::group(['prefix'=>'users','as'=>'users.','middleware' => 'authware'], function()
 {
 
@@ -61,8 +89,10 @@ Route::controller(DashboardController::class)->group(function() {
 	//Route::group(['prefix'=>'users','as'=>'users.'], function()
 	//{
 		Route::get('/dashboard', 'index')->name('dashboard');
+		Route::get('/shop-dashboard', 'shops')->name('shop-dashboard');
 	//});
 });
+
 Route::controller(CampaignController::class)->group(function() {
 	
 	Route::get('/campaigns', 'index')->name('campaigns');
@@ -196,7 +226,7 @@ Route::controller(ScratchOfferBranchController::class)->group(function() {
 	
 });
 
-Route::controller(ScratchStaffUserController::class)->group(function() {
+Route::controller(ShopUsersController::class)->group(function() {
 
 	Route::get('/staff-users', 'index')->name('staff-users');
 	Route::post('/save-staff-user', 'store')->name('save-staff-user');
