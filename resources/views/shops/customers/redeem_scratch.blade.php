@@ -102,7 +102,6 @@
 
 <script>
 
-
 $(document).on('click','.btn-camera', function()
 {
         // Initialize the QR code scanner
@@ -117,7 +116,6 @@ $(document).on('click','.btn-camera', function()
             },
             (decodedText, decodedResult) => {
                 // This function will be called when a QR code is scanned
-				alert(decodedText);
                 document.getElementById("code_mobile").value=decodedText;
 				html5QrCode.stop();
 				$("form#searchCustomer").submit();
@@ -157,8 +155,6 @@ $("#btn_clear").click(function()
 	$("form#searchCustomer").submit(function (event)
 	{
        event.preventDefault();
-	   
-	   alert("ok");
 		   var formData= new FormData(this);
            var url = BASE_URL + '/shops/redeem-scratch-now';
 				$.ajax({
