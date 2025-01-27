@@ -644,12 +644,7 @@ progress {
 	.container, .container-sm {
 		max-width: 540px
 	}
-	
-	.btn
-	{
-		width:75px;
-		height:45px;
-	}
+
 	.btn
 	{
 		margin-top:10px !important;
