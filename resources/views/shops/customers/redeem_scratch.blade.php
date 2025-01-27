@@ -55,9 +55,9 @@
 							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:45px;font-size:20px !important;" type="text" placeholder="Unique Id" >
 						</div>
 						<div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
-							<button type="submit" class="btn btn-primary" > &nbsp;&nbsp;Search</button>
-							<button type="button" class="btn btn-secondary ms-3" id="btn_clear" > Clear</button>
-							<button type="button" class="btn btn-secondary ms-3 btn-camera" ><i class="fa fa-camera" style="font-size:25px;"></i></button>
+							<button type="submit" class="btn btn-primary sbtn" > &nbsp;&nbsp;Search</button>
+							<button type="button" class="btn btn-secondary sbtn ms-3" id="btn_clear" > Clear</button>
+							<button type="button" class="btn btn-secondary sbtn ms-3 btn-camera" ><i class="fa fa-camera" style="font-size:25px;"></i></button>
 						</div>
 					   </div>
 					   
@@ -65,8 +65,10 @@
 						<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
 						<div id="qr-reader" style="width: 100%; height: 100%;"></div>
 						</div>
+						
+										
 					   </div>
-
+						<button type="button" class="btn-primary btn-xs btn-sm ms-2" id="stop-scanner" style="width:130px;display:none;">Stop Scanner</button>		
 					   
 				   </form>
 				  
@@ -106,7 +108,7 @@ $(document).on('click','.btn-camera', function()
 {
         // Initialize the QR code scanner
         const html5QrCode = new Html5Qrcode("qr-reader");
-
+		$("#stop-scanner").css('display','block');
         // Start scanning the camera feed
         html5QrCode.start(
             { facingMode: "environment" }, // Use rear camera (mobile)
@@ -117,6 +119,7 @@ $(document).on('click','.btn-camera', function()
             (decodedText, decodedResult) => {
                 // This function will be called when a QR code is scanned
                 document.getElementById("code_mobile").value=decodedText;
+				$("#stop-scanner").css('display','none');
 				html5QrCode.stop();
 				$("form#searchCustomer").submit();
             },
@@ -132,6 +135,7 @@ $(document).on('click','.btn-camera', function()
         document.getElementById("stop-scanner").addEventListener("click", () => {
             html5QrCode.stop().then(() => {
                 console.log("Scanner stopped.");
+				$("#stop-scanner").css('display','none');
             }).catch((err) => {
                 console.log("Error stopping scanner: " + err);
             });
