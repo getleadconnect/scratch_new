@@ -60,7 +60,9 @@
 							<button type="button" class="btn btn-secondary sbtn ms-3 btn-camera" ><i class="fa fa-camera" style="font-size:25px;"></i></button>
 						</div>
 					   </div>
-					   
+
+				   </form>
+				   					   
 					   <div class="row mt-3" style="padding:3px 10px 10px 10px;" >
 						<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
 						<div id="qr-reader" style="width: 100%; height: 100%;"></div>
@@ -70,7 +72,6 @@
 					   </div>
 						<button type="button" class="btn-primary btn-xs btn-sm ms-2" id="stop-scanner" style="width:130px;display:none;">Stop Scanner</button>		
 					   
-				   </form>
 				  
 				  </div>
 				</div>
