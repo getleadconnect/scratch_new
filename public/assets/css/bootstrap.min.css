@@ -614,10 +614,12 @@ progress {
 	margin-left: auto
 }
 
-.btn-camera
+.sbtn
 {
-	display:none;
+	width:75px;
+	height:45px;
 }
+
 
 @media (max-width:380px) {
 	.container, .container-sm {
@@ -632,13 +634,9 @@ progress {
 	.footer{
 		left:0px !important;
 	}
-	
-	.btn-camera
-	{
-		display:inline-block !important;
-	}
-	
+
 }
+
 
 @media (max-width:768px) {
 	.container, .container-sm {
@@ -649,28 +647,24 @@ progress {
 	{
 		margin-top:10px !important;
 	}
-	
-	.btn-camera
-	{
-		display:inline-block !important;
-	}
+
 	
 	.footer{
 		left:0px !important;
 	}
 	
 }
-
 
 @media (min-width:768px) {
 	.container, .container-md, .container-sm {
 		max-width: 720px
 	}
-	
+		
 	.footer{
 		left:0px !important;
 	}
 }
+
 @media (min-width:992px) {
 	.container, .container-lg, .container-md, .container-sm {
 		max-width: 960px
@@ -680,6 +674,7 @@ progress {
 		left:0px !important;
 	}
 }
+
 @media (min-width:1200px) {
 	.container, .container-lg, .container-md, .container-sm, .container-xl {
 		max-width: 1140px
@@ -689,6 +684,7 @@ progress {
 		left:0px !important;
 	}
 }
+
 @media (min-width:1400px) {
 	.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
 		max-width: 1320px

@@ -158,7 +158,7 @@ input[type="number"]::-ms-reveal {
                             @endif
                             @if($shortlink->branch_required == 1)
                                 <div class="input-group branch">
-                                    <label for="customer_branch">Branch</label>
+                                    <label for="customer_branch">Select Shop</label>
                                         <select name="customer_branch" id="customer_branch" class="customer_branch js-data-example-ajax form-control required" style="width: 100%" data-branch="1">
 
                                         </select>
@@ -205,6 +205,7 @@ input[type="number"]::-ms-reveal {
                             &nbsp;&nbsp; </div>
                         </form>
                     </div>
+					
 					
                     <div class="kt-login__otp">
                         <div class="kt-login__head">
@@ -259,7 +260,7 @@ input[type="number"]::-ms-reveal {
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                           </div>
                           <div class="modal-body">
-                            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                            <p> Content Here..</p>
                           </div>
                         </div>
                       </div>
