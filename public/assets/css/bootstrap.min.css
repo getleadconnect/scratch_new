@@ -616,7 +616,7 @@ progress {
 
 .btn-camera
 {
-	/*display:none;*/
+	display:none;
 }
 
 @media (max-width:380px) {
