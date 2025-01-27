@@ -15,7 +15,7 @@
           <ul class="metismenu" id="menu">
 		  
 			<li>
-              <a href="{{url('users/dashboard')}}" title="Dashboard">
+              <a href="{{url('shops/dashboard')}}" title="Dashboard">
                 <div class="parent-icon"><img src="{{asset('assets/images/icons/people-roof.png')}}" style="width:20px;">
                 </div>
                 <div class="menu-title">Dashboard</div>
@@ -23,16 +23,16 @@
             </li>
 						
 			<li>
-              <a href="{{url('users/scratch-web-customers')}}" title="Campaigns">
+              <a href="{{url('shops/customers-history')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/users-alt.png')}}" style="width:20px;">
                 </div>
-                <div class="menu-title">Customers List</div>
+                <div class="menu-title">Customers History</div>
               </a>
             </li>
 			
 			<li>
-              <a href="{{url('users/redeem-scratch')}}" title="Campaigns">
+              <a href="{{url('shops/redeem-scratch')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/win.png')}}" style="width:18px;">
 				

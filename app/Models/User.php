@@ -33,7 +33,7 @@ class User extends Authenticatable implements JWTSubject
 
     const ADMIN = 1;
     const USERS = 2;
-    const STAFF = 3;
+    const SHOPS = 3;
 	
 	protected $table = 'tbl_users';
     protected $primaryKey = 'pk_int_user_id';
@@ -64,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
 
     public static $userRule = [
         'user_name' => 'required|max:25',
-        'email' => 'required|email|unique:tbl_users,email',
+        'email' => 'required|email',
         'mobile' => 'required|numeric|digits_between:8,15|unique:tbl_users,vchr_user_mobile',
         'password' => 'required|min:6',
         // 'password_confirmation' => 'required_with:password|confirmed|min:6'
@@ -97,33 +97,28 @@ class User extends Authenticatable implements JWTSubject
     ];
 
 
-	public static $staffUserRule = [
+	public static $shopUserRule = [
         'user_name' => 'required|max:25',
-        'email' => 'required',
-        'mobile' => 'required|numeric|digits_between:8,15',
+        'mobile' => 'required|numeric|digits_between:8,15|unique:tbl_users,mobile',
 		'password' => 'required|min:6',
     ];
 	 
-    public static $staffUserMessage = [
+    public static $shopUserMessage = [
         'user_name.required' => 'Username is required',
-        'email.required' => 'Email is required',
-        'email.email' => 'Incorrect Email format',
         'mobile.required' => 'Mobile Number is required',
         'mobile.numeric' => 'Enter number in correct format ',
+		'mobile.unique' => 'Mobile number already exist.',
 		'password.required' => 'password is required',
     ];
 
 
-	public static $staffEditRule = [
+	public static $shopEditRule = [
         'user_name_edit' => 'required|max:25',
-        'email_edit' => 'required',
         'mobile_edit' => 'required|numeric|digits_between:8,15',
     ];
 	 
-    public static $staffEditMessage = [
+    public static $shopEditMessage = [
         'user_name_edit.required' => 'Username is required',
-        'email_edit.required' => 'Email is required',
-        'email_edit.email' => 'Incorrect Email format',
         'mobile_edit.required' => 'Mobile Number is required',
         'mobile_edit.numeric' => 'Enter number in correct format ',
     ];
@@ -163,7 +158,7 @@ class User extends Authenticatable implements JWTSubject
         if(auth()->check()){
             if (Auth::user()->int_role_id == User::USERS) {
                 $vendorId = Auth::user()->pk_int_user_id;
-            } elseif (Auth::user()->int_role_id == User::STAFF) {
+            } elseif (Auth::user()->int_role_id == User::SHOPS) {
                 $vendorId = Auth::user()->parent_user_id;
             } else {
                 $vendorId = Auth::user()->pk_int_user_id;
@@ -185,7 +180,7 @@ class User extends Authenticatable implements JWTSubject
         if ($user) {
             if ($user->parent_user_id == NULL && $user->int_role_id == User::USERS) {
                 $vendorId = $userId;
-            } elseif ($user->parent_user_id != NULL && $user->int_role_id == User::STAFF) {
+            } elseif ($user->parent_user_id != NULL && $user->int_role_id == User::SHOPS) {
                 $vendorId = $user->parent_user_id;
             } else {
                 $vendorId = $userId;
@@ -211,9 +206,9 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 	
-	public function isStaff()
+	public function isShops()
     {
-        if (Auth::user()->int_role_id == Variables::STAFF) {
+        if (Auth::user()->int_role_id == Variables::SHOPS) {
             return true;
         }
     }
@@ -235,7 +230,7 @@ class User extends Authenticatable implements JWTSubject
         $user = User::select('pk_int_user_id', 'int_role_id', 'vchr_user_name', 'email', 'int_status','parent_user_id')->find($id);
         if ($user->int_role_id == User::USERS) {
             $vendorId = $user->pk_int_user_id;
-        } elseif ($user->int_role_id == User::STAFF) {
+        } elseif ($user->int_role_id == User::SHOPS) {
             $vendorId = $user->parent_user_id;
         } else {
             $vendorId = $user->pk_int_user_id;

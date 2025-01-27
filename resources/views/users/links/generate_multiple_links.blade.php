@@ -26,17 +26,17 @@
 					</div>
 				</div>
 							
-				<div class="mb-2 row">
-					<div class="col-lg-8 col-xl-8 col-xxl-8">
-					<label for="example-text-input" class="col-form-label">Enter Short Code (<small class="text-blue">Min 3 characters</small>)<span class="text-danger">*</span></label>
-					<input class="form-control " type="text" name="code" id="code" value="{{old('code')}}" placeholder="Short Link" minlength=3 maxlength=3 required >
+				<!--<div class="mb-2 row">
+					<div class="col-lg-11 col-xl-11 col-xxl-11">
+					<label for="example-text-input" class="col-form-label">Link identified Group Code (<small class="text-blue">3 to 5 character</small>)<span class="text-danger">*</span></label>
+					<input class="form-control " type="text" name="link_group_code" id="link_group_code" value="{{old('link__group_code')}}" placeholder="Multiple link group code" minlength=3 maxlength=5 required >
 						  @if ($errors->has('code'))
 						  <span class="invalid-feedback" role="alert">
 						  <strong>{{ $errors->first('code') }}</strong>
 						  </span>
 						  @endif
 					</div>
-				</div>
+				</div>-->
 								
 				<div class=" mb-2 row">				
 					<div class="col-lg-12 col-xl-12 col-xxl-12 ">
@@ -90,13 +90,7 @@ var validate=$('#formMultipleLinks').validate({
                offer_id: {
                    required: true,
                },
-   
-               code: {
-                   required: true,
-                   maxlength: 3,
-                   minlength: 3
-               },
-   
+  
            },
 
 	submitHandler: function(form) 

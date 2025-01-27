@@ -143,87 +143,8 @@ public function generateLinks(Request $request)
 	
 	$user_id=User::getVendorId();
 	$offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
-	return view('users.links.generate_links',compact('offers','offer_id'));
+	return view('users.links.generate_multiple_links',compact('offers','offer_id'));
 }
-
-public function saveGeneratedMultipleLinks(Request $request)
-{
-	
-        $validator = Validator::make($request->all(), [
-            'code' => 'required|max:3|min:3',
-			'offer_id'=>'required',
-			'link_count'=>'required'
-        ]);
-		
-        if ($validator->fails()) {
-			return response()->json(['msg' =>$validator->messages()->first(), 'status' => false]);
-        }
-
-		$sol=ScratchOffersListing::select(\DB::raw('SUM(int_scratch_offers_balance) as gift_sum'),\DB::raw('count(*) as list_count'))
-		->where('fk_int_scratch_offers_id',$request->offer_id)->first();
-		
-		if($sol->list_count<=0)
-			return response()->json(['msg' =>'Offer gift listing not found!"' , 'status' => false]);
-		
-		if($request->link_count>$sol->gift_sum)
-			return response()->json(['msg' =>'Insufficient gift counts. Available gift is '.$sol->gift_sum.')' , 'status' => false]);
-		
-
-		$slink=ShortLink::where('vendor_id',USER::getVendorId())->where('code','like',strtoupper($request->code)."%")->first();
-		if($slink)
-		{
-			return response()->json(['msg' =>'Code already exist.!' , 'status' => false]);
-		}
-		else
-		{
-			try{
-				$lcount=$request->link_count;
-				for($x=1;$x<=$lcount;$x++)
-				{
-					
-					
-					$short_code=strtoupper($request->code).$x;
-					$user_id=User::getVendorId();
-					
-					$filename="qr_codes/".$short_code.'-'.time().'.png';
-					$path = public_path('uploads/'.$filename);
-					$short_link=env('SHORT_LINK_DOMAIN') . '/'.$user_id."/". $short_code;
-					
-					$result=$this->generateQrCode($short_link,$path);   //generate qrcode for scan link
-
-					$link = new  ShortLink();
-					$link->vendor_id = $user_id;
-					$link->link = $short_link;
-					$link->code = $short_code;
-					$link->offer_id = $request->offer_id;
-					$link->custom_field = $request->custom_field;
-					$link->bill_number_only_apply_from_list = $request->custom_field; //bill no
-					$link->email_required = $request->email_required;
-					$link->branch_required = $request->branch_required;
-					$link->status = ShortLink::ACTIVE;
-					$link->link_type = "Multiple";
-					$link->qrcode_file=$filename;
-					$flag = $link->save();
-				}
-				if ($flag) {
-					return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
-				}
-				else
-				{
-					FileUpload::deleteFile($filename,'local');
-					return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
-				}
-			}
-			catch(\Exception $e)
-			{
-				return response()->json(['msg' =>$e->getMessage(), 'status' => false]);	
-			}
-		}
-	
-}
-
-
-
 
 public function store(Request $request)
     {
@@ -290,6 +211,82 @@ public function store(Request $request)
 			}
 		}
     }
+
+//To generate multiple links with qrcodes -------------------------------------------
+
+public function saveGeneratedMultipleLinks(Request $request)
+{
+	
+        $validator = Validator::make($request->all(), [
+            //'code' => 'required|max:3|min:3',
+			'offer_id'=>'required',
+			'link_count'=>'required'
+        ]);
+		
+        if ($validator->fails()) {
+			return response()->json(['msg' =>$validator->messages()->first(), 'status' => false]);
+        }
+
+		$sol=ScratchOffersListing::select(\DB::raw('SUM(int_scratch_offers_balance) as gift_sum'),\DB::raw('count(*) as list_count'))
+		->where('fk_int_scratch_offers_id',$request->offer_id)->first();
+		
+		if($sol->list_count<=0)
+			return response()->json(['msg' =>'Offer gift listing not found!"' , 'status' => false]);
+		
+		if($request->link_count>$sol->gift_sum)
+			return response()->json(['msg' =>'Insufficient gift counts. Available gift is '.$sol->gift_sum.')' , 'status' => false]);
+		
+
+			try{
+				$lcount=$request->link_count;
+				$pdf_category=$lcount." links";
+				
+				$shortCodes=$this->getUniqueAlphabetsCode($lcount);
+				
+				for($x=0;$x<count($shortCodes);$x++)
+				{
+										
+					//$short_code=strtoupper($request->code).$x;
+					
+					$short_code=strtoupper($shortCodes[$x]);
+					$user_id=User::getVendorId();
+					
+					$filename="qr_codes/".$short_code.'-'.time().'.png';
+					$path = public_path('uploads/'.$filename);
+					$short_link=env('SHORT_LINK_DOMAIN') . '/'.$user_id."/". $short_code;
+					
+					$result=$this->generateQrCode($short_link,$path);   //generate qrcode for scan link
+
+					$link = new  ShortLink();
+					$link->vendor_id = $user_id;
+					$link->link = $short_link;
+					$link->code = $short_code;
+					$link->offer_id = $request->offer_id;
+					$link->custom_field = $request->custom_field;
+					$link->bill_number_only_apply_from_list = $request->custom_field; //bill no
+					$link->email_required = $request->email_required;
+					$link->branch_required = $request->branch_required;
+					$link->status = ShortLink::ACTIVE;
+					$link->link_type = "Multiple";
+					$link->qrcode_file=$filename;
+					$link->qrcode_pdf_category=$pdf_category;
+					$flag = $link->save();
+				}
+				if ($flag) {
+					return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
+				}
+				else
+				{
+					FileUpload::deleteFile($filename,'local');
+					return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
+				}
+			}
+			catch(\Exception $e)
+			{
+				return response()->json(['msg' =>$e->getMessage(), 'status' => false]);	
+			}
+	
+}
 	
 	
 public function destroy($id)
@@ -353,7 +350,7 @@ public function deleteMultipleLinks(Request $request)
 	{
 		return response()->json(['msg'=>$e->getMessage(),'status'=>false]);
 	}
-}	
+}
 
 public function reGenerateQrcode(Request $request)
 {
@@ -502,24 +499,26 @@ public function generateQrcodePdf(Request $request)
 			->toJson(true);
     }
 
+//Generated unique short code -----------------------------------
 
 public function getUniqueNumberCode($numCodes)
 {
-	$maxLength = 7;
+	$length = 7;
     $codes = [];
     
     while (count($codes) < $numCodes) {
         // Generate a unique ID
-        $code = substr(uniqid(bin2hex(random_bytes(4)), true), -$maxLength);  // Limiting the length to maxLength
+        $code = substr(uniqid(bin2hex(random_bytes(4)), true), -$length);  // Limiting the length to maxLength
 
         // Ensure the code is unique
         if (!in_array($code, $codes)) {
             $codes[] = $code;
         }
     }
-    //return $codes;
-	print_r(array_slice($codes, 0, 10));
+    return $codes;
+	//print_r($codes));
 }
+
 
 
 public function getUniqueAlphabetsCode($numCodes)
@@ -543,10 +542,8 @@ public function getUniqueAlphabetsCode($numCodes)
         }
     }
 	
-	//return $codes;
-	
-	print_r($codes);
-   
+	return $codes;
+	//print_r($codes);
 }
 
 

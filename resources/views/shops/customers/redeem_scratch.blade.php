@@ -51,14 +51,23 @@
 				  <form id="searchCustomer" >
 				  @csrf
 					  <div class="row mt-3" style="padding:3px 10px 10px 10px;" >
-						<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
-							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Unique Id" >
+						<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
+							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:45px;font-size:20px !important;" type="text" placeholder="Unique Id" >
 						</div>
-						<div class="col-lg-2 col-xl-2 col-xxl-2">
-							<button type="submit" class="btn btn-primary" style="height:50px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
-							<button type="button" class="btn btn-secondary ms-3" id="btn_clear" style="height:50px;width:75px;" > Clear</button>
+						<div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+							<button type="submit" class="btn btn-primary" > &nbsp;&nbsp;Search</button>
+							<button type="button" class="btn btn-secondary ms-3" id="btn_clear" > Clear</button>
+							<button type="button" class="btn btn-secondary ms-3 btn-camera" ><i class="fa fa-camera" style="font-size:25px;"></i></button>
 						</div>
 					   </div>
+					   
+					   <div class="row mt-3" style="padding:3px 10px 10px 10px;" >
+						<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
+						<div id="qr-reader" style="width: 100%; height: 100%;"></div>
+						</div>
+					   </div>
+
+					   
 				   </form>
 				  
 				  </div>
@@ -89,6 +98,58 @@
 	</script>
 @endif
 
+<script src="{{url('assets/js/html5-qrcode.js')}}"></script>
+
+<script>
+
+
+$(document).on('click','.btn-camera', function()
+{
+        // Initialize the QR code scanner
+        const html5QrCode = new Html5Qrcode("qr-reader");
+
+        // Start scanning the camera feed
+        html5QrCode.start(
+            { facingMode: "environment" }, // Use rear camera (mobile)
+            {
+                fps: 10, // Frame rate for scanning
+                qrbox: 250, // Box size for QR scan area
+            },
+            (decodedText, decodedResult) => {
+                // This function will be called when a QR code is scanned
+                document.getElementById("result").textContent = decodedText;
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+            },
+            (errorMessage) => {
+                // This function is called on error
+                console.log(errorMessage);
+            }
+        ).catch((err) => {
+            console.log("Error starting QR scanner: " + err);
+        });
+
+        // Stop scanner when button is clicked
+        document.getElementById("stop-scanner").addEventListener("click", () => {
+            html5QrCode.stop().then(() => {
+                console.log("Scanner stopped.");
+            }).catch((err) => {
+                console.log("Error stopping scanner: " + err);
+            });
+        });
+});
+    </script>
+
+
 <script>
 
 BASE_URL ={!! json_encode(url('/')) !!}
@@ -101,11 +162,11 @@ $("#btn_clear").click(function()
 });
 
 
-$("form#searchCustomer").submit(function (event)
- {
-      event.preventDefault();
+	$("form#searchCustomer").submit(function (event)
+	{
+       event.preventDefault();
 		   var formData= new FormData(this);
-           var url = BASE_URL + '/users/redeem-scratch-now';
+           var url = BASE_URL + '/shops/redeem-scratch-now';
 				$.ajax({
 				url: url,
 				method: 'post',
@@ -118,8 +179,9 @@ $("form#searchCustomer").submit(function (event)
 				}
 				
 				});
-       });
-		
+    });
+	
+	
 	   
 	$(document).on('click', '.btn-redeem', function (event) {
            event.preventDefault();
@@ -137,7 +199,7 @@ $("form#searchCustomer").submit(function (event)
 				  if (result.isConfirmed) {
 						
 					$.ajax({
-					  url: "{{url('users/scratch-web-redeem')}}" +"/"+cid,
+					  url: "{{url('shops/scratch-redeem')}}" +"/"+cid,
 					  type: 'get',
 					  dataType: 'json',
 					  //data:{'track_id':tid},

@@ -119,5 +119,19 @@ class DashboardController extends Controller
 	return view('users.dashboard',compact('tot_count','used_count','bal_count','sub','chart','sub_diff_days'));
 	
   }	
+      
+  
+  public function shops()
+  {
+	
+	$user_id=User::getVendorId();
+	
+	$tot_count=ScratchCount::getTotalScratchCount($user_id);
+	$used_count=ScratchCount::getUsedScratchCount($user_id);
+	$bal_count=ScratchCount::getBalanceScratchCount($user_id);
+
+	return view('users.shop_dashboard',compact('tot_count','used_count','bal_count'));
+	
+  }	
    
 }

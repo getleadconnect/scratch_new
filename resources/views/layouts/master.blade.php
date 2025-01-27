@@ -115,7 +115,7 @@
 	@elseif(Auth::user()->int_role_id==2)
        @include('layouts.user_sidebar');
    @else	
-       @include('layouts.staff_sidebar');
+       @include('layouts.shops_sidebar');
    
 	@endif
        <!--start content-->
