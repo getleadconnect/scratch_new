@@ -619,12 +619,6 @@ progress {
 	/*display:none;*/
 }
 
-.btn
-	{
-		width:75px;
-		height:45px;
-	}
-
 @media (max-width:380px) {
 	.container, .container-sm {
 		max-width: 740px
