@@ -117,17 +117,8 @@ $(document).on('click','.btn-camera', function()
             },
             (decodedText, decodedResult) => {
                 // This function will be called when a QR code is scanned
-                document.getElementById("result").textContent = decodedText;
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+                document.getElementById("code_mobile").textContent = decodedText;
+				$("form#searchCustomer").submit(event);
 				
             },
             (errorMessage) => {
