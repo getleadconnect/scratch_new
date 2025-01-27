@@ -199,6 +199,7 @@ $("#btn_clear").click(function()
 						{
 							$("#success").html("Redeem SUCCESS!!!");
 							$(".btn-redeem").css('display','none');
+							$("#code_mobile").val('');
 							
 							Swal.fire({
 								  title: "SUCCESS!!!",
