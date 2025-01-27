@@ -76,7 +76,7 @@
                                 <th>Code</th>
 								<th><span>Email</span> <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
 								<th>BillNo <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
-								<th>Branch <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
+								<th>Shop <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
                                 <th>Click Count</th>
 								 <th>Status</th>
                                 <th class="no-content" style="width:50px;">Action</th>
