@@ -55,7 +55,7 @@
 							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:45px;font-size:20px !important;" type="text" placeholder="Unique Id" >
 						</div>
 						<div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
-							<button type="submit" class="btn btn-primary sbtn" > &nbsp;&nbsp;Search</button>
+							<button type="submit" class="btn btn-primary sbtn" style="width:110px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
 							<button type="button" class="btn btn-secondary sbtn ms-3" id="btn_clear" > Clear</button>
 							<button type="button" class="btn btn-secondary sbtn ms-3 btn-camera" ><i class="fa fa-camera" style="font-size:25px;"></i></button>
 						</div>
