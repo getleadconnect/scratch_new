@@ -117,9 +117,10 @@ $(document).on('click','.btn-camera', function()
             },
             (decodedText, decodedResult) => {
                 // This function will be called when a QR code is scanned
-                document.getElementById("code_mobile").textContent = decodedText;
+				alert(decodedText);
+                document.getElementById("code_mobile").val(decodedText);
 				html5QrCode.stop();
-				$("form#searchCustomer").submit(event);
+				$("form#searchCustomer").submit();
 				
             },
             (errorMessage) => {
@@ -157,6 +158,8 @@ $("#btn_clear").click(function()
 	$("form#searchCustomer").submit(function (event)
 	{
        event.preventDefault();
+	   
+	   alert("ok");
 		   var formData= new FormData(this);
            var url = BASE_URL + '/shops/redeem-scratch-now';
 				$.ajax({
