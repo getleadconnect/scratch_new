@@ -52,7 +52,7 @@
 				  @csrf
 					  <div class="row mt-3" style="padding:3px 10px 10px 10px;" >
 						<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
-							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Unique Id/Mobile" >
+							<input class="form-control" name="code_mobile" id="code_mobile" style="padding-left:20px;height:50px;font-size:24px !important;" type="text" placeholder="Unique Id" >
 						</div>
 						<div class="col-lg-2 col-xl-2 col-xxl-2">
 							<button type="submit" class="btn btn-primary" style="height:50px;" > <i class="bi bi-search"></i>&nbsp;&nbsp;Search</button>
