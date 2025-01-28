@@ -220,6 +220,8 @@ public function store(Request $request)
 public function saveGeneratedMultipleLinks(Request $request)
 {
 	
+		ini_set('max_execution_time', '300');
+	
         $validator = Validator::make($request->all(), [
             //'code' => 'required|max:3|min:3',
 			'offer_id'=>'required',
