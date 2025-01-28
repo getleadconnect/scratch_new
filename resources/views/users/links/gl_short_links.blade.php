@@ -342,7 +342,6 @@ $(document).on('change','#offer_id',function()
 $(document).on('change','#flt_offer_id',function()
 {
 	var offer_id=$(this).val();
-	alert(offer_id);
 			jQuery.ajax({
 			type: "GET",
 			url: "{{url('users/get-link-count-section')}}"+"/"+offer_id,
@@ -350,8 +349,6 @@ $(document).on('change','#flt_offer_id',function()
 			//data: {vid: vid},
 			success: function(data)
 			{
-				
-				alert(data);
 			   $("#flt_link_section_id").html(data);
 			}
 		});
