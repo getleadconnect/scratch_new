@@ -41,16 +41,26 @@ class GlShortLinksController extends Controller
    
   public function index()
   {
-	 
+
 	 $user_id=User::getVendorId();
-	
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
 	 return view('users.links.gl_short_links',compact('offers','user_id'));
   }
       
-  public function getShortLinks()
+  public function getShortLinks(Request $request)
     {
-        $links = ShortLink::where("vendor_id", User::getVendorId())->where('type', ShortLink::GL_SCRATCH)->orderBy('id', 'Desc')->get();
+		$offer_id=$request->offer_id;
+		$link_sec_id=$request->link_section_id;
+				
+		$link=ShortLink::where("vendor_id", User::getVendorId())->where('type', ShortLink::GL_SCRATCH)->orderBy('id', 'Desc');
+		
+		if($offer_id!="")
+			$link->where('offer_id',$offer_id);
+		
+		if($link_sec_id!="")
+			$link->where('pdf_link_count_section_id',$link_sec_id);
+		
+		$links=$link->orderBy('id','ASC')->get();
         		
         return DataTables::of($links)
 			->addIndexColumn()
@@ -252,7 +262,7 @@ public function saveGeneratedMultipleLinks(Request $request)
 				$lcount=$request->link_count;
 				
 				$shortCodes=$this->getUniqueAlphabetsCode($lcount);
-				$link_cat=$request->link_count." links (".date('d-m-Y').")";
+				$link_cat=$request->link_count." links (".date('d-m-YTh-i-s').")";
 								
 				$res=LinkCountSection::create(['offer_id'=>$request->offer_id,'vendor_id'=>$user_id,'section_name'=>$link_cat]);
 				$lnk_sec_id=$res->id;
