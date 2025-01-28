@@ -190,7 +190,7 @@ class ScratchOfferBranchController extends Controller
     {
       $id=User::getVendorId();
 
-      $data = ScratchBranch::where('vendor_id',$id)->orderby('id','Desc')->get();
+      $data = ScratchBranch::where('vendor_id',$id)->orderby('id','ASC')->get();
 		
         return Datatables::of($data)
 		->addIndexColumn()

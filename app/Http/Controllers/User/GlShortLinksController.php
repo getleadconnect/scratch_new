@@ -237,7 +237,8 @@ public function saveGeneratedMultipleLinks(Request $request)
 			return response()->json(['msg' =>'Insufficient gift counts. Available gift is '.$sol->gift_sum.')' , 'status' => false]);
 		
 
-			try{
+			try
+			{
 				$lcount=$request->link_count;
 				
 				$shortCodes=$this->getUniqueAlphabetsCode($lcount);
@@ -266,6 +267,7 @@ public function saveGeneratedMultipleLinks(Request $request)
 					$link->link_type = "Multiple";
 					$link->qrcode_file=$filename;
 					$flag = $link->save();
+					
 				}
 				if ($flag) {
 					return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
@@ -280,7 +282,6 @@ public function saveGeneratedMultipleLinks(Request $request)
 			{
 				return response()->json(['msg' =>$e->getMessage(), 'status' => false]);	
 			}
-	
 }
 	
 	
