@@ -463,6 +463,7 @@ public function linkActivateDeactivate($op,$id)
 
 public function generateQrcodePdf(Request $request)
 {
+
 	try
 	{
 		$offer_id=$request->offer_id;
@@ -471,7 +472,7 @@ public function generateQrcodePdf(Request $request)
 		
 		$qrimages=ShortLink::select('qrcode_file')->where('offer_id',$offer_id)->where('vendor_id',$user_id)
 		->where('link_type','Multiple')->where('pdf_link_count_section_id',$section_id)->get();
-
+		
 		if(!$qrimages->isEmpty())
 		{
 			$pdf = PDF::loadView('users.links.generate_qrcode_pdf', compact('qrimages'));
