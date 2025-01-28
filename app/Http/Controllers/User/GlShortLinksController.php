@@ -463,6 +463,8 @@ public function linkActivateDeactivate($op,$id)
 
 public function generateQrcodePdf(Request $request)
 {
+	ini_set('max_execution_time', '300');
+	
 	try
 	{
 		$offer_id=$request->offer_id;
