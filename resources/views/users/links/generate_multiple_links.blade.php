@@ -58,17 +58,17 @@
 				
 				<div class="mb-2 row">
 					<div class="col-lg-8 col-xl-8 col-xxl-8">
-					<label for="example-text-input" class="col-form-label">Lniks Count (<small class="text-blue">How many links you want?</small>)<span class="text-danger">*</span></label>
-					<input class="form-control " type="number" name="link_count" id="link_count" value="{{old('link_count')}}" placeholder="link count" required >
+					<label for="example-text-input" class="col-form-label">Lniks Count (<small class="text-blue">Max : 1000 links only</small>)<span class="text-danger">*</span></label>
+					<input class="form-control " type="number" name="link_count" id="link_count" value="{{old('link_count')}}" maxlength=1000 placeholder="link count" required >
 						  @if ($errors->has('link_count'))
 						  <span class="invalid-feedback" role="alert">
 						  <strong>{{ $errors->first('link_count') }}</strong>
 						  </span>
 						  @endif
+						<label id="link_count-error" class="error" for="link_count"></label>
 					</div>
 				</div>
-				
-				
+							
 						
 								
 				<hr class="mt-3">
@@ -90,33 +90,45 @@ var validate=$('#formMultipleLinks').validate({
                offer_id: {
                    required: true,
                },
-  
+			link_count: {
+                   required: true,
+				   maxlength:1000
+               },
            },
 
-	submitHandler: function(form) 
-	{
-		//$("#partner_submit").attr('disabled',true).html('Saving <i class="fa fa-spinner fa-spin"></i>')
+		submitHandler: function(form) 
+		{
+			//$("#partner_submit").attr('disabled',true).html('Saving <i class="fa fa-spinner fa-spin"></i>')
 
-		$.ajax({
-		url: "{{route('users.generate-multiple-links')}}",
-		method: 'post',
-		data: $('#formMultipleLinks').serialize(),
-		success: function(result){
-			if(result.status == 1)
+			if(parseInt($("#link_count").val())>1000)
 			{
-				$('#datatable').DataTable().ajax.reload(null,false);
-				toastr.success(result.msg);
-				$('#formMultipleLinks')[0].reset();
-				$("#btn-reset-offcanvas").trigger('click');
+				$("#link_count-error").css('display','block');
+				$("#link_count-error").html('Count exceeded, 1000 links only!');
+				
 			}
 			else
 			{
-				toastr.error(result.msg);
-				//$('#formMultipleLinks')[0].reset();
+				$.ajax({
+				url: "{{route('users.generate-multiple-links')}}",
+				method: 'post',
+				data: $('#formMultipleLinks').serialize(),
+				success: function(result){
+					if(result.status == 1)
+					{
+						$('#datatable').DataTable().ajax.reload(null,false);
+						toastr.success(result.msg);
+						$('#formMultipleLinks')[0].reset();
+						$("#btn-reset-offcanvas").trigger('click');
+					}
+					else
+					{
+						toastr.error(result.msg);
+						//$('#formMultipleLinks')[0].reset();
+					}
+				}
+				});
 			}
 		}
-		});
-	  }
 	});
    
 </script>
