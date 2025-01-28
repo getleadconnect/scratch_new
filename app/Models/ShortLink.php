@@ -28,7 +28,8 @@ class ShortLink extends Model
         'custom_field',
         'type',
         'status',
-        'email_required'
+        'email_required',
+		'pdf_link_count_section_id'
     ];
 	
     public function scratchOffer(){

@@ -72,7 +72,7 @@ Route::controller(CustomersHistoryController::class)->group(function() {
 	Route::get('/get-customers-history', 'getCustomers')->name('get-customers-history');
 	Route::get('/scratch-redeem/{id}', 'redeem')->name('scratch-redeem');
 	Route::post('/sractch-history-download', 'downloadHistory')->name('sractch-history-download');	
-	Route::post('/export-web-customers-list', 'exportWebCustomersList')->name('export-web-customers-list');
+	Route::post('/export-customers-list', 'exportWebCustomersList')->name('export-customers-list');
 	Route::get('/redeem-scratch', 'redeemScratch')->name('redeem-scratch');
 	Route::post('/redeem-scratch-now', 'redeemScratchNow')->name('redeem-scratch-now');
 });
@@ -145,8 +145,6 @@ Route::controller(CampaignGiftController::class)->group(function() {
 });*/
 
 
-
-
 Route::controller(GlShortLinksController::class)->group(function() {
 
 	Route::get('/gl-links', 'index')->name('gl-links');
@@ -169,9 +167,11 @@ Route::controller(GlShortLinksController::class)->group(function() {
 	Route::post('/delete-multiple-links', 'deleteMultipleLinks')->name('delete-multiple-links');
 	Route::get('/get_unique_number_code/{no}', 'getUniqueNumberCode')->name('get_unique_number_code');
 	Route::get('/get_unique_alphabets_code/{no}', 'getUniqueAlphabetsCode')->name('get_unique_alphabets_code');
-
+	Route::get('/get-link-count-section/{offer_id}', 'getLinkCountSection')->name('get-link-count-section');
 	
 });
+
+
 
 Route::controller(ScratchWebController::class)->group(function() {
 

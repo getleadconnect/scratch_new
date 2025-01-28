@@ -162,6 +162,7 @@ class ScratchOfferBranchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+	 
     public function destroy($id)
     {
         try 
@@ -181,12 +182,13 @@ class ScratchOfferBranchController extends Controller
             return response(['msg' => 'Something Went Wrong ddd', 'status' => false]);
         }
         return response(['msg' => 'Something Went Wrong', 'status' => false]);
-  
           
       }
   
+  
+  
 
-     public function viewBranches()
+    public function viewBranches()
     {
       $id=User::getVendorId();
 
