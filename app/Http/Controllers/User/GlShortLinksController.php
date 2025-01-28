@@ -239,15 +239,11 @@ public function saveGeneratedMultipleLinks(Request $request)
 
 			try{
 				$lcount=$request->link_count;
-				$pdf_category=$lcount." links";
 				
 				$shortCodes=$this->getUniqueAlphabetsCode($lcount);
 				
 				for($x=0;$x<count($shortCodes);$x++)
 				{
-										
-					//$short_code=strtoupper($request->code).$x;
-					
 					$short_code=strtoupper($shortCodes[$x]);
 					$user_id=User::getVendorId();
 					
@@ -269,7 +265,6 @@ public function saveGeneratedMultipleLinks(Request $request)
 					$link->status = ShortLink::ACTIVE;
 					$link->link_type = "Multiple";
 					$link->qrcode_file=$filename;
-					$link->qrcode_pdf_category=$pdf_category;
 					$flag = $link->save();
 				}
 				if ($flag) {
