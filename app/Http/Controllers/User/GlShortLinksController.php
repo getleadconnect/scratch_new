@@ -15,6 +15,7 @@ use App\Models\ScratchWebCustomer;
 use App\Models\ShortLink;
 use App\Models\ShortLinkHistory;
 use App\Models\User;
+use App\Models\LinkCountSection;
 use App\Traits\GeneralTrait;
 use App\Traits\EndroidQrcodeTrait;
 
@@ -25,6 +26,7 @@ use Session;
 use Auth;
 use Log;
 use PDF;
+use DB;
 
 class GlShortLinksController extends Controller
 {
@@ -194,6 +196,7 @@ public function store(Request $request)
 				$link->branch_required = $request->branch_required;
 				$link->status = ShortLink::ACTIVE;
 				$link->qrcode_file=$filename;
+
 				$flag = $link->save();
 
 				if ($flag) {
@@ -227,7 +230,7 @@ public function saveGeneratedMultipleLinks(Request $request)
 			return response()->json(['msg' =>$validator->messages()->first(), 'status' => false]);
         }
 
-		$sol=ScratchOffersListing::select(\DB::raw('SUM(int_scratch_offers_balance) as gift_sum'),\DB::raw('count(*) as list_count'))
+		/*$sol=ScratchOffersListing::select(\DB::raw('SUM(int_scratch_offers_balance) as gift_sum'),\DB::raw('count(*) as list_count'))
 		->where('fk_int_scratch_offers_id',$request->offer_id)->first();
 		
 		if($sol->list_count<=0)
@@ -235,18 +238,26 @@ public function saveGeneratedMultipleLinks(Request $request)
 		
 		if($request->link_count>$sol->gift_sum)
 			return response()->json(['msg' =>'Insufficient gift counts. Available gift is '.$sol->gift_sum.')' , 'status' => false]);
-		
+		*/
 
 			try
 			{
+				
+				DB::beginTransaction();
+								
+				$user_id=User::getVendorId();
+				
 				$lcount=$request->link_count;
 				
 				$shortCodes=$this->getUniqueAlphabetsCode($lcount);
-				
+				$link_cat=$request->link_count." links (".date('d-m-Y').")";
+								
+				$res=LinkCountSection::create(['offer_id'=>$request->offer_id,'vendor_id'=>$user_id,'section_name'=>$link_cat]);
+				$lnk_sec_id=$res->id;
+								
 				for($x=0;$x<count($shortCodes);$x++)
 				{
 					$short_code=strtoupper($shortCodes[$x]);
-					$user_id=User::getVendorId();
 					
 					$filename="qr_codes/".$short_code.'-'.time().'.png';
 					$path = public_path('uploads/'.$filename);
@@ -266,24 +277,28 @@ public function saveGeneratedMultipleLinks(Request $request)
 					$link->status = ShortLink::ACTIVE;
 					$link->link_type = "Multiple";
 					$link->qrcode_file=$filename;
+					$link->pdf_link_count_section_id=$lnk_sec_id;
 					$flag = $link->save();
 					
 				}
 				if ($flag) {
+					DB::commit();
 					return response()->json(['msg' =>'Short link successfully added!' , 'status' => true]);
 				}
 				else
 				{
+					DB:;rollback();
 					FileUpload::deleteFile($filename,'local');
 					return response()->json(['msg' =>'Something went wrong. Try again later!', 'status' => false]);
 				}
 			}
 			catch(\Exception $e)
 			{
+				DB::rollback();
 				return response()->json(['msg' =>$e->getMessage(), 'status' => false]);	
 			}
 }
-	
+
 	
 public function destroy($id)
 {
@@ -440,8 +455,8 @@ public function linkActivateDeactivate($op,$id)
 			{
 				return response()->json(['msg' =>'Something wrong, try again!' , 'status' => false]);
 			}				
-
 	}
+
 
 
 public function generateQrcodePdf(Request $request)
@@ -450,8 +465,11 @@ public function generateQrcodePdf(Request $request)
 	{
 		$offer_id=$request->offer_id;
 		$user_id=$request->user_id;
+		$section_id=$request->link_section_id;
 		
-		$qrimages=ShortLink::select('qrcode_file')->where('offer_id',$offer_id)->where('vendor_id',$user_id)->where('link_type','Multiple')->get();
+		$qrimages=ShortLink::select('qrcode_file')->where('offer_id',$offer_id)->where('vendor_id',$user_id)
+		->where('link_type','Multiple')->where('pdf_link_count_section_id',$section_id)->get();
+
 		if(!$qrimages->isEmpty())
 		{
 			$pdf = PDF::loadView('users.links.generate_qrcode_pdf', compact('qrimages'));
@@ -460,7 +478,7 @@ public function generateQrcodePdf(Request $request)
 		}
 		else
 		{
-			Session::flash('fail','Qr image were not found.');
+			Session::flash('fail','Short links were not found.');
 			return back();
 		}
 		
@@ -471,6 +489,26 @@ public function generateQrcodePdf(Request $request)
 		\Log::info($e->getMessage());
 		return false; 
 	}
+}
+
+
+//To generate qrcode pdf file for section count wise - (multiple links)
+
+public function getLinkCountSection($offer_id)
+{
+	$user_id=User::getVendorId();
+	$secdt=LinkCountSection::where('offer_id',$offer_id)->where('vendor_id',$user_id)->get();
+		
+	$opt='<option value="">-select--</option>';
+	if(!$secdt->isEmpty())
+	{
+		foreach($secdt as $row)
+		{
+			$opt.='<option value="'.$row->id.'">'.$row->section_name.'</option>';
+		}
+	}
+	
+	return $opt;
 }
 
 

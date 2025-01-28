@@ -163,6 +163,17 @@
 					</div>
 				</div>
 				
+				
+				<div class="mb-2 row">
+					<div class="col-lg-12 col-xl-12 col-xxl-12">
+					<label for="example-text-input" class="col-form-label">Select link section to pdf</label>
+					<select class="form-select" name="link_section_id" id="link_section_id" required>
+						<option value="" >--select--</option>
+					</select>
+					
+					</div>
+				</div>
+				
 				<div class="modal-footer mt-5">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"> Close </button>
 					<button type="submit" class="btn btn-primary" name="btn-submit"> Download PDF </button>
@@ -264,6 +275,23 @@ var table = $('#datatable').DataTable({
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],
 
+});
+
+
+$(document).on('change','#offer_id',function()
+{
+	var offer_id=$(this).val();
+
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('users/get-link-count-section')}}"+"/"+offer_id,
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(data)
+			{
+			   $("#link_section_id").html(data);
+			}
+		});
 });
 
 
