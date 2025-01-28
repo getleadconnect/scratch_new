@@ -244,7 +244,7 @@ $('#datatable tbody').on('click','.edit-gift',function()
 
 });
 
-$("#winning_status").change(function()
+/*$("#winning_status").change(function()
 {
 	var val=$(this).val();
 	if(val==0)
@@ -263,7 +263,7 @@ $("#winning_status").change(function()
 	}
 		
 });
-
+*/
 
 function clearData()
 {
