@@ -90,8 +90,6 @@
 							
 							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:18px;">
 							<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
-							<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
-							<!--<button type="submit" class="btn btn-secondary btn-xs"  > <i class="lni lni-download"></i> Download</button>-->
 							</div>
 
 						   </div>
@@ -321,6 +319,13 @@ var table = $('#datatable').DataTable({
         ],
 
 });
+
+
+$(document).on('click','#btn-filter',function()
+{
+	$('#datatable').DataTable().ajax.reload(null,false);
+});
+
 
 
 $(document).on('change','#offer_id',function()
