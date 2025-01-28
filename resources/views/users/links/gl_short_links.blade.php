@@ -58,6 +58,50 @@
 				  </div>
                 </div>
                 <div class="card-body">
+								
+				<div class="accordion-item accordion-item-bm" >
+                        <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" >
+                         <div class="accordion-body">
+						  <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>
+						  
+						  
+						  {{--<form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
+						  @csrf  --}}
+						  
+						   <div class="row" style="padding:3px 10px 10px 10px;" >
+
+							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
+								<label>Campaign</label>
+								<select id="flt_offer_id" name="flt_offer_id" class="form-control" >
+                                 <option value="">Select Campaign</option>
+                                 @foreach($offers as $rw)
+                                 <option value="{{ $rw->pk_int_scratch_offers_id }}">{{ $rw->vchr_scratch_offers_name }}</option>
+                                 @endforeach
+                              </select>
+							</div>
+							
+							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+								<label>Link Section</label>
+								<select id="flt_link_section_id" name="flt_link_section_id" class="form-control" >
+                                 <option value="">--select--</option>
+								</select>
+							</div>
+							
+							
+							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:18px;">
+							<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
+							<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
+							<!--<button type="submit" class="btn btn-secondary btn-xs"  > <i class="lni lni-download"></i> Download</button>-->
+							</div>
+
+						   </div>
+						   
+						   {{--</form>--}}
+						   
+						</div>
+					  </div>
+				</div>
+
 			
                    <div class="row mt-2">
                      <div class="col-12 col-lg-12 d-flex">
@@ -247,7 +291,8 @@ var table = $('#datatable').DataTable({
 			url:BASE_URL+"/users/view-short-links",
 			data: function (data) 
 		    {
-               //data.search = $('input[type="search"]').val();
+               data.offer_id = $('#flt_offer_id').val();
+			   data.link_section_id = $('#flt_link_section_id').val();
 		    },
         },
 				
@@ -294,6 +339,23 @@ $(document).on('change','#offer_id',function()
 		});
 });
 
+$(document).on('change','#flt_offer_id',function()
+{
+	var offer_id=$(this).val();
+	alert(offer_id);
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('users/get-link-count-section')}}"+"/"+offer_id,
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(data)
+			{
+				
+				alert(data);
+			   $("#flt_link_section_id").html(data);
+			}
+		});
+});
 
 $(document).on('click','.link-add',function()
 {
