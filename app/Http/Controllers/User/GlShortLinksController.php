@@ -361,7 +361,15 @@ public function deleteMultipleLinks(Request $request)
 		{
 			foreach($links as $row)
 			{
-				FileUpload::deleteFile($row->qrcode_file,'local');
+				try
+				{				
+					FileUpload::deleteFile($row->qrcode_file,'local');
+				}
+				catch(\Exception $e)
+				{
+					\Log::info($e->getMessage());	
+				}	
+
 				$result=$row->delete();
 			}
 			return response()->json(['msg'=>'Short link successfully removed.','status'=>true]);
