@@ -42,6 +42,9 @@ class GeneralSettingsController extends Controller
 		 $data['crm_api_status']=$crmapi->int_status;
 	  }else {$data['crm_api_token']='';$data['crm_api_status']=0;}
 	  
+	  $srequired=Settings::where('vchr_settings_type','shop_required_in_link')->where('fk_int_user_id',$user_id)->pluck('vchr_settings_value')->first();
+	  $data['shop_required']=$srequired;
+		 
 	 return view('users.settings.general_settings',compact('data')); 
   }
  

@@ -22,11 +22,11 @@ body { margin: 10px; }
 
 		@foreach($qrimages as $row)
 		 <td align="center">
-			<img src="uploads/{{$row->qrcode_file}}" style="width:150px;height:150px;">
+			<img src="uploads/{{$row->qrcode_file}}" style="width:200px;height:200px;">
 		</td>
-		@if($x==4)
+		@if($x==3)
 			</tr>
-			<tr><td colspan="4" style="height:30px;"></td></tr><tr>
+			<tr><td colspan="3" style="height:30px;"></td></tr><tr>
 			@php
 			$x=1;		
 			@endphp
