@@ -99,7 +99,7 @@ class GlShortLinksController extends Controller
 			->addColumn('qrcode', function ($links) 
 			{
 				if($links->qrcode_file!="")
-				$qrc='<a  href="'.FileUpload::viewFile($links->qrcode_file,'local').'" target="_blank"><img class="qrcode-icon" src='.FileUpload::viewFile($links->qrcode_file,'local').' width="40" height="40"></a>';
+				$qrc='<a  href="'.FileUpload::viewFile($links->qrcode_file,'local').'" target="_blank"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>';
 				else
 				$qrc="--";
 				return $qrc;
