@@ -50,11 +50,11 @@
                 </div>
                 <div class="card-body">
 
-                 <div class="row mt-3">
+                 <div class="row mt-2">
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100 mt-2">
 						
-						<div class="row mt-3">
+						<div class="row mt-2">
 						<div class="col-12 col-lg-12">
 						<p style="font-weight:500;">➧ Scratch & Win</b></p>
 						<div class="d-flex" style="padding-left:20px;">
@@ -73,8 +73,8 @@
                 </div>
 			</div>
 			</div>
-			
-		
+
+
 			<div class="card">
                 <div class="card-header p-y-3">
 				<div class="row">
