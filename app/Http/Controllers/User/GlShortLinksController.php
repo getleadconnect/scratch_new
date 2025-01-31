@@ -252,7 +252,7 @@ public function saveGeneratedMultipleLinks(Request $request)
 		
 		if($request->link_count>$sol->gift_sum)
 			return response()->json(['msg' =>'Insufficient gift counts. Available gift is '.$sol->gift_sum.')' , 'status' => false]);
-		*/
+		*/ 
 
 			try
 			{
@@ -361,15 +361,11 @@ public function deleteMultipleLinks(Request $request)
 		{
 			foreach($links as $row)
 			{
-				try
-				{				
+				
+				if(Storage::disk('local')->exists('/uploads/'.$row->qrcode_file))
+				{
 					FileUpload::deleteFile($row->qrcode_file,'local');
 				}
-				catch(\Exception $e)
-				{
-					\Log::info($e->getMessage());	
-				}	
-
 				$result=$row->delete();
 			}
 			return response()->json(['msg'=>'Short link successfully removed.','status'=>true]);
