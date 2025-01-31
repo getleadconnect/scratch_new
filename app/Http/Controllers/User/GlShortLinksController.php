@@ -36,6 +36,8 @@ class GlShortLinksController extends Controller
   public function __construct()
   {
      //$this->middleware('admin');
+	 date_default_timezone_set('Asia/Kolkata');
+	  
   }
     
    
@@ -262,7 +264,7 @@ public function saveGeneratedMultipleLinks(Request $request)
 				$lcount=$request->link_count;
 				
 				$shortCodes=$this->getUniqueAlphabetsCode($lcount);
-				$link_cat=$request->link_count." links (".date('d-m-YTh-i-s').")";
+				$link_cat=$request->link_count." links (".date('d-m-Y-h-i-s').")";
 								
 				$res=LinkCountSection::create(['offer_id'=>$request->offer_id,'vendor_id'=>$user_id,'section_name'=>$link_cat]);
 				$lnk_sec_id=$res->id;
