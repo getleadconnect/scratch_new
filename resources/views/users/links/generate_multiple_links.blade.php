@@ -56,6 +56,16 @@
 					</div>
 				</div>
 				
+				<div class="mb-3 mt-3 row">
+					<div class="col-lg-8 col-xl-8 col-xxl-8">
+						<label for="example-text-input" class="col-form-label">Shop Selection in scratch link?</label>
+						<div style="display:flex;" class="align-item-center ps-2">					
+						<input type="radio" value="0" name="branch_required"  style="width:20px;height:20px;" checked><span style="margin-right:15px;">&nbsp;NO</span>
+						<input type="radio" value="1" name="branch_required" style="width:20px;height:20px;" ><span>&nbsp;YES</span>
+						</div>
+				</div>
+				</div>
+				
 				<div class="mb-2 row">
 					<div class="col-lg-8 col-xl-8 col-xxl-8">
 					<label for="example-text-input" class="col-form-label">Lniks Count (<small class="text-blue">Max : 1000 links only</small>)<span class="text-danger">*</span></label>
@@ -65,12 +75,12 @@
 						  <strong>{{ $errors->first('link_count') }}</strong>
 						  </span>
 						  @endif
-						<label id="link_count-error" class="error" for="link_count"></label>
+					</div>
+					<div class="col-lg-12 col-xl-12 col-xxl-12">
+						<div>&nbsp;<label style="float:left;" id="link_count-error"class="error" for="link_count"></label></div>
 					</div>
 				</div>
-							
-						
-								
+		
 				<hr class="mt-3">
 				<div class="mb-2 row">	
 					<div class="col-lg-12 col-xl-12 col-xxl-12 " style="text-align:right;">
@@ -103,7 +113,7 @@ var validate=$('#formMultipleLinks').validate({
 			if(parseInt($("#link_count").val())>1000)
 			{
 				$("#link_count-error").css('display','block');
-				$("#link_count-error").html('Count exceeded, 1000 links only!');
+				$("#link_count-error").html('Count exceeded, Maximum 1000 links!');
 				
 			}
 			else
