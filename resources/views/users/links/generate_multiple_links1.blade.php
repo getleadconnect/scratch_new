@@ -1,5 +1,59 @@
 {{--<form id="formAddLink" method="POST" action="{{route('users.generate-multiple-links')}}" enctype="multipart/form-data">--}}
   
+<style>
+body{background-color:#fff !important;}
+.text-white{color:#fff;text-shadow:1px 1px 1px #000;}
+h3.h3{text-align:center;padding:1.5em 0em 2em 0em;text-transform:capitalize;font-size:1.5em;}
+.container-fluid{padding:2em 0em 4em 0em;background: linear-gradient(to right,#7474bf,#348ac7);}
+.container{padding:2em 0em 5em 0em;}
+.bg-1{background: linear-gradient(to right,#7b4379,#dc2430);}
+.bg-2{background:#ABAD5D;}
+.bg-3{background:#1ABC9C;}
+
+/********************  Preloader Demo-15 *******************/
+.loader15{text-align:center;margin:30px 0}
+.loader15 span{width:20px;height:20px;border-radius:50%;background:#f7bd3a;display:inline-block}
+.loader15 span:first-child{animation:loading-152 .5s linear infinite;opacity:0;transform:translate(-20px)}
+.loader15 span:nth-child(2),.loader15 span:nth-child(3){animation:loading-153 .5s linear infinite}
+.loader15 span:last-child{animation:loading-15 .5s linear infinite}
+@-webkit-keyframes loading-15{
+	100%{transform:translate(40px);opacity:0}
+}
+@keyframes loading-15{
+	100%{transform:translate(40px);opacity:0}
+}
+@-webkit-keyframes loading-152{
+	100%{transform:translate(20px);opacity:1}
+}
+@keyframes loading-152{
+	100%{transform:translate(20px);opacity:1}
+}
+@-webkit-keyframes loading-153{
+	100%{transform:translate(20px)}
+}
+@keyframes loading-153{
+	100%{transform:translate(20px)}
+}
+.pre-loader
+{
+	width:250px;
+	height:70px;
+	background:#e4e4e4;
+}
+</style>
+
+
+<div class="pre-loader">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="loader15">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+	</div>
+
+
 		<div class="mb-2 row">
 			<div class="col-lg-12 col-xl-12 col-xxl-12">
 			<ul style="color:blue;">
