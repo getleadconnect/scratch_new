@@ -173,7 +173,7 @@ public function store(Request $request)
 			return response()->json(['msg' =>$validator->messages()->first(), 'status' => false]);
         }
 
-		$gift_cnt=ScratchOffersListing::where('int_scratch_offers_id',$request->offer_id)->where('int_status',1)->count();
+		$gift_cnt=ScratchOffersListing::where('fk_int_scratch_offers_id',$request->offer_id)->where('int_status',1)->count();
 		if($gift_cnt<=0)
 		{
 			return response()->json(['msg' =>'Offer gift listing not found!' , 'status' => false]);
