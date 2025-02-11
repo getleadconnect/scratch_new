@@ -32,7 +32,7 @@
 						<!--begin::Title-->
 						<!--begin::Form group-->
 							<div class="form-group form-feild-row  country-code-row text-left position-relative">
-								<label class="sign-label">Mobile number </label>
+								<label class="sign-label">Mobile number </label><br>
 								<input class="form-control form-control-solid h-auto phone-field text-input" type="number" placeholder="Mobile number" name="mobile" id="phoneField1" autocomplete="off" value="{{ old('mobile')}}" required />
 								<input type="hidden" id="country_code" name="country_code" value="{{ $countryCode }}">
 							</div>
