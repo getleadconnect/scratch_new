@@ -45,10 +45,11 @@
   <title>GL-Scratch</title>
 </head>
 <style>
-.wrapper:hoved
-{
-	
-}
+/*pre-loader style*/
+.loading-outer{	width:90%;	height:90%;	background:#ffffff9c;position:absolute;}
+.loading-inner{	top: 40%;	left: 50%;	transform: translate(-50%, -50%);}
+.spinner-loading{text-align:center;}
+/*----------------*/
 </style>
 
 <body class="pace-done">

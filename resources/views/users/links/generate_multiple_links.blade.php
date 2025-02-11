@@ -1,5 +1,16 @@
 {{--<form id="formAddLink" method="POST" action="{{route('users.generate-multiple-links')}}" enctype="multipart/form-data">--}}
   
+  <!-- pre-loader-------------------------->
+  	   <div class="loading-outer hide" >
+			<div class="loading-inner" style="position:relative;">
+			  <span class="spinner-loading">
+			  <label style="text-align:center;width:90%;"> <i class="text-red fa fa-spinner fa-spin fa-4x"></i> </label>
+			  <h6 style="color:red;"> Please Wait.....</h6>
+			  </span>
+			</div>
+	   </div>
+  <!---------------------------------------->   
+  
 		<div class="mb-2 row">
 			<div class="col-lg-12 col-xl-12 col-xxl-12">
 			<ul style="color:blue;">
@@ -118,6 +129,8 @@ var validate=$('#formMultipleLinks').validate({
 			}
 			else
 			{
+				$(".loading-outer").removeClass('hide').addClass('show');
+				
 				$.ajax({
 				url: "{{route('users.generate-multiple-links')}}",
 				method: 'post',
@@ -128,6 +141,7 @@ var validate=$('#formMultipleLinks').validate({
 						$('#datatable').DataTable().ajax.reload(null,false);
 						toastr.success(result.msg);
 						$('#formMultipleLinks')[0].reset();
+						$(".loading-outer").removeClass('show').addClass('hide');
 						$("#btn-reset-offcanvas").trigger('click');
 					}
 					else
