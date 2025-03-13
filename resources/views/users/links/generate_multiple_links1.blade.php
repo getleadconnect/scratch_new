@@ -1,29 +1,5 @@
 {{--<form id="formAddLink" method="POST" action="{{route('users.generate-multiple-links')}}" enctype="multipart/form-data">--}}
   
-<style>
-
-.loading-outer
-{
-	width:90%;
-	height:90%;
-	background:#ffffff9c;
-	position:absolute;
-	
-}
-
-.loading-inner
-{
-	top: 40%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
-.spinner-loading{text-align:center;}
-	
-}
-</style>
-
-
 		<div class="loading-outer hide" >
 			<div class="loading-inner" style="position:relative;">
 			  <span class="spinner-loading">

@@ -253,7 +253,6 @@ Route::controller(GeneralSettingsController::class)->group(function() {
 	Route::get('/send-otp', 'sendWhatsappOtp')->name('send-top');
 	Route::post('/save-crmapi-token', 'saveCrmApiToken')->name('save-crmapi-token');
 	Route::post('/set-crm-api-status', 'setCrmApiStatus')->name('setCrmApiStatus');
-	
 });
 
 });
