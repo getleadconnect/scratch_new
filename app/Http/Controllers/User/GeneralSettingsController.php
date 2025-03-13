@@ -197,12 +197,6 @@ public function setCrmApiStatus(Request $request)
 
 
 
-
-
-
-
-
-
 /*    public function sendWhatsappOtp()
     {
         // Send the message

@@ -95,7 +95,7 @@
 				<hr class="mt-3">
 				<div class="mb-2 row">	
 					<div class="col-lg-12 col-xl-12 col-xxl-12 " style="text-align:right;">
-					<button type="button" class="btn btn-danger btn-reset"  id="btn-reset-offcanvas" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+					<button type="button" class="btn btn-danger btn-reset btn-close"  id="btn-reset-offcanvas" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
 					<button class="btn btn-primary" type="submit">Generate Links</button>
 					</div>
 				</div>
@@ -103,7 +103,11 @@
 			
 <script>
 
-// adding record --------------------------------------------				
+// adding record --------------------------------------------
+
+
+
+	
 				
 var validate=$('#formMultipleLinks').validate({ 
 	
