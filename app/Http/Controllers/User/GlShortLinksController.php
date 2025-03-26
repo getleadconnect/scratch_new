@@ -67,7 +67,7 @@ class GlShortLinksController extends Controller
 		if($link_sec_id!="")
 			$link->where('pdf_link_count_section_id',$link_sec_id);
 		
-		$links=$link->orderBy('id','ASC')->get();
+		$links=$link->orderBy('id','ASC')->get()->take(1000);
         		
         return DataTables::of($links)
 			->addIndexColumn()
