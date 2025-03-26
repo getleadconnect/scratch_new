@@ -43,15 +43,11 @@ class GlShortLinksController extends Controller
    
   public function index()
   {
-	
-	$this->getUniqueNumberCode(100);
-	
+
 	 $user_id=User::getVendorId();
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
 	 return view('users.links.gl_short_links',compact('offers','user_id'));
-	 
-	 
-	 
+ 
   }
       
   public function getShortLinks(Request $request)
@@ -585,7 +581,7 @@ public function getUniqueNumberCode($numCodes)
 
 public function getUniqueAlphabetsCode($numCodes)
 {
-	$length=7;
+	$length=8;
 	$codes = [];
 	$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; // Letters only
     $charactersLength = strlen($characters);
