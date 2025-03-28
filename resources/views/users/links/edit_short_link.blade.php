@@ -27,19 +27,18 @@
 				<div class="col-lg-8 col-xl-8 col-xxl-8">
 					<label for="example-text-input" class="col-form-label">Bill Number Required?</label>
 					<div style="display:flex;" class="align-item-center;">					
-					<input type="radio" value="0" name="custom_field_edit" style="width:20px;height:20px;" {{($sl->custom_field == 0)?'checked':''}}><span style="margin-right:15px;">&nbsp;NO</span>
-                    <input type="radio" value="1" name="custom_field_edit" style="width:20px;height:20px;" {{($sl->custom_field == 1)?'checked':''}}><span>&nbsp;YES</span>
+					<input type="radio" value="0" name="custom_field_edit" style="width:20px;height:20px;" @if($sl->custom_field==0){{__('checked')}} @endif><span style="margin-right:15px;">&nbsp;NO</span>
+                    <input type="radio" value="1" name="custom_field_edit" style="width:20px;height:20px;" @if($sl->custom_field==1){{__('checked')}} @endif><span>&nbsp;YES</span>
 					</div>
 			</div>
 			</div>
-					
-						
+										
 			<div class="mb-2 mt-2 row">
 				<div class="col-lg-8 col-xl-8 col-xxl-8">
 					<label for="example-text-input" class="col-form-label">Branch Required?</label>
-					<div style="display:flex;" class="align-item-center;">					
-					<input type="radio" value="0" name="branch_required_edit" style="width:20px;height:20px;" {{($sl->branch_required == 0)?'checked':''}}><span style="margin-right:15px;">&nbsp;NO</span>
-                    <input type="radio" value="1" name="branch_required_edit" style="width:20px;height:20px;" {{($sl->brnach_required == 1)?'checked':''}}><span>&nbsp;YES</span>
+					<div style="display:flex;" class="align-item-center;">				
+					<input type="radio" value="0" name="branch_required_edit" style="width:20px;height:20px;" @if($sl->branch_required==0){{__('checked')}} @endif><span style="margin-right:15px;">&nbsp;NO</span>
+                    <input type="radio" value="1" name="branch_required_edit" style="width:20px;height:20px;" @if($sl->branch_required==1){{__('checked')}} @endif><span>&nbsp;YES</span>
 					</div>
 			</div>
 			</div>
@@ -48,8 +47,8 @@
 				<div class="col-lg-8 col-xl-8 col-xxl-8">
 					<label for="example-text-input" class="col-form-label">Email Required?</label>
 					<div style="display:flex;" class="align-item-center;">					
-					<input type="radio" value="0" name="email_required_edit" style="width:20px;height:20px;" {{($sl->email_required == 0)?'checked':''}}><span style="margin-right:15px;">&nbsp;NO</span>
-                    <input type="radio" value="1" name="email_required_edit" style="width:20px;height:20px;"  name="custom_field" {{($sl->email_required == 1)?'checked':''}}><span>&nbsp;YES</span>
+					<input type="radio" value="0" name="email_required_edit" style="width:20px;height:20px;" @if($sl->email_required==0){{__('checked')}} @endif><span style="margin-right:15px;">&nbsp;NO</span>
+                    <input type="radio" value="1" name="email_required_edit" style="width:20px;height:20px;"  name="custom_field" @if($sl->email_required==1){{__('checked')}} @endif><span>&nbsp;YES</span>
 					</div>
 			</div>
 			</div>

@@ -41,13 +41,39 @@ class GlShortLinksController extends Controller
   }
     
    
-  public function index()
+  public function index(Request $request)
   {
-
 	 $user_id=User::getVendorId();
+	 $offer_id=$request->flt_offer_id;
+	 $link_sec_id=$request->flt_link_section_id;
+	 $search=$request->search;
+	 
+	 $link=ShortLink::leftJoin('tbl_scratch_offers','short_links.offer_id','tbl_scratch_offers.pk_int_scratch_offers_id')
+	 ->select('short_links.*','tbl_scratch_offers.vchr_scratch_offers_name')
+	 ->where("vendor_id", $user_id)->where('type', ShortLink::GL_SCRATCH);
+	 
+	 if($offer_id!="")
+			$link->where('offer_id',$offer_id);
+		
+	 if($link_sec_id!="")
+		$link->where('pdf_link_count_section_id',$link_sec_id);
+	
+		if($search!="")
+		{
+			if(strtoupper($search)=='YES') $search=1;  
+			if(strtoupper($search)=="NO")$search=0;
+			
+			$link->where('vchr_scratch_offers_name','like','%'.$search.'%')
+			->orWhere('code','like','%'.$search.'%')
+			->orWhere('email_required','like','%'.$search.'%')
+			->orWhere('branch_required','like','%'.$search.'%')
+			->orWhere('bill_number_only_apply_from_list','like','%'.$search.'%');
+		}
+	
+	 $links=$link->orderBy('id','ASC')->paginate(100);
+			
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
-	 return view('users.links.gl_short_links',compact('offers','user_id'));
- 
+	 return view('users.links.gl_short_links',compact('offers','user_id','links'));
   }
       
   public function getShortLinks(Request $request)
@@ -55,7 +81,7 @@ class GlShortLinksController extends Controller
 		$offer_id=$request->offer_id;
 		$link_sec_id=$request->link_section_id;
 				
-		$link=ShortLink::where("vendor_id", User::getVendorId())->where('type', ShortLink::GL_SCRATCH)->orderBy('id', 'Desc');
+		$link=ShortLink::where("vendor_id", User::getVendorId())->where('type', ShortLink::GL_SCRATCH);
 		
 		if($offer_id!="")
 			$link->where('offer_id',$offer_id);
