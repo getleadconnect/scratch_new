@@ -148,6 +148,8 @@ Route::controller(CampaignGiftController::class)->group(function() {
 Route::controller(GlShortLinksController::class)->group(function() {
 
 	Route::get('/gl-links', 'index')->name('gl-links');
+	Route::post('/gl-links', 'index')->name('gl-links');
+	
 	Route::get('/add-link', 'addLink')->name('add-link');
 	Route::post('/save-link', 'store')->name('save-link');
 	Route::get('/view-short-links', 'getShortLinks')->name('view-short-links');

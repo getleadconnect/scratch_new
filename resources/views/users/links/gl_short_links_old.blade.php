@@ -17,7 +17,6 @@
 {
 	border:1px solid blue;
 }
-
 </style>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -48,6 +47,8 @@
 
 				  <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->pk_int_user_id}}">
 				  
+				  <button class="btn btn-gl-primary btn-xs" id="delele_multiple" ><i class="fa fa-trash"></i>&nbsp;Delete</button>&nbsp;&nbsp;
+
 					 <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-qrcode"></i>&nbsp;Qr-Code PDF</button>
 					 &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
 				     &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
@@ -64,8 +65,8 @@
 						  <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>
 						  
 						  
-						  <form method="POST" action="{{url('users/gl-links')}}" enctype="multipart/form-data" >
-						  @csrf 
+						  {{--<form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
+						  @csrf  --}}
 						  
 						   <div class="row" style="padding:3px 10px 10px 10px;" >
 
@@ -86,42 +87,21 @@
 								</select>
 							</div>
 							
-							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:18px;">
-							<button type="submit" class="btn btn-primary btn-xs" style="margin-top:5px;"> <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
-							</div>
 							
-							<div class="col-4 col-lg-4 col-xl-4 col-xxl-4 text-right" style="padding-top:18px;">
-							<button type="submit" class="btn btn-secondary btn-xs" style="margin-top:5px;"> Clear </button>&nbsp;&nbsp;
+							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:18px;">
+							<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
 							</div>
 
 						   </div>
 						   
-						   </form>
+						   {{--</form>--}}
 						   
 						</div>
 					  </div>
 				</div>
-			
-					<form method="POST" action="{{url('users/gl-links')}}" enctype="multipart/form-data" >
-					@csrf 
-					   <div class="row mt-3">
-						<div class="col-12 col-lg-12 col-xl-12 col-xxl-12 d-flex">
-						 
-							<div style="margin-left:auto;width:250px !important;">
-							<div class="input-group mb-3">
-							  <input type="text" class="form-control"  style="width:200px !important;" placeholder="Search" name="search" >
-							  <div class="input-group-append">
-								<button type="submit" class="btn btn-outline-secondary" style="height:36px;border-color:#e4e4e4;" type="button"><i class="fa fa-search"></i></button>
-							  </div>
-							</div>
-							</div>
 
-					   </div>
-					   </div>
-				   </form>
-				  
-				  
-				   <div class="row ">
+			
+                   <div class="row mt-2">
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100">
                         <!--<div class="card-body">-->
@@ -130,7 +110,8 @@
                              <table id="datatable" class="table align-middle" style="width:100% !important;" >
                                <thead class="thead-semi-dark">
                                 <tr>
-								<th>Sl No</th>
+								<th style="width:30px;"><input type="checkbox" id="chkbox-all" class="dt-checkboxes chkbox-all" name="chkbox_all"></th>
+                                <th>Sl No</th>
                                 <th>Offer Name</th>
                                 <th>Link</th>
 								<th>QrCode</th>
@@ -146,67 +127,12 @@
 								</tr>
                                </thead>
                                <tbody>
-							   
-							   @foreach($links as $key=>$row)
-							   <tr>
-									<td>{{++$key}}</td>
-									<td>{{$row->offer_id}}</td>
-									<td>{{$row->link}}</td>
-									<td>
-									<a  href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" target="_blank"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>
-									</td>
-									<td>{{$row->code}}</td>
-									<td>
-									
-									@if($row->email_required==1) Yes @else No @endif
-									</td>
-									<td>
-									@if($row->custom_field==1) Yes @else No @endif
-									<td>
-									@if($row->branch_required==1) Yes @else No @endif
-									</td>
-									<td>{{$row->click_count}}</td>
-									 <td>
-									    @if($row->status==1) 
-											<span class="badge rounded-pill bg-success">Active</span>
-										@else
-											<span class="badge rounded-pill bg-danger">Inactive</span>
-										@endif				 
-									 </td>
-									<td class="no-content" style="width:50px;">
-										<div class="fs-5 ms-auto dropdown">
-											<div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="fadeIn animated bx bx-dots-vertical"></i></div>
-											<ul class="dropdown-menu">
-											<li><a class="dropdown-item link-edit" href="javascript:;" id="{{$row->id}}" data-bs-toggle="offcanvas" data-bs-target="#edit-link" aria-controls="offcanvasScrolling" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
-											<li><a class="dropdown-item link-del" href="javascript:;" id="{{$row->id}}" ><i class="lni lni-trash"></i> Delete</a></li>
-											<li><a class="dropdown-item link-view" href="{{route('users.web-click-link-history',$row->id)}}"><i class="lni lni-eye"></i> View</a></li>
-											<li><a class="dropdown-item gen-qrcode" href="javascript:;" id="{{$row->id}}"><i class="fa fa-qrcode"></i> Generate QrCode</a></li>
-							
-											@if ($row->status == \App\Models\ShortLink::ACTIVE) 
-											<li><a class="dropdown-item btn-act-deact" href="javascript:;" id="{{$row->id}}" data-option="2" ><i class="lni lni-close"></i> Deactivate</a></li>
-											@else
-											<li><a class="dropdown-item btn-act-deact" href="javascript:;" id="{{$row->id}}" data-option="1"><i class="lni lni-checkmark"></i> Activate</a></li>
-											@endif
-										
-											<ul>
-										</div>
-									</td>
-								</tr>
-							  @endforeach
+                                  
                                </tbody>
                              </table>
                           </div>
 
                        <!-- </div>-->
-					   
-					   <div class="row mt-3">
-					   <div class="col-lg-3 col-xl-3 col-xxl-3"></div>
-					   <div class="col-lg-6 col-xl-6 col-xxl-6">
-							{{$links->links('pagination::bootstrap-4')}}
-					   </div>
-					   <div class="col-lg-3 col-xl-3 col-xxl-3"></div>
-					   </div>
-					   
                       </div> 
                     </div>
                    </div><!--end row-->
@@ -347,6 +273,61 @@ $(document).on('click','.link-add-err',function()
 
 BASE_URL ={!! json_encode(url('/')) !!}
 
+var table = $('#datatable').DataTable({
+        processing: true,
+        serverSide: true,
+		stateSave:true,
+		paging     : true,
+        pageLength :50,
+		scrollX: true,
+		
+		'pagingType':"simple_numbers",
+        'lengthChange': true,
+			
+		ajax:
+		{
+			url:BASE_URL+"/users/view-short-links",
+			data: function (data) 
+		    {
+               data.offer_id = $('#flt_offer_id').val();
+			   data.link_section_id = $('#flt_link_section_id').val();
+		    },
+        },
+				
+        columns: [
+			{	
+				targets: 0,
+                data: null,
+				className: 'text-center',
+				searchable: false,
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return '<input type="checkbox" id="' + data.chkbox + '" class="dt-checkboxes" name="checkboxes" value="' + data.chkbox + '">';
+				 },
+			},
+            {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
+			{"data": "offer" },
+			{"data": "link" },
+			{"data": "qrcode" },
+			{"data": "code" },
+			{"data": "email" },
+			{"data": "billno" },
+			{"data": "branch" },
+			{"data": "click_count" },
+			{"data": "status" },
+			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
+        ],
+
+});
+
+
+$(document).on('click','#btn-filter',function()
+{
+	$('#datatable').DataTable().ajax.reload(null,false);
+});
+
+
+
 $(document).on('change','#offer_id',function()
 {
 	var offer_id=$(this).val();
@@ -426,8 +407,7 @@ $(document).on('click','.gen-qrcode',function()
 		   if(res.status==true)
 		   {
 			   toastr.success(res.msg);
-			   window.location.reload();
-			   //$('#datatable').DataTable().ajax.reload(null,false);
+			   $('#datatable').DataTable().ajax.reload(null,false);
 		   }
 		   else
 		   {
@@ -490,7 +470,7 @@ $("#datatable tbody").on('click','.btn-act-deact',function()
 			   if(res.status==true)
 			   {
 				   toastr.success(res.msg);
-				   window.location.reload();
+				   $('#datatable').DataTable().ajax.reload(null, false);
 			   }
 			   else
 			   {
@@ -530,7 +510,7 @@ $("#datatable tbody").on('click','.link-del',function()
 			   if(res.status==true)
 			   {
 				   toastr.success(res.msg);
-				    window.location.reload();
+				   $('#datatable').DataTable().ajax.reload(null, false);
 			   }
 			   else
 			   {
@@ -561,6 +541,76 @@ function fileValidation()
 			return true;
 		}
 }
+
+$("#chkbox-all").click(function()
+{
+	if($(this).is(':checked'))
+	{
+		$(table.$('input[name="checkboxes"]').each(function () {
+			$(this).prop('checked',true);
+		}));
+	}
+	else
+	{
+		$(table.$('input[name="checkboxes"]:checked').each(function () {
+			$(this).prop('checked',false);
+		}));
+	}
+	
+});
+
+$(document).on('click','#delele_multiple',function()
+{
+	var selectedValues=[];
+	$(table.$('input[name="checkboxes"]:checked').each(function () {
+        //console.log($(this).val());
+		selectedValues.push($(this).val());
+    }));
+	if(selectedValues.length>0)
+	{
+		var linkids=selectedValues.toString();
+
+			Swal.fire({
+				  title: "Are you sure?",
+				  text: "You want to delete selected links?",
+				  icon: "question",
+				  showCancelButton: true,
+				  confirmButtonColor: "#3085d6",
+				  cancelButtonColor: "#d33",
+				  confirmButtonText: "Yes, Delete it!"
+				}).then((result) => {
+				  if (result.isConfirmed) {
+
+					  jQuery.ajax({
+						type: "POST",
+						url: BASE_URL+"/users/delete-multiple-links",
+						dataType: 'json',
+						data: {_token:"{{csrf_token()}}",link_ids:linkids},
+						success: function(res)
+						{
+						   if(res.status==true)
+						   {
+							   toastr.success(res.msg);
+							   $('#datatable').DataTable().ajax.reload(null, false);
+							   $("#chkbox-all").prop('checked',false);
+						   }
+						   else
+						   {
+							 toastr.error(res.msg); 
+						   }
+						}
+					  });
+				  }
+				});
+
+	}
+	else
+	{
+		toastr.error("Please select data from the list!");
+	}
+		
+});
+
 	
 
 </script>
