@@ -122,28 +122,28 @@ input[type="number"]::-ms-reveal {
 						
                         <form class="kt-login__form kt-form" id="details-page">
 						@csrf
-						
-						
-						
+
                             <div class="input-group">
                                 <label for="full_name">Name</label>
                                     <input class="form-control" type="text" placeholder="Full Name" name="full_name" id="full_name">
                             </div>
+							
                             <div class="input-group row">
-                                    <div class="col-4 p-0">
-                                        <label for="mobile_number">Code</label>
-                                        <select class="form-control " id="country_code_id" name="country_code"
-                                                style=" padding-left: 1rem; padding-right: .5rem;"
-                                                autocomplete="off">
-												
-										    <option value="91" selected>+91
-                                           </select>
-                                    </div>
-                                    <div class="col-8 pr-0">
-                                        <label for="mobile_number">Whatsapp Number</label>
-                                        <input class="form-control" type="number" placeholder="Mobile Number" name="mobile_number" autocomplete="off" id="mobile_number">
-                                    </div>                                    
+								<div class="col-4 p-0">
+									<label for="mobile_number">Code</label>
+									<select class="form-control " id="country_code_id" name="country_code"
+											style=" padding-left: 1rem; padding-right: .5rem;"
+											autocomplete="off">
+											
+										<option value="91" selected>+91
+									   </select>
+								</div>
+								<div class="col-8 pr-0">
+									<label for="mobile_number">Whatsapp Number</label>
+									<input class="form-control" type="number" placeholder="Mobile Number" name="mobile_number" autocomplete="off" id="mobile_number">
+								</div>                                    
                             </div>
+							
                             <input type="hidden" id="offer_id" value="{{$shortlink->offer_id}}" name="offer_id">
                             <input type="hidden" id="vendor_id" value="{{$shortlink->vendor_id}}" name="vendor_id">
 							<input type="hidden" id="scratch_otp_enabled" value="{{$scratch_otp_enabled}}" name="scratch_otp_enabled">
@@ -189,7 +189,7 @@ input[type="number"]::-ms-reveal {
                                 <div class="input-group">
                                     <label for="event_name">Event Name</label>
                                         <input class="form-control" type="text" id="event_name"
-                                              placeholder="Event Name" name="event_name" autocomplete="off">
+                                            placeholder="Event Name" name="event_name" autocomplete="off">
                                 </div>
                             @endif --> --}}
 
@@ -295,11 +295,11 @@ input[type="number"]::-ms-reveal {
 
 @push('footer.script')
 
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.4/html2canvas.min.js"></script>-->
-<!--<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.4/html2canvas.min.js"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
-<script src="{{asset('assets/htmlcanvas/js/html2canvas-1.3.4.min.js')}}"></script>
-<script src="{{asset('assets/qrcode/js/qrcode.min.js')}}"></script>
+<!--<script src="{{asset('assets/htmlcanvas/js/html2canvas-1.3.4.min.js')}}"></script>
+<script src="{{asset('assets/qrcode/js/qrcode.min.js')}}"></script> -->
 
 @push('get-branch')
     <script>

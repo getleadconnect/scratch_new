@@ -268,8 +268,11 @@
 @endpush
 
 @push('footer.script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.4/html2canvas.min.js"></script>
-<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.4/html2canvas.min.js"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>-->
+
+<script src="{{asset('assets/htmlcanvas/js/html2canvas-1.3.4.min.js')}}"></script>
+<script src="{{asset('assets/qrcode/js/qrcode.min.js')}}"></script>
 
 @push('get-branch')
     <script>
