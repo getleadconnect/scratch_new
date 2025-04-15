@@ -432,26 +432,9 @@ input[type="number"]::-ms-reveal {
         return false;
     };
 </script>
-<script>
-    var KTAppOptions = {
-        "colors": {
-            "state": {
-                "brand": "#374afb",
-                "light": "#ffffff",
-                "dark": "#282a3c",
-                "primary": "#5867dd",
-                "success": "#34bfa3",
-                "info": "#36a3f7",
-                "warning": "#ffb822",
-                "danger": "#fd3995"
-            },
-            "base": {
-                "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
-                "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
-            }
-        }
-    };
 
+<script>
+   
     var scratch_count = 1;
     var BASE_URL = window.location.origin;
   
@@ -512,9 +495,9 @@ input[type="number"]::-ms-reveal {
         
     });
     
-    $('.carousel').carousel({
+    /*$('.carousel').carousel({
         interval: 600
-    })
+    })*/
             
 </script>
 
