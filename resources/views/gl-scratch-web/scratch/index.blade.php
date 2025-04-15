@@ -445,6 +445,7 @@ input[type="number"]::-ms-reveal {
         $('.kt-login__title').hide()
             var target = document.getElementById('demo');
             html2canvas(target,{
+					  useCORS: true,
 					  allowTaint: true,
 					}).then((canvas) => {
                let a = document.createElement("a");
