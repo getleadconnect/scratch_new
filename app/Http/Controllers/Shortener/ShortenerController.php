@@ -21,9 +21,6 @@ use App\Models\User;
 
 use App\Traits\GeneralTrait;
 
-use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\Cors;
-
 
 use Auth;
 use Flash;
