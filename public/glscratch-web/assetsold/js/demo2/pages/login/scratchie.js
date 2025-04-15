@@ -6,7 +6,8 @@
 	}
 	b.prototype = {
 		_generate: function() {
-			return a.support.canvas ? (this.canvas = document.createElement("canvas"), this.ctx = this.canvas.getContext("2d"), "static" === this.$el.css("position") && this.$el.css("position", "relative"), this.$img = $('<img src=""/>').css({
+			return a.support.canvas ? (this.canvas = document.createElement("canvas"), this.ctx = this.canvas.getContext("2d"), "static" === this.$el.css("position") && this.$el.css("position", "relative"), 
+				this.$img = $('<img src="" crossorigin="anonymous"/>').css({
 				position: 'absolute',
 				width: '100%',
 				height: '100%'
