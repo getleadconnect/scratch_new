@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Shortener;
-
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,6 +31,11 @@ class ShortenerController extends Controller
 {
 	
 	use GeneralTrait;
+	
+	public function __construct()
+	{
+		$this->middleware('cors');
+	}
 	
     public function index($id,$code)
     {
