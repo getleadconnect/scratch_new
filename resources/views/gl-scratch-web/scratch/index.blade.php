@@ -439,13 +439,16 @@ input[type="number"]::-ms-reveal {
     var scratch_count = 1;
     var BASE_URL = window.location.origin;
   
-    function capture () {
+    function capture() {
         var uniqueId  = $('.uniqueHidden').val()
         generateQr(uniqueId);
         $('.kt-login__title').hide()
             var target = document.getElementById('demo');
-            html2canvas(target).then((canvas) => {
-                let a = document.createElement("a");
+            html2canvas(target,{
+					  useCORS: true,
+					  allowTaint: true,
+					}).then((canvas) => {
+               let a = document.createElement("a");
                 a.download = uniqueId+".png";
                 a.href = canvas.toDataURL("image/png");
                 a.click(); // MAY NOT ALWAYS WORK!
