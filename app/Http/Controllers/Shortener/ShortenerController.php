@@ -35,10 +35,10 @@ class ShortenerController extends Controller
 	
 	use GeneralTrait;
 	
-	public function __construct()
+	/*public function __construct()
 	{
 		$this->middleware('cors');
-	}
+	}*/
 	
     public function index($id,$code)
     {
