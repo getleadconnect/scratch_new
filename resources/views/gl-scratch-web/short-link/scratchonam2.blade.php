@@ -234,7 +234,7 @@ src="https://www.facebook.com/tr?id=2688679058053948&ev=PageView&noscript=1"
                                     
                     <div class="kt-login__forgot">
                         <div class="scratch-container">
-                            <div id="promo" class="scratchpad"></div>
+                            <div id="promo" class="scratchpad"> </div>
                         </div>
                         <div class="promo-container" style="display: none">
                             <div class="promo-code"></div>
