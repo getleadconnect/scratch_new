@@ -21,6 +21,9 @@ use App\Models\User;
 
 use App\Traits\GeneralTrait;
 
+use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\Cors;
+
 
 use Auth;
 use Flash;
@@ -32,10 +35,10 @@ class ShortenerController extends Controller
 	
 	use GeneralTrait;
 	
-	/*public function __construct()
+	public function __construct()
 	{
 		$this->middleware('cors');
-	}*/
+	}
 	
     public function index($id,$code)
     {
