@@ -1,4 +1,7 @@
-/*! wScratchPad - v2.1.0 - 2014-04-14 */ ! function(a) {
+/*! wScratchPad - v2.1.0 - 2014-04-14 */
+/* this is custom script for scrach */
+
+ ! function(a) {
 	"use strict";
 
 	function b(b, c) {
