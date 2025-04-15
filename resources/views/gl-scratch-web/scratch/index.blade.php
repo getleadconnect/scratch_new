@@ -242,7 +242,7 @@ input[type="number"]::-ms-reveal {
                             <div id="promo" class="scratchpad"></div>
                         </div>
                         <div class="promo-container" style="display: none">
-                            <div class="promo-code"> </div>
+                            <div class="promo-code">  </div>
                         </div>
                         <div class="widget-wrap captureBtn  d-none screenSt">
                             <button onclick="capture()" class="btn btn-screen-shot">
@@ -279,7 +279,23 @@ input[type="number"]::-ms-reveal {
 
 
 <script>
-    var KTAppOptions = {"colors":{"state":{"brand":"#374afb","light":"#ffffff","dark":"#282a3c","primary":"#5867dd","success":"#34bfa3","info":"#36a3f7","warning":"#ffb822","danger":"#fd3995"},"base":{"label":["#c5cbe3","#a1a8c3","#3d4465","#3e4466"],"shape":["#f0f3ff","#d9dffa","#afb4d4","#646c9a"]}}};
+    var KTAppOptions = {
+	"colors":{
+		"state":{
+		"brand":"#374afb",
+		"light":"#ffffff",
+		"dark":"#282a3c",
+		"primary":"#5867dd",
+		"success":"#34bfa3",
+		"info":"#36a3f7",
+		"warning":"#ffb822",
+		"danger":"#fd3995"},
+		"base":
+		{"label":["#c5cbe3","#a1a8c3","#3d4465","#3e4466"],
+		"shape":["#f0f3ff","#d9dffa","#afb4d4","#646c9a"]
+		}
+	}
+};
 </script> 
 
 @endsection
