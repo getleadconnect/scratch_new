@@ -131,12 +131,10 @@ input[type="number"]::-ms-reveal {
                             <div class="input-group row">
 								<div class="col-4 p-0">
 									<label for="mobile_number">Code</label>
-									<select class="form-control " id="country_code_id" name="country_code"
-											style=" padding-left: 1rem; padding-right: .5rem;"
-											autocomplete="off">
-											
-										<option value="91" selected>+91
-									   </select>
+									<select class="form-control " id="country_code_id" name="country_code" style=" padding-left: 1rem; padding-right: .5rem;" autocomplete="off">
+										<option value="91" selected>+91</option>
+										<option value="971">+971</option>
+								   </select>
 								</div>
 								<div class="col-8 pr-0">
 									<label for="mobile_number">Whatsapp Number</label>

@@ -47,8 +47,8 @@ class GlScratchWebController extends Controller
  
     public function shortenLink($code)
     {
-        $shortlink = ShortLink::where('code', $code)->where('status', ShortLink::ACTIVE)->first();
 		
+        $shortlink = ShortLink::where('code', $code)->where('status', ShortLink::ACTIVE)->first();
 		
         if ($shortlink) {
             $agent = new Agent();
