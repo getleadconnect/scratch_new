@@ -47,11 +47,9 @@
 				  <div class="col-lg-6 col-xl-6 col-xxl-6 col-6 text-right">
 
 				  <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->pk_int_user_id}}">
-				  
 					 <button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
 					 &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
 				     &nbsp;&nbsp;<button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-qrcode"></i>&nbsp;Qr-Code PDF</button>
-				  				
 				  </div>
 
 				  </div>
@@ -134,6 +132,7 @@
                                 <th>Offer Name</th>
                                 <th>Link</th>
 								<th>QrCode</th>
+								
                                 <th>Code</th>
 								<th><span>Email</span> <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
 								<th>BillNo <p style="color:#2727e9;font-size:11px;margin:0px;">(Required)</p></th>
@@ -153,8 +152,16 @@
 									<td>{{$row->offer_id}}</td>
 									<td>{{$row->link}}</td>
 									<td>
-									<a  href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" target="_blank"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>
+									
+									@if($row->link_type!="Multiple")
+										<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" target="_blank" title="View"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>
+										&nbsp;<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" download=true title="Download" ><i class="fa fa-download" style="font-size:18px;" ></i></a>	
+									@else
+										<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" target="_blank"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>	
+									@endif
+
 									</td>
+									
 									<td>{{$row->code}}</td>
 									<td>
 									
