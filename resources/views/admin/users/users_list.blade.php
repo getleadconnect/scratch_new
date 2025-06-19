@@ -86,6 +86,7 @@
 									<th>Company</th>
 									<th>Location</th>
 									<th>Created At</th>
+									<th>Subscription</th>
 									<th>Status</th>
 									<th class="no-content" style="width:50px;">Action</th>
 								</tr>
@@ -342,6 +343,7 @@ var table = $('#datatable').DataTable({
 			{"data": "company" },
 			{"data": "location" },
 			{"data": "cdate" },
+			{"data": "subscription" },
 			{"data": "status" },
 			{"data": "action" ,name: 'Action',orderable: false, searchable: false },
         ],

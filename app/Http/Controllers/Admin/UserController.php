@@ -146,9 +146,22 @@ class UserController extends Controller
         })
 		->addColumn('cdate', function ($row) {
             
-			return date_create($row->created_at)->format('d-m-Y');
+			return Carbon::parse($row->created_at)->format('d-m-Y');
         })
-				
+		
+		->addColumn('subscription', function ($row) {
+            
+			$dt="Start:".Carbon::parse($row->subscription_start_date)->format('d-m-Y');
+			
+			$subscription_date = Carbon::create($row->subscription_end_date)->addDays(1)->format('Y-m-d');
+			if($subscription_date<=date('Y-m-d'))
+				$dt.="<br>End:<span style='color:red'>".Carbon::parse($row->subscription_end_date)->format('d-m-Y')."</span>";
+			else
+				$dt.="<br>End:<span>".Carbon::parse($row->subscription_end_date)->format('d-m-Y')."</span>";
+			
+			return $dt;
+        })
+		
         ->addColumn('action', function ($row)
         {
 			if ($row->int_status == 1)
@@ -172,7 +185,7 @@ class UserController extends Controller
                         </div>';
 			return $action;
         })
-        ->rawColumns(['action','name','status'])
+        ->rawColumns(['action','name','status','subscription'])
         ->make(true);
     }
 
