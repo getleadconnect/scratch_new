@@ -155,7 +155,7 @@
 									
 									@if($row->link_type!="Multiple")
 										<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" target="_blank" title="View"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>
-										&nbsp;<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" download=true title="Download" ><i class="fa fa-download" style="font-size:18px;" ></i></a>	
+										&nbsp;<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" download title="Download" ><i class="fa fa-download" style="font-size:18px;" ></i></a>	
 									@else
 										<a href="{{\App\Facades\FileUpload::viewFile($row->qrcode_file,'local')}}" target="_blank"><i class="fa fa-qrcode qrcode-icon" style="font-size:28px;color:#6c757d;padding:2px;"></i></a>	
 									@endif
