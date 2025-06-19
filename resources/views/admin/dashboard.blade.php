@@ -9,7 +9,7 @@
 </style>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-    <div class="breadcrumb-title pe-3">Dashboard-ADMIN</div>
+    <div class="breadcrumb-title pe-3">Dashboard - ADMIN</div>
  </div>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-4">
