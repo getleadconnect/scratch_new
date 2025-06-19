@@ -261,6 +261,13 @@
 				</div>
 				
 				<div class="modal-body">
+				
+				<ul style="font-size: 13px !important;color: #2d2de9;">
+				<li> This is used for generate qr-code pdf file for <span style='font-weight:500;'>Multiple links</span></li>
+				<li> Create multiple links one by one. Click '<span style='font-weight:500;'>Add Multiple Links</span>' button</li>
+				<li> Then use this Qr-code generator option.</li>
+				</ul>
+				
 				<form method="Post" action="{{route('users.generate-qrcode-pdf')}}" enctype="multipart/form-data">
 				@csrf
 				

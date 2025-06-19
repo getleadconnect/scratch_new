@@ -1,5 +1,11 @@
 {{--<form id="formAddLink" method="POST" action="{{route('users.save-link')}}" enctype="multipart/form-data">--}}
   
+  <ul style="font-size: 13px !important;color: #2d2de9;">
+  <li>To create single scratch link for multiple customers</li>
+  <li>To create link and clik on the Qr-Code. Then print and show the Qr-Code for the customers.</li> 
+  </ul>
+   
+  
 		<form id="formAddLink" enctype="multipart/form-data">
 			@csrf
 			
