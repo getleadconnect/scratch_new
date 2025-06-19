@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
-use App\Models\Enquiry;
-use App\Models\EnquiryType;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\ScratchBranch;
 use App\Models\ScratchWebCustomer;
@@ -14,30 +12,19 @@ use App\Models\ScratchOffer;
 use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
 use App\Models\UserOtp;
-
-use App\Common\Common;
-use App\Common\Notifications;
-use App\Common\SingleSMS;
-
-use Hash;
 use App\Models\User;
-use Validator;
+
 use App\Common\Variables;
 use App\Common\WhatsappSend;
-//use App\Core\CustomClass;
-//use App\CustomField;
 
-
-use App\Mail\VerifyEmailScratch;
 use App\Services\WhatsappService;
-//use App\BillingSubscription;
-//use App\SmsPanel;
 
 use Carbon\Carbon;
 use DB;
+use Hash;
+use Validator;
 use Log;
 use Mail;
-
 
 class GetleadScratchController extends Controller
 {
@@ -47,11 +34,12 @@ class GetleadScratchController extends Controller
     * @return \Illuminate\Http\Response
     */
 	
+	
     public function login(Request $request)
     {
         $input=$request->all();
         $rule=[ 
-            'mobile' => 'required',
+            'email' => 'required',
             'password'=>'required'
         ];
         
@@ -60,33 +48,34 @@ class GetleadScratchController extends Controller
         {
             try
             {
-				$user_mob=$request->country_code.$request->mobile;
-				$user = User::active()->where('vchr_user_mobile', $user_mob)->orWhere('mobile', $request->mobile)->first();
+				$user = User::active()->where('email', $request->email)->first();
 				
                 if ($user && Hash::check($request->password,$user->password)) 
                 {
-                    $vendor_id = User::getVendorIdApi($user->pk_int_user_id );
-					//Auth::login($user);
-					//$token = $user->createToken('scratch')->accessToken;
-					//$user = Auth::user();
 					$success['token'] =  $user->createToken('scratchMyApp')->plainTextToken; 
 					$success['user'] =  $user;
 										
-                    return response()->json(['message' => 'Logged Successfully','data'=>$success,'status' => true]);  
+                    return response()->json(['data'=>$success,'message'=>'Logged Successfully']);  
                 }   
-                 else
-                 {
-                    return response()->json(['message' => 'Invalid Credentials', 'status' => false]); 
-                 }
+                else
+                {
+                    return response()->json(['message'=>'Invalid Credentials','status'=>false]); 
+                }
             }catch(\Exception $e){
-                return response()->json(['message' => $e->getMessage(), 'status' => false]);
+				return response()->json(['message'=>$e->getMessage(),'status'=>false]); 
             }
         } else{
-            return response()->json(['message' => $validator->messages(), 'status' => false]);
+			return response()->json(['message'=>$validator->messages()->first(),'status'=>false]); 
         }
     }
 	
-    
+	/**
+    * Display a listing of the scratch offers (campaigns).
+    * Method: POST
+	* Parms: user_id(int)
+    * @return \Illuminate\Http\Response
+    */	
+	    
     public function getOffers(Request $request)
     {
 
@@ -98,13 +87,13 @@ class GetleadScratchController extends Controller
         if ($validator->passes()) 
         {
             $vendor_id = User::getVendorIdApi($request->user_id);
+			
             try
             {
-				
                 $user = User::active()->where('pk_int_user_id', $vendor_id)->first();
                 if ($user) {
                     $offers = ScratchOffer::where('int_status','1')->where('fk_int_user_id',$vendor_id)->whereDate('end_date','>=',Date('Y-m-d'))->get();
-                    return response()->json(['message'=> 'Successfully listed','offers'=>$offers,'path'=>url('uploads'), 'status' => true]);
+                    return response()->json(['message'=>'Successfully listed','offers'=>$offers,'path'=>url('uploads').'/', 'status' => true]);
                 }else{
                     return response()->json(['message'=> 'User Not Found', 'status' => false]); 
                 }  
@@ -115,9 +104,15 @@ class GetleadScratchController extends Controller
             return response()->json(['message'=>$validator->messages(), 'status' => false]);
         }
     }
-    	
-	/*
-    public function type(Request $request)
+   
+/**
+    * Display a listing of the scratch types.
+    * Method: POST
+	* Parms: user_id (int),campaign_id (int)
+    * @return \Illuminate\Http\Response
+    */	
+  
+  public function scratchType(Request $request)
     {
         $input=$request->all();
         $userid=User::getVendorIdApi($request->user_id);
@@ -131,21 +126,12 @@ class GetleadScratchController extends Controller
         {
             try
             {
-                $type = ScratchType::where('scratch_type.vendor_id', $userid)->where('scratch_type.status',ScratchType::ACTIVATE)
-                ->join('tbl_scratch_offers_listing','tbl_scratch_offers_listing.type_id','scratch_type.id')
-                ->where('tbl_scratch_offers_listing.int_status',ScratchOffersListing::ACTIVATE)
-                ->where('tbl_scratch_offers_listing.int_scratch_offers_balance','>','0')
-                ->join('tbl_scratch_offers','tbl_scratch_offers.pk_int_scratch_offers_id','tbl_scratch_offers_listing.fk_int_scratch_offers_id')
-                ->where('tbl_scratch_offers.int_status',ScratchOffers::ACTIVATE)
-                ->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id',$request->campaign_id)
-                ->whereNull('tbl_scratch_offers.deleted_at')
-                ->whereNull('tbl_scratch_offers_listing.deleted_at')
+                $type = ScratchType::select('scratch_type.id','scratch_type.type')->where('scratch_type.status',ScratchType::ACTIVATE)
                 ->whereNull('scratch_type.deleted_at')
-                ->select('scratch_type.id','scratch_type.type')->groupBy('id')
                 ->get();
-                
+				
                 if($type->isEmpty()){
-                    return response()->json(['message'=> 'No Offer Available Now ...','status' => 'fail','user'=>$type]);
+                    return response()->json(['message'=> 'No Offer type available.!','status' => 'fail','user'=>$type]);
                 }
                 return response()->json(['message'=> 'Successfully listed','user'=>$type,'status' => 'success']);
             }catch(\Exception $e){
@@ -155,8 +141,8 @@ class GetleadScratchController extends Controller
             return response()->json(['msg'=>$validator->messages(), 'status' => 'fail']);
         }
     }
- 
-*/
+      
+	
 
 /* To send otp for customer mobile verify  and collect user data 
 	fucntion sendOtp
@@ -164,8 +150,6 @@ class GetleadScratchController extends Controller
 	params: user_id (int) ,name(string), mobile_no (string) include country code , campaign_id (int), type_id (int) 
 	 [ bill_no (int), email (string), branch( int)  -> if vendor user required ]
 */
-
-
 
     public function sendOtp(Request $request)
     {
@@ -191,7 +175,7 @@ class GetleadScratchController extends Controller
 		{
 			$check_mob = ScratchWebCustomer::where('mobile', $request->mobile_no)->where('user_id',$userid)->whereDate('created_at',date('Y-m-d'))->first();
 			if($check_mob){
-				return response()->json(['msg' => "You already Scratched with this mobile number.Please try with other.", 'status' => false]);
+				return response()->json(['msg' => "You already Scratched with this mobile number. Please try with other.", 'status' => false]);
 			}
 		}
 				
@@ -200,7 +184,7 @@ class GetleadScratchController extends Controller
 			$check_bill = ScratchWebCustomer::where('bill_no', $request->bill_no)->where('user_id',$userid)->first();
             if($check_bill)
 			{
-                return response()->json(['msg' => "You already Scratched with this bill number.Please try with other.", 'status' => false]);
+                return response()->json(['msg' => "You already Scratched with this bill number. Please try with other.", 'status' => false]);
             }
         }
 		
@@ -338,11 +322,13 @@ class GetleadScratchController extends Controller
             }
     }
 
-/* To store customer scratched details  
-	fucntion scratchCustomer
-	Method :post
-	params: user_id (int) ,name(string), mobile_no (string) include country code , campaign_id (int), type_id (int)
-*/
+/**
+    * to set scratch customer details.
+    * Method: POST
+	* Parms: user_id (int),campaign_id (int), customer_name (string), country_code (string), mobile_no (string), type_id (int), 
+		optional parameters ( bill_no (string/null), email (string/null) )
+    * @return \Illuminate\Http\Response
+    */	
 
  public function scratchCustomer(Request $request)
  {
@@ -354,8 +340,8 @@ class GetleadScratchController extends Controller
 			'country_code' => 'required|numeric',
             'mobile_no' => 'required|numeric|digits_between:8,14',
             'type_id'=>'required',
+			
         ];
-
 
         $validator = Validator::make($request->all(),$rule);
         if ($validator->fails()) 
@@ -380,7 +366,7 @@ class GetleadScratchController extends Controller
 					{
 						$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
 						if($check_mob){
-							return response()->json(['msg' => "You already Scratched with this mobile number.Please try with other.", 'status' => false]);
+							return response()->json(['msg' => "You already Scratched with this mobile number. Please try with other.", 'status' => false]);
 						}
 					}
 					
@@ -389,7 +375,7 @@ class GetleadScratchController extends Controller
 					$check_bill = ScratchWebCustomer::where('bill_no', $request->bill_no)->where('user_id',$vendor_id)->first();
 					if($check_bill)
 					{
-						return response()->json(['msg' => "You already Scratched with this bill number.Please try with other.", 'status' => false]);
+						return response()->json(['msg' => "You already Scratched with this bill number. Please try with other.", 'status' => false]);
 					}
 				}
 
@@ -438,7 +424,7 @@ class GetleadScratchController extends Controller
 
 						$offerlisting->int_scratch_offers_balance--;
 						$offerlisting->save();
-						return response()->json(['message'=> 'Customer details added successfully','status' =>true]);
+						return response()->json(['data'=>$flag,'message'=> 'Customer details added successfully','status' =>true]);
 					}
 					else{
 						return response()->json(['message'=> 'Something wrong, Try later.!', 'status' => false]);

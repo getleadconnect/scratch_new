@@ -155,7 +155,4 @@ public function changePassword(Request $request)
 	
 }
 
-
-
-
 }

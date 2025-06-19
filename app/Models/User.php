@@ -163,7 +163,6 @@ class User extends Authenticatable implements JWTSubject
             } else {
                 $vendorId = Auth::user()->pk_int_user_id;
             }
-    
             return $vendorId;
         }else{
             return null;
