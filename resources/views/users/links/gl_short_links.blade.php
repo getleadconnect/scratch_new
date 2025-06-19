@@ -48,9 +48,9 @@
 
 				  <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->pk_int_user_id}}">
 				  
-					 <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-qrcode"></i>&nbsp;Qr-Code PDF</button>
+					 <button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
 					 &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-multiple" data-bs-toggle="offcanvas" data-bs-target="#add-multiple-links"><i class="fa fa-plus"></i>&nbsp;Add Multiple Links</button>
-				     &nbsp;&nbsp;<button type="button" class="btn btn-primary btn-xs link-add" data-bs-toggle="offcanvas" data-bs-target="#add-link"><i class="fa fa-plus"></i>&nbsp;Add Link</button>
+				     &nbsp;&nbsp;<button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#gen-pdf-modal" ><i class="fa fa-qrcode"></i>&nbsp;Qr-Code PDF</button>
 				  				
 				  </div>
 
