@@ -46,6 +46,7 @@ class ScratchApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+	 
     public function loginApi(Request $request)
     {
     	$input=$request->all();
@@ -74,10 +75,7 @@ class ScratchApiController extends Controller
             	{
             		return response()->json(['message'=> 'Invalid Login', 'status' => 'fail']); 
             	}
-            	
-            	
-
-	    	}
+ 	    	}
 	    	catch(\Exception $e)
 	    	{
 	    		return response()->json(['message'=>$e->getMessage(), 'status' => 'fail']);
@@ -96,11 +94,7 @@ class ScratchApiController extends Controller
     }
    
 
-   
-
-   
-
-      public function offersListingApi(Request $request)
+    public function offersListingApi(Request $request)
     {
     	$input=$request->all();
         //print_r($request->all()); die();
@@ -203,7 +197,7 @@ class ScratchApiController extends Controller
 	    }
     }
 
-      public function offerApi(Request $request)
+    public function offerApi(Request $request)
     {
         $input=$request->all();
         //print_r($request->all()); die();
@@ -386,6 +380,7 @@ class ScratchApiController extends Controller
                                     'status' => 'New'
                                 ]);
                             }
+							
                             Enquiry::getCRMWebsiteUsers(EnquiryType::GLSCRATCH,$request->mobileno,$vendor_id,$request->name,'','',$request->country_code,'',$request);
 
                             $balance=$offersListing->int_scratch_offers_balance;
@@ -841,7 +836,6 @@ Date and Time : " . Carbon::now();
 
     }
 
-
     public function typeApi(Request $request)
     {
       $input=$request->all();
@@ -988,7 +982,7 @@ Date and Time : " . Carbon::now();
         return view('backend.user-pages.scratch.footer');
     }
 
-     public function getScratchFooter()
+    public function getScratchFooter()
     {
       $id=User::getVendorId();
       //return $id;

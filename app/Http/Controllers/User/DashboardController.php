@@ -76,8 +76,6 @@ class DashboardController extends Controller
 				  return $q;
 			  });	  
 	
-
-	
 	$camp=[];
 	$win_count=[];
 	$los_count=[];
@@ -116,7 +114,19 @@ class DashboardController extends Controller
 	$chart['user_year']=implode(",",$ur_year);
 	$chart['user_count']=implode(",",$ur_cnt);
 	//---------------------------------------------------
-	return view('users.dashboard',compact('tot_count','used_count','bal_count','sub','chart','sub_diff_days'));
+	
+	$tc_count=ScratchWebCustomer::where('user_id',$user_id)->count();
+	$twin_count=ScratchWebCustomer::where('user_id',$user_id)->where('win_status',1)->count();
+	$tlos_count=ScratchWebCustomer::where('user_id',$user_id)->where('win_status',0)->count();
+	
+	$pie['tot_cust']=$tc_count;
+	$pie['win_per']=($twin_count/$tc_count)*100;
+	$pie['los_per']=($tlos_count/$tc_count)*100;
+	$pie['tot_count']=$tc_count;
+	$pie['win_count']=$twin_count;
+	$pie['los_count']=$tlos_count;
+	
+	return view('users.dashboard',compact('tot_count','used_count','bal_count','sub','chart','sub_diff_days','pie'));
 	
   }	
       

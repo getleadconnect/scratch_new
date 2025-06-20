@@ -16,7 +16,7 @@
 </style>
 
 		<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-              <div class="breadcrumb-title pe-3">Scratch Web Customers</div>
+              <div class="breadcrumb-title pe-3">Redeemed Customers List</div>
  
              <!-- <div class="ms-auto">
                 <div class="btn-group">
@@ -52,7 +52,7 @@
 						  <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>
 						  
 						  
-						  <form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
+						  <form method="POST" id="export_redeem_history"  action="{{url('users/export-redeemed-customers-list')}}" enctype="multipart/form-data" >
 							@csrf 
 						  
 						   <div class="row" style="padding:3px 10px 10px 10px;" >
@@ -103,38 +103,15 @@
 				
 				<!---  filer end ----------------------------------------->
 				<div class="row mt-3">
-                     <div class="col-12 col-lg-12  text-right">
-					 <label>Web Total : <span style="font-weight:600;" id="web_count"></span></label>
-					 &nbsp;|&nbsp;<label class="ms-1">App Total : <span style="font-weight:600;" id="app_count"></span></label>
+                     <div class="col-12 col-lg-12">
+					 <label>Redeemed Total : <span style="font-weight:600;" id="redeemed_count"></span></label>
 					 </div>
 				</div>
 	
-                <div class="row">
+                <div class="row mt-3">
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100">
-					  
-						<ul class="nav nav-tabs nav-primary mt-2" role="tablist">
-							<li class="nav-item" role="presentation">
-								<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="false" tabindex="-1">
-									<div class="d-flex align-items-center">
-										<div class="tab-icon"><i class="bx bx-user-pin font-18 me-1"></i>
-										</div>
-										<div class="tab-title">Web Customers</div>
-									</div>
-								</a>
-							</li>
-							<li class="nav-item" role="presentation">
-								<a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
-									<div class="d-flex align-items-center">
-										<div class="tab-icon"><i class="bx bx-user-pin font-18 me-1"></i>
-										</div>
-										<div class="tab-title">App Customers</div>
-									</div>
-								</a>
-							</li>
-							
-						</ul>
-					  <div class="tab-content py-3">
+
 						<div class="tab-pane fade show active" id="primaryhome" role="tabpanel">
 
 						  <div class="table-responsive">
@@ -163,40 +140,8 @@
                           </div>
 												
 						</div>
-					  <!-- TAB Pane 2 --------------->
-						  <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
-						  
-						  <div class="table-responsive">
-	
-                             <table id="datatable_app" class="table align-middle" style="width:100% !important;" >
-                               <thead class="thead-semi-dark" >
-								<tr>
-									<th>Sl No</th>
-									<th>Created At</th>
-									<th>Unique Id</th>
-									<th>Name</th>
-									<th>Mobile No</th>
-									<th>Email</th>
-									<th>Bill No</th>
-									<th>Branch</th>
-									<th>Redeemed By</th>
-									<th>Offer</th>
-									<th>Status</th>
-									<th>Redeem</th>
-								</tr>
-                               </thead>
-                               <tbody>
-                                  
-                               </tbody>
-                             </table>
-                          </div>
-						  
-						  </div>
-					  </div>
-
-					  
+				  
                         <!--<div class="card-body">-->
-                          
 
                        <!-- </div>-->
                       </div> 
@@ -238,7 +183,7 @@ var table1 = $('#datatable').DataTable({
 				
 		ajax:
 		{
-			url:BASE_URL+"/users/get-scratch-web-customers",
+			url:BASE_URL+"/users/view-redeemed-customers",
 			data: function (data) 
 		    {
                data.start_date = $('#start_date').val();
@@ -264,57 +209,11 @@ var table1 = $('#datatable').DataTable({
 	   
 	   initComplete: function (settings, json) {
         var total=table1.page.info().recordsTotal;
-		$("#web_count").html(total);
+		$("#redeemed_count").html(total);
 		
     }
 
 });
-
-
-var table2 = $('#datatable_app').DataTable({
-        processing: true,
-        serverSide: true,
-		stateSave:true,
-		paging     : true,
-        pageLength :50,
-		
-		'pagingType':"simple_numbers",
-        'lengthChange': true,
-				
-		ajax:
-		{
-			url:BASE_URL+"/users/get-scratch-app-customers",
-			data: function (data) 
-		    {
-               data.start_date = $('#start_date').val();
-               data.end_date = $('#end_date').val();
-               data.branch = $('#branch').val();
-               data.campaign = $('#campaign').val();
-		    },
-        },
-		columns: [
-		   {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
-		   {data: 'created_at', name: 'created_at'},
-		   {data: 'unique_id', name: 'unique_id'},
-		   {data: 'name', name: 'name'},
-		   {data: 'mobile', name: 'mobile'},
-		   {data: 'email', name: 'email'},
-		   {data: 'billno', name: 'bill_no'},
-		   {data: 'branch', name: 'branch'},
-		   {data: 'agent', name: 'agent'},
-		   {data: 'offer_text', name: 'offer_text'},
-		   {data: 'status', name: 'status'},
-		   {data: 'show', name: 'show', orderable: false, searchable: false}
-	   ],
-	   
-	   initComplete: function (settings, json) {
-        var total=table2.page.info().recordsTotal;
-		$("#app_count").html(total);
-		
-    }
-
-});
-
 
 
 $("#btn-filter").click(function()

@@ -61,12 +61,12 @@ $(function () {
 		}
 	});
 	
-*/
+	*/
 	
 	
 	
 	// chart 2
-	/*var ctx = document.getElementById("chart2").getContext('2d');
+	var ctx = document.getElementById("chart2").getContext('2d');
 	
 	var lbl=document.getElementById("legend_x").value;
 	var lb_w=document.getElementById("series_1").value;
@@ -80,15 +80,15 @@ $(function () {
 	var myChart = new Chart(ctx, {
 		type: 'bar',
 		data: {
-			labels: label1 , 
+			labels: label1 , /*[2020, 2021, 2022, 2023, 2024],*/
 			datasets: [{
 				label: 'Win',
-				data: lbl_win, 
+				data: lbl_win, /*[ 198, 220, 214, 198, 265],*/
 				barPercentage: .5,
 				backgroundColor: "#9bd59b"
 			}, {
 				label: 'Loss',
-				data: lbl_los, 
+				data: lbl_los, /* [188, 210, 214, 188, 260],*/
 				barPercentage: .5,
 				backgroundColor: "#adadef"
 			}]
@@ -130,11 +130,10 @@ $(function () {
 			}
 		}
 	});
-*/
 		
 	// chart 6
 	
-	var cr_lbl=document.getElementById("ur_year").value;
+	/*var cr_lbl=document.getElementById("ur_year").value;
 	var cr_cnt=document.getElementById("ur_count").value;
 	
 	var cr_lbl1=cr_lbl.split(',');
@@ -144,11 +143,11 @@ $(function () {
 		type: 'doughnut',
 		data: {
 			labels: cr_lbl1, /* ["LDC", "SCERT", "NCRT", "PC", "SEC.ASST",'HS-ASST','SI'],*/
-			datasets: [{
+	/*		datasets: [{
 				label: "Users",
 				backgroundColor: ["#0d6efd", "#212529", "#17a00e", "#f41127","#ffc107", "#055160","#fac245"],
 				data: cr_cnt1 /*[200, 210, 180, 178, 188,190,210]*/
-			}]
+	/*		}]
 		},
 		options: {
 			maintainAspectRatio: false,
@@ -159,6 +158,7 @@ $(function () {
 		}
 	});
 	
+	*/
 	
 	
 });

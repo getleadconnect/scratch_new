@@ -2,7 +2,7 @@ $(function() {
 	"use strict";
 
 
-
+/*
 // chart 1
     var options = {
         series: [{
@@ -1382,7 +1382,7 @@ var options = {
 
 
 
-
+*/
 
   $('#chart17').easyPieChart({
     
@@ -1392,6 +1392,7 @@ var options = {
 		trackColor : 'rgb(231 46 122 / 15%)',
 		scaleColor: false,
         onStep: function(from, to, percent) {
+			//$(this.el).find('.w_percent').text(Math.round(percent));
 			$(this.el).find('.w_percent').text(Math.round(percent));
 		}
 
@@ -1426,7 +1427,7 @@ $('#chart19').easyPieChart({
 });
 
 
-
+/*
 $('#chart20').easyPieChart({
     
     easing: 'easeOutBounce',
@@ -1441,7 +1442,7 @@ $('#chart20').easyPieChart({
 });
 
 
-
+*/
 
 
 

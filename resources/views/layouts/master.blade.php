@@ -209,7 +209,7 @@
    @if(Auth::user()->int_role_id==1)
 	   <script src="{{url('assets/plugins/chartjs/js/chartjs-admin-custom.js')}}"></script>
    @else
-   <script src="{{url('assets/plugins/chartjs/js/chartjs-custom.js')}}"></script>
+   <script src="{{url('assets/plugins/chartjs/js/chartjs-custom-user.js')}}"></script>
    @endif
   
   <script src="{{url('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>

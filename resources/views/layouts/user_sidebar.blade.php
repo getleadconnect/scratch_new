@@ -53,6 +53,16 @@
             </li>
 			
 			<li>
+              <a href="{{url('users/redeemed-customers')}}" title="Campaigns">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/list.png')}}" style="width:18px;">
+				
+                </div>
+                <div class="menu-title">Redeemed Customers</div>
+              </a>
+            </li>
+			
+			<li>
               <a href="{{url('users/gl-links')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/link.png')}}" style="width:20px;">

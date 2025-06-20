@@ -236,13 +236,36 @@ class User extends Authenticatable implements JWTSubject
         }
         return $vendorId;
     }
+	
+	
+	public static function totalUserCount()
+	{
+		return self::count();
+	}
 
- /*public function getProfilePicAttribute()
-    {
-        if($this->vchr_logo == null){
-            return null;
-        }else{
-            FileUpload::viewFile('uploads/user-profile/' . $this->vchr_logo,'local');
-        }
-    }*/
+
+	public static function expiredUserCount()
+	{
+		return self::where('subscription_end_date','<',date('Y-m-d'))->count();
+	}
+
+	public static function activeUserCount()
+	{
+		return self::where('subscription_end_date','>=',date('Y-m-d'))->count();
+	}
+	
+	/*public static function userThisMonth()
+	{
+		return self::whereMonth('created_at',date('m'))->count();
+	}
+	
+	public static function userThisWeek()
+	{
+		$now = Carbon::now();
+		$weekStartDate = $now->startOfWeek();
+		$weekEndDate = $now->endOfWeek();
+		return self::whereBetween('created_at',[$weekStartDate,$weekEndDate])->count();
+	}
+*/
+
 }

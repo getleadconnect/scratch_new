@@ -6,6 +6,20 @@
     background-color: #cdeaf3 !important;
     color: #434547;
 }
+
+.w_chart {
+    font-size: 1em !important;
+}
+
+.w_chart canvas
+ {
+    position: absolute;
+    top: 9px !important;
+    left: 7px !important;
+    width: 60px !important;
+    height: 60px !important;
+}
+
 </style>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -119,7 +133,7 @@
   </div><!--end row-->
 
 <div class="row">
-  <div class="col-12 col-lg-8 d-flex">
+  <div class="col-12 col-lg-9 col-xl-9 col-xxl-9 d-flex">
 	<div class="card radius-10 w-100">
 	  <div class="card-body">
 		<div class="d-flex align-items-center">
@@ -142,7 +156,76 @@
 	</div>
   </div>
   
-  <div class="col-12 col-lg-4 d-flex">
+  
+  <div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
+  
+  <div class="card radius-10 w-100">
+	  <div class="card-body">
+		<div class="d-flex align-items-center">
+		  <h6 class="mb-0">Redeemed Analytics</h6>
+		</div>
+		<hr/>
+  
+
+		<div class="col">
+			  <div class="card radius-10">
+				<div class="card-body">
+				  <div class="d-flex align-items-center">
+					<div class="">
+					  <p class="mb-1">Total Scratch Customers</p>
+					  <h4 class="mb-0 text-primary">{{$pie['tot_count']}}</h4>
+					</div>
+					<div class="ms-auto">
+					  <div class="w_chart" id="chart18" data-percent="100">
+						<span class="w_percent" id="tot_percentage">100</span>
+					  <canvas height="110" width="110"></canvas></div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+				
+				<div class="col-12">
+				  <div class="card radius-10">
+					<div class="card-body">
+					  <div class="d-flex align-items-center">
+						<div class="">
+						  <p class="mb-1">Redeemed Customers (<b>Win</b>)</p>
+						  <h4 class="mb-0 text-success">{{$pie['win_count']}}</h4>
+						</div>
+						<div class="ms-auto">
+						  <div class="w_chart" id="chart19" data-percent="{{$pie['win_per']}}">
+							<span class="w_percent" id="win_percentage">{{$pie['win_per']}}</span>
+						  <canvas height="110" width="110"></canvas></div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<div class="col-12">
+				  <div class="card radius-10">
+					<div class="card-body">
+					  <div class="d-flex align-items-center">
+						<div class="">
+						  <p class="mb-1">Redeemed Customers (<b>Loss</b>)</p>
+						  <h4 class="mb-0 text-pink">{{$pie['los_count']}}</h4>
+						</div>
+						<div class="ms-auto">
+						  <div class="w_chart" id="chart17" data-percent="{{$pie['los_per']}}">
+							<span class="w_percent" id="los_percentage" >{{$pie['los_per']}}</span>
+						  <canvas height="110" width="110"></canvas></div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+	</div>
+  </div>
+  </div>
+  
+  <!--<div class="col-12 col-lg-4 d-flex">
 	<div class="card radius-10 w-100">
 	  <div class="card-body">
 		<div class="d-flex align-items-center">
@@ -160,17 +243,21 @@
 						</div>
 					</div>
 				</div>
-		   
-		   
+		   		   
 		</div>
 		<!-- content here -->
-	  </div>
-	</div>
+	 <!--</div>
+	</div> -->
+	
   </div>
 </div><!--end row-->
 
-			
 @push('scripts')
+
+<script src="{{url('assets/plugins/easyPieChart/jquery.easypiechart.js')}}"></script>
+<!--<script src="{{url('assets/plugins/apexcharts-bundle/js/apexcharts.min.js')}}"></script>-->
+<script src="{{url('assets/js/data-widgets.js')}}"></script>
+
 <script>
 
 </script>

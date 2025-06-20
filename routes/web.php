@@ -189,6 +189,9 @@ Route::controller(ScratchWebController::class)->group(function() {
 	Route::get('/redeem-scratch', 'redeemScratch')->name('redeem-scratch');
 	Route::post('/redeem-scratch-now', 'redeemScratchNow')->name('redeem-scratch-now');
 	
+	Route::get('/redeemed-customers', 'redeemedCustomers')->name('redeemed-customers');
+	Route::get('/view-redeemed-customers', 'viewRedeemedCustomers')->name('gview-redeemed-customers');
+	Route::post('/export-redeemed-customers-list', 'exportRedeemedCustomersList')->name('export-redeemed-customers-list');
 	
 });
 

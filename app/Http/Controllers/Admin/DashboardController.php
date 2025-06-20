@@ -49,9 +49,12 @@ class DashboardController extends Controller
 	$chart['user_year']=implode(",",$ur_year);
 	$chart['user_count']=implode(",",$ur_cnt);
 	//---------------------------------------------------
-	
+		
+	$data['usr_count']=User::totalUserCount();
+	$data['exp_count']=User::expiredUserCount();
+	$data['active_count']=User::activeUserCount();
 	  
-	 return view('admin.dashboard',compact('chart'));
+	 return view('admin.dashboard',compact('chart','data'));
   }	
   
  
