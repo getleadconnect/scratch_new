@@ -15,7 +15,7 @@
  {
     position: absolute;
     top: 9px !important;
-    left: 7px !important;
+    left: 8px !important;
     width: 60px !important;
     height: 60px !important;
 }
