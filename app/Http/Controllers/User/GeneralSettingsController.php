@@ -112,12 +112,19 @@ public function saveCrmApiToken(Request $request)
 	
 	$api_token=$request->crm_api_token;
 	$user_id=User::getVendorId();
-	
-	if(substr($api_token,0,3)!="gl_")
+	$len=strlen($api_token);
+		
+	if(substr($api_token,0,3)!="gl_" and ($len>23 or $len<23))
 	{
+		$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$user_id)->delete();
 		return response()->json(['msg'=>"Crm api token is invalid!",'status'=>false]);
 	}
-		
+	else if(substr($api_token,0,3)=="gl_" and ($len>23 or $len<23))
+	{
+		$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$user_id)->delete();
+		return response()->json(['msg'=>"Crm api token is invalid!",'status'=>false]);
+	}
+	
 	try{
 		$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$user_id)->first();
 		

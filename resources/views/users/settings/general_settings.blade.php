@@ -190,7 +190,6 @@ $(document).on('click','#otp_bypass',function()
 $(document).on('change','#crm_api_enabled_disabled',function()
 {
 	var status_value=$(this).val();
-	alert(status_value);
 			jQuery.ajax({
 			type: "POST",
 			url: "{{url('users/set-crm-api-status')}}",
@@ -239,6 +238,8 @@ var validate=$('#formAddToken').validate({
 			}
 			else
 			{
+				$("#api_enabled").html("Disabled");
+				$("#crm_api_enabled_disabled").prop('checked',false);
 				toastr.error(result.msg);
 			}
 		}

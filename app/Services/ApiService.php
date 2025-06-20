@@ -12,7 +12,7 @@ trait ApiService
   {	
 	try
 	{
-	$endpoint = "https://app.getlead.co.uk/api/gl-website-contacts";
+	$endpoint = "https://app.getleadcrm.com/api/gl-website-contacts";
 	$client = new \GuzzleHttp\Client();
 
 			$params=[

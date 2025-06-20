@@ -15,8 +15,13 @@ use App\Models\User;
 
 use App\Common\Variables;
 use App\Common\WhatsappSend;
-
 use App\Services\WhatsappService;
+
+use App\Models\Settings;
+//use App\Services\CrmApiService;
+use App\Jobs\SentCrmServiceJob;
+
+
 use Carbon\Carbon;
 use Hash;
 use Validator;
@@ -26,7 +31,9 @@ use Log;
 
 class HyundaiScratchController extends Controller
 {
-    /**
+    //use CrmApiService;
+	
+	/**
     * Display a listing of the resource.
     *
     * @return \Illuminate\Http\Response
@@ -408,13 +415,40 @@ public function scratchCustomer(Request $request)
 						'redeem_source'=>'app',
 						];
 				
-				$flag=ScratchWebCustomer::create($cust_data);
+				$customer=ScratchWebCustomer::create($cust_data);
 				
-				if($flag){
+				if($customer){
+					
+					//send data to crm -------------------------------
+						
+						/*try{
+							$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$vendor_id)->first();
+							if($sdt)
+							{
+								if($sdt->vchr_settings_value!="" and $sdt->int_status==1)
+								{
+									$data=[
+									  'token'=>trim($sdt->vchr_settings_value),
+									  'name'=>$customer->name,
+									  'email'=>$customer->email,
+									  'country_code'=>$customer->country_code,
+									  'mobileno'=>$customer->mobile,
+									  'source'=>'Gl-Scratch',
+									  //'company_name'	=>$customer->company_name,
+									];
+									dispatch(new SentCrmServiceJob($data));
+								}
+							}
+														
+						}Catch(\Exception $e)
+						{
+							\Log::info($e->getMessage());
+						}
+						*/
 
 						$offerlisting->int_scratch_offers_balance--;
 						$offerlisting->save();
-						return response()->json(['data'=>$flag,'message'=> 'Customer details added successfully','status' =>true]);
+						return response()->json(['data'=>$customer,'message'=> 'Customer details added successfully','status' =>true]);
 					}
 					else{
 						return response()->json(['message'=> 'Something wrong, Try later.!', 'status' => false]);
