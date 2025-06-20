@@ -251,8 +251,8 @@ Route::controller(UserProfileController::class)->group(function() {
 	Route::post('/change-password', 'changePassword')->name('change-password');
 });
 
-Route::controller(GeneralSettingsController::class)->group(function() {
-
+Route::controller(GeneralSettingsController::class)->group(function() 
+{
 	Route::get('/general-settings', 'index')->name('general-settings');
 	Route::post('/set-scratch-otp-enabled', 'setScratchOtpEnabled')->name('set-scratch-otp-enabled');
 	Route::get('/send-otp', 'sendWhatsappOtp')->name('send-top');

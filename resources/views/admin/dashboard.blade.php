@@ -50,7 +50,7 @@
                     <small class="mb-0"><i class="bi bi-arrow-up"></i> <span><a href="{{url('admin/users-list')}}">View Details</a></span></small>
                   </div>
                 </div>
-               </div>
+            </div>
 			   
 			   
 			<div class="col">
@@ -69,7 +69,7 @@
                     <small class="mb-0"><i class="bi bi-arrow-up"></i> <span><a href="{{url('admin/users-list')}}">View Details</a></span></small>
                   </div>
                 </div>
-               </div>
+            </div>
 
 			
 			<div class="col">

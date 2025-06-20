@@ -404,6 +404,7 @@ public function scratchCustomer(Request $request)
 						'type_id' => $request->type_id,
 						'offer_text' => $offerlisting->txt_description,
 						'win_status'=>$offerlisting->int_winning_status,
+						'redeem'=>0,
 						'redeem_source'=>'app',
 						];
 				
