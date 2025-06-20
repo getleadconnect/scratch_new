@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Facades\FileUpload;
 
 use App\Models\User;
@@ -52,7 +53,7 @@ class UserController extends Controller
 		{
             try
 			{
-   
+				
 				$data=[
 					'vchr_user_name'=>$request->user_name,
 					'email'=>$request->email,
@@ -70,7 +71,13 @@ class UserController extends Controller
 				
 				$result=User::create($data);
 				$user_id=$result->pk_int_user_id;
-
+				
+				//update unique id------------
+				$le=str::length($user_id);
+				$uniq_id="H".str_pad("0",(8-$le),'0').$user_id;
+				$res=User::where('pk_int_user_id',$user_id)->update(['unique_id'=>$uniq_id]);
+				//---------------
+				
 				$sdata=[
 					'vchr_settings_type'=>"scratch_otp_enabled",
 					'vchr_settings_value'=>"Enabled",

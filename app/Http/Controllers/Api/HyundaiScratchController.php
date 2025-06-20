@@ -322,9 +322,12 @@ class HyundaiScratchController extends Controller
 /**
     * to set scratch customer details.
     * Method: POST
-	* Parms: user_id (int),campaign_id (int), customer_name (string), country_code (string), mobile_no (string), type_id (int), 
+	* Parms: user_id (int),vin_number (string), campaign_id (int), customer_name (string), country_code (string), mobile_no (string), type_id (int), 
 		optional parameters ( bill_no (string/null), email (string/null) )
     * @return \Illuminate\Http\Response
+	
+	* vin_number add to bill_no field
+	
     */	
 
 public function scratchCustomer(Request $request)
@@ -332,6 +335,7 @@ public function scratchCustomer(Request $request)
 
         $rule = [
             'user_id' => 'required',
+			'vin_number'=>'required',
             'campaign_id' => 'required',
             'customer_name' => 'required',
 			'country_code' => 'required|numeric',
@@ -352,8 +356,7 @@ public function scratchCustomer(Request $request)
 			{
                return response()->json(['message'=> 'User Not Found', 'status' => false]); 
 			}
-			
-			
+
             try
             {
 				$mobile=$request->country_code.$request->mobile_no;
@@ -384,10 +387,11 @@ public function scratchCustomer(Request $request)
 				$offerlisting = ScratchOffersListing::where('fk_int_scratch_offers_id',$request->campaign_id)
 													->where('pk_int_scratch_offers_listing_id',$request->offer_listing_id)
 													->first();
+													
 				$bill_no=$email=$branch_id=null;
 				
 				if($request->has('bill_no'))
-					$bill_no=$request->bill_no;
+					$bill_no=$request->vin_number;
 				
 				if($request->has('email'))
 					$email=$request->email;

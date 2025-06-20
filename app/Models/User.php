@@ -41,7 +41,7 @@ class User extends Authenticatable implements JWTSubject
     protected $dates = ['deleted_at'];
 	
 	protected $fillable = [
-        'vchr_user_name', 'countrycode', 'mobile', 'email','company_name', 'location','address','vchr_user_mobile', 
+        'unique_id','vchr_user_name', 'countrycode', 'mobile', 'email','company_name', 'location','address','vchr_user_mobile', 
 		'password','int_status','int_role_id','vchr_user_imei', 'datetime_last_login', 'int_module', 'int_registration_from',
 		'int_is_emergency_account', 'vchr_logo', 'designation_id', 'rank','parent_user_id', 'reward', 'is_co_admin',
 		'calling_method', 'enquiry_display_fields', 'extension','web_notification','employee_code','time_zone',
