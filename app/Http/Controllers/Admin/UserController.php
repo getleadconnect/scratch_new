@@ -74,7 +74,7 @@ class UserController extends Controller
 				
 				//update unique id------------
 				$le=str::length($user_id);
-				$uniq_id="H".str_pad("0",(8-$le),'0').$user_id;
+				$uniq_id="DS".str_pad("0",(8-$le),'0').$user_id;
 				$res=User::where('pk_int_user_id',$user_id)->update(['unique_id'=>$uniq_id]);
 				//---------------
 				
