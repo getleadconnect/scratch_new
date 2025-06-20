@@ -162,7 +162,7 @@
   <div class="card radius-10 w-100">
 	  <div class="card-body">
 		<div class="d-flex align-items-center">
-		  <h6 class="mb-0">Redeemed Analytics</h6>
+		  <h6 class="mb-0">Analytics</h6>
 		</div>
 		<hr/>
   
