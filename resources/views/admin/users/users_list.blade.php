@@ -80,6 +80,7 @@
                                <thead class="thead-semi-dark">
                                  <tr>
 									<th>SlNo</th>
+									<th>Unique Id</th>
 									<th>Name</th>
 									<th>Mobile</th>
 									<th>Email</th>
@@ -336,7 +337,7 @@ var table = $('#datatable').DataTable({
 
         columns: [
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
-			
+			{"data": "unique_id" },
 			{"data": "name" },
 			{"data": "mobile" },
 			{"data": "email" },

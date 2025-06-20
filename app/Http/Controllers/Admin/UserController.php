@@ -119,6 +119,12 @@ class UserController extends Controller
 		->addColumn('name', function ($row) {
 			return '<a href="'.route('admin.user-profile',$row->pk_int_user_id).'" style="font-weight:500;">'.strtoupper($row->vchr_user_name).'</a>';
         })
+		
+		->addColumn('unique_id', function ($row) {
+            
+			return $row->unique_id??"--";
+        })
+		
 		->addColumn('status', function ($row) {
             if ($row->int_status==1) {
                 $status='<span class="badge rounded-pill bg-success">Active</span>';
@@ -168,6 +174,7 @@ class UserController extends Controller
 			
 			return $dt;
         })
+		
 		
         ->addColumn('action', function ($row)
         {
