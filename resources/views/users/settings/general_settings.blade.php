@@ -238,6 +238,7 @@ var validate=$('#formAddToken').validate({
 			}
 			else
 			{
+				$("#crm_api_token").val('');
 				$("#api_enabled").html("Disabled");
 				$("#crm_api_enabled_disabled").prop('checked',false);
 				toastr.error(result.msg);
