@@ -191,7 +191,7 @@
 					<div class="card-body">
 					  <div class="d-flex align-items-center">
 						<div class="">
-						  <p class="mb-1">Redeemed Customers (<b>Win</b>)</p>
+						  <p class="mb-1">Scratch Customers (<b>Win</b>)</p>
 						  <h4 class="mb-0 text-success">{{$pie['win_count']}}</h4>
 						</div>
 						<div class="ms-auto">
@@ -209,7 +209,7 @@
 					<div class="card-body">
 					  <div class="d-flex align-items-center">
 						<div class="">
-						  <p class="mb-1">Redeemed Customers (<b>Loss</b>)</p>
+						  <p class="mb-1">Scratch Customers (<b>Loss</b>)</p>
 						  <h4 class="mb-0 text-pink">{{$pie['los_count']}}</h4>
 						</div>
 						<div class="ms-auto">
