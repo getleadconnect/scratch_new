@@ -3,7 +3,9 @@
     <!--begin::Aside Top-->
     <div class="d-flex flex-column-auto flex-column">
         <div class="container">
-            <div class="logo-sec"><img style="width: 45%;" src="{{url('onboarding/assets/media/logo.svg')}}"></div>
+            <div class="logo-sec">
+			<a href="https://getleadcrm.com/"><img style="width: 45%;" src="{{url('onboarding/assets/media/logo.svg')}}"></a>
+			</div>
         <div class="owl-carousel owl-theme">
             <div class="item">
                 <img style="width : 380px;" src="{{url('onboarding/assets/media/leads.svg')}}">

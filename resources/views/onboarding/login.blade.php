@@ -20,15 +20,17 @@
 				<!--begin::Signin-->
 				<div class="login-form login-signin main-login">
 					<!--begin::Form-->
-					<form class="form" method="post"  action="{{route('user-login')}}"  name="loginForm"> <!--id="kt_login_signin_form"-->
+					
+						<div class="pb-5 pt-lg-0 pt-5 mx-auto">
+							<img class="logo-mob" src="{{url('onboarding/assets/media/mob-logo.svg')}}" width="80%">
+						
+							<h3 class="sign-title"><span style="color:#ee3448;">GL</span>-SCRATCH</h3>
+							<p class="pt-10" style="font-size:16px;" > Log in to your account</p> 
+						</div>
+						
+						<form class="form" method="post"  action="{{route('user-login')}}"  name="loginForm"> <!--id="kt_login_signin_form"-->
 						<!--begin::Title-->
 						@csrf
-						<div class="pb-13 pt-lg-0 pt-5 mx-auto">
-							<img class=" logo-mob" src="{{url('onboarding/assets/media/mob-logo.svg')}}" width="80%">
-						
-							<h3 class="sign-title">Login to your account!</h3>
-							{{-- <p class="pt-5"> Log in to your account</p> --}}
-						</div>
 						<!--begin::Title-->
 						<!--begin::Form group-->
 							<div class="form-group form-feild-row  country-code-row text-left position-relative">
