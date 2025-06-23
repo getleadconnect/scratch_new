@@ -33,7 +33,8 @@ class ScratchWebController extends Controller
 
     public function getWebCustomers(Request $request)
     {
-			
+		
+		
         $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent','scratch_branches.branch_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
@@ -207,6 +208,34 @@ public function getAppCustomers(Request $request)
     }
 		
 
-	
+
+	public function getBranches($user_id)
+	{
+		$branches=ScratchBranch::where('vendor_id',$user_id)->get();
+		$opt="<option value=''> Select Branch </option>";
+		if($branches)
+		{
+			foreach($branches as $row)
+			{
+				$opt.="<option value='".$row->id."'>".$row->branch_name."</option>";
+			}
+		}
+		return $opt;
+	}
+
+
+	public function getOffers($user_id)
+	{
+		$offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
+		$opt="<option value=''> Select Campaign </option>";
+		if($offers)
+		{
+			foreach($offers as $row)
+			{
+				$opt.="<option value='".$row->pk_int_scratch_offers_id."'>".$row->vchr_scratch_offers_name."</option>";
+			}
+		}
+		return $opt;
+	}
 	
 }

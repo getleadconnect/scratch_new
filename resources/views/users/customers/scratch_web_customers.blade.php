@@ -12,7 +12,18 @@
 .td-desc
 {
 	width:30%;
-}						
+}				
+
+.select2-selection--single
+{
+	height: 38px !important;
+    border: 1px solid #dfdbdb !important;
+    padding: 3px 3px !important;		
+}
+.select2-selection__arrow
+{
+	margin-top:4px;
+}
 </style>
 
 		<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -225,6 +236,9 @@
 
 BASE_URL ={!! json_encode(url('/')) !!}
 
+$("#branch").select2();
+$("#campaign").select2();
+
 
 var table1 = $('#datatable').DataTable({
         processing: true,
@@ -330,6 +344,7 @@ $("#btn-filter").click(function()
 });
 
 
+
 $('#datatable').on('click', '.scratch-web-redeem', function (event) {
            event.preventDefault();
            var customer_id = $(this).attr('customer-id');
@@ -371,6 +386,16 @@ $('#datatable').on('click', '.scratch-web-redeem', function (event) {
 				  }
 				});
        });
+
+
+$(document).on('click','#btn-clear-filter',function()
+{
+	
+	location.reload();
+
+
+});
+
 
 /*
 

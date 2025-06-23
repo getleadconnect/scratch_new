@@ -12,7 +12,17 @@
 .td-desc
 {
 	width:30%;
-}						
+}				
+.select2-selection--single
+{
+	height: 38px !important;
+    border: 1px solid #dfdbdb !important;
+    padding: 3px 3px !important;		
+}
+.select2-selection__arrow
+{
+	margin-top:4px;
+}		
 </style>
 
 		<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -50,8 +60,7 @@
                         <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" >
                          <div class="accordion-body">
 						  <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>
-						  
-						  
+
 						  <form method="POST" id="export_redeem_history"  action="{{url('admin/export-customers-list')}}" enctype="multipart/form-data" >
 							@csrf 
 						  
@@ -71,12 +80,12 @@
 								<select id="user_id" name="user_id" class="form-control" >
                                  <option value="">Select User</option>
                                  @foreach($users as $usr)
-                                 <option value="{{ $usr->id }}">{{ $usr->vchr_user_name }}</option>
+                                 <option value="{{ $usr->pk_int_user_id }}">{{ $usr->vchr_user_name }}</option>
                                  @endforeach
 								</select>
 							</div>
 							
-							<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+							<div class="col-3 col-lg-3 col-xl-3 col-xxl-3">
 								<label>Branch</label>
 								<select id="branch" name="branch" class="form-control" >
                                  <option value="">Select Branch</option>
@@ -105,7 +114,7 @@
 
 						   </div>
 
-						   </form>
+						  </form>
 						   
 						</div>
 					  </div>
@@ -204,10 +213,8 @@
 						  
 						  </div>
 					  </div>
-
-					  
+				  
                         <!--<div class="card-body">-->
-                          
 
                        <!-- </div>-->
                       </div> 
@@ -235,6 +242,9 @@
 <script>
 
 BASE_URL ={!! json_encode(url('/')) !!}
+
+$("#branch").select2();
+$("#campaign").select2();
 
 
 var table1 = $('#datatable').DataTable({
@@ -329,7 +339,6 @@ var table2 = $('#datatable_app').DataTable({
 });
 
 
-
 $("#btn-filter").click(function()
 {
 	$('#datatable').DataTable().ajax.reload(function (json) {
@@ -337,10 +346,44 @@ $("#btn-filter").click(function()
 	});
 	
 	$('#datatable_app').DataTable().ajax.reload(function (json) {
-		$("#app_count").html(json.recordsTotal);
+	$("#app_count").html(json.recordsTotal);
 	});
 
 });
+
+
+$(document).on('change','#user_id',function()
+{
+	var usr_id=$(this).val();
+
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('admin/get-branches')}}"+"/"+usr_id,
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(data)
+			{
+			   $("#branch").html(data);
+			}
+		});
+
+			jQuery.ajax({
+			type: "GET",
+			url: "{{url('admin/get-offers')}}"+"/"+usr_id,
+			dataType: 'html',
+			//data: {vid: vid},
+			success: function(data)
+			{
+			   $("#campaign").html(data);
+			}
+		});
+});
+
+$(document).on('click','#btn-clear-filter',function()
+{
+	location.reload();
+});
+
 
 /*
 

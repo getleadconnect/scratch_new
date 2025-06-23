@@ -41,6 +41,7 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
 <link href="{{ url('assets/intl-tel-input17.0.3/intlTelInput.min.css')}}" rel="stylesheet"/>
+<link href="{{ url('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet"/>
 
   <title>GL-Scratch</title>
 </head>
@@ -221,6 +222,7 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
    
    <script src="{{url('assets/intl-tel-input17.0.3/intlTelInput.min.js')}}"></script>
+   <script src="{{ url('assets/plugins/select2/js/select2.min.js')}}"></script>
  <!--<script>
     new PerfectScrollbar(".best-product")
  </script>-->
