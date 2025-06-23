@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
+use App\Facades\FileUpload;
 
 use App\Models\ScratchBranch;
 use App\Models\ScratchWebCustomer;
@@ -350,6 +351,9 @@ class GetleadScratchController extends Controller
         }
 		
             $vendor_id = User::getVendorIdApi($request->user_id);
+			
+			$otp_verify_status=Variables::getScratchBypass($vendor_id);
+			
             $user = User::active()->where('pk_int_user_id', $vendor_id)->first();
             
 			if(!$user)
@@ -421,10 +425,16 @@ class GetleadScratchController extends Controller
 				
 				$flag=ScratchWebCustomer::create($cust_data);
 				
+				if($otp_verify_status=="Disabled")
+					$customer->otp_verify_status="Disabled";
+				else
+					$customer->otp_verify_status="Enabled";
+				
 				if($flag){
 
-						$offerlisting->int_scratch_offers_balance--;
-						$offerlisting->save();
+						//$offerlisting->int_scratch_offers_balance--;
+						//$offerlisting->save();
+						
 						return response()->json(['data'=>$flag,'message'=> 'Customer details added successfully','status' =>true]);
 					}
 					else{
@@ -439,4 +449,90 @@ class GetleadScratchController extends Controller
         
     }
 	
+	
+	 /**
+	* to scratch the card.
+	* Method: POST
+	* Parms: customer_id (int)
+	* @return Response - customer offer details
+	*/	
+	
+public function getScratch(Request $request)
+{
+	
+	$customer = ScratchWebCustomer::find($request->customer_id);
+	
+	if($customer)
+	{
+		if($customer->reedeem==1)
+		{
+			return response()->json(['msg' => "Sorry, Already redeemed this offer.!", 'status' => false]);
+			
+		}
+
+		$vendor_id = User::getVendorIdApi($customer->user_id);
+		
+		$customer->status = ScratchWebCustomer::SCRATCHED;
+		$uniqueId = $customer->unique_id;
+		$offetText = $customer->offer_text;
+
+		$offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->where('int_scratch_offers_balance','>', '0')->first();
+		
+		if($offerListing){
+			$offerListing->int_scratch_offers_balance--;
+			$offerListing->save();
+			
+			/*$sl=ShortLink::where('code',$customer->short_code)->first();
+			if($sl->link_type=="Multiple")
+			{
+				$sl->status=0;
+				$sl->save();
+			}*/
+		}
+
+		$flag = $customer->save();
+		
+		//send data to crm -------------------------------
+					
+			/*try{
+				$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$vendor_id)->first();
+				if($sdt)
+				{
+					if($sdt->vchr_settings_value!="" and $sdt->int_status==1)
+					{
+						$data=[
+						  'token'=>trim($sdt->vchr_settings_value),
+						  'name'=>$customer->name,
+						  'email'=>$customer->email,
+						  'country_code'=>$customer->country_code,
+						  'mobileno'=>$customer->mobile,
+						  'source'=>'Gl-Scratch',
+						  //'company_name'	=>$customer->company_name,
+						];
+						dispatch(new SentCrmServiceJob($data));
+					}
+				}
+											
+			}Catch(\Exception $e)
+			{
+				\Log::info($e->getMessage());
+			}
+			*/
+
+		$offerListing->customer_id = $customer->id;
+		$offerListing->unique_id = $uniqueId;
+		$offerListing->customer_name = $customer->name;
+		$offerListing['image'] = FileUpload::viewFile($offerListing->image,'local');
+				
+		if ($flag) {
+			return response()->json(['msg' => "Success", 'offer' => $offerListing,'status' => true]);
+		}
+		return response()->json(['msg' => "Sorry Somthing Went Wrong .!! Try again", 'status' => false]);
+	}
+	else
+	{
+		return response()->json(['msg' => "Sorry, customer details were not found.!", 'status' => false]);
+	}
+}
+
 }

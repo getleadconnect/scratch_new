@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Facades\FileUpload;
 
 use App\Models\ScratchBranch;
 use App\Models\ScratchWebCustomer;
@@ -12,12 +13,12 @@ use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
 use App\Models\UserOtp;
 use App\Models\User;
+use App\Models\Settings;
 
 use App\Common\Variables;
 use App\Common\WhatsappSend;
 use App\Services\WhatsappService;
 
-use App\Models\Settings;
 //use App\Services\CrmApiService;
 use App\Jobs\SentCrmServiceJob;
 
@@ -290,33 +291,33 @@ class HyundaiScratchController extends Controller
     */	
 	
 	
-    public function getBranches(){
-        $rule=[ 
-            'user_id' => 'required',
-            ];
-    
-            $validator = Validator::make(request()->all(),$rule);
-            if ($validator->passes()) 
-            {
-                $userid=User::getVendorIdApi(request('user_id'));
-                try
-                {
-                    $branches = ScratchBranch::where('scratch_branches.vendor_id', $userid)->where('scratch_branches.status',ScratchBranch::ACTIVATE)
-                                        ->select('scratch_branches.id','scratch_branches.branch_name')->groupBy('id','scratch_branches.branch_name')
-                                        ->get();
-                
-                    if($branches->isEmpty()){
-                        return response()->json(['message'=> 'No Branches Available Now ...','status' => 'fail','branches'=>$branches]);
-                    }
-                    
-                    return response()->json(['message'=> 'Successfully listed','branches'=>$branches,'status' => 'success']);
-                }catch(\Exception $e){
-                    return response()->json(['message'=>$e->getMessage(), 'status' => 'fail']);
-                }
-            }else{     
-                return response()->json(['message'=>$validator->messages(), 'status' => 'fail']);
-            }
-    }
+public function getBranches(){
+	$rule=[ 
+		'user_id' => 'required',
+		];
+
+		$validator = Validator::make(request()->all(),$rule);
+		if ($validator->passes()) 
+		{
+			$userid=User::getVendorIdApi(request('user_id'));
+			try
+			{
+				$branches = ScratchBranch::where('scratch_branches.vendor_id', $userid)->where('scratch_branches.status',ScratchBranch::ACTIVATE)
+									->select('scratch_branches.id','scratch_branches.branch_name')->groupBy('id','scratch_branches.branch_name')
+									->get();
+			
+				if($branches->isEmpty()){
+					return response()->json(['message'=> 'No Branches Available Now ...','status' => 'fail','branches'=>$branches]);
+				}
+				
+				return response()->json(['message'=> 'Successfully listed','branches'=>$branches,'status' => 'success']);
+			}catch(\Exception $e){
+				return response()->json(['message'=>$e->getMessage(), 'status' => 'fail']);
+			}
+		}else{     
+			return response()->json(['message'=>$validator->messages(), 'status' => 'fail']);
+		}
+}
 	
 	
 /**
@@ -333,136 +334,236 @@ class HyundaiScratchController extends Controller
 public function scratchCustomer(Request $request)
  {
 
-        $rule = [
-            'user_id' => 'required',
-			'vin_number'=>'required',
-            'campaign_id' => 'required',
-            'customer_name' => 'required',
-			'country_code' => 'required|numeric',
-            'mobile_no' => 'required|numeric|digits_between:8,14',
-            'type_id'=>'required',
-        ];
+	$rule = [
+		'user_id' => 'required',
+		'vin_number'=>'required',
+		'campaign_id' => 'required',
+		'customer_name' => 'required',
+		'country_code' => 'required|numeric',
+		'mobile_no' => 'required|numeric|digits_between:8,14',
+		'type_id'=>'required',
+	];
 
-        $validator = Validator::make($request->all(),$rule);
-        if ($validator->fails()) 
-        {
-            return response()->json(['message'=>$validator->messages(), 'status' => false]);
-        }
+	$validator = Validator::make($request->all(),$rule);
+	if ($validator->fails()) 
+	{
+		return response()->json(['message'=>$validator->messages(), 'status' => false]);
+	}
+	
+	$vendor_id = User::getVendorIdApi($request->user_id);
+	
+	$otp_verify_status=Variables::getScratchBypass($vendor_id);
+	
+	$user = User::active()->where('pk_int_user_id', $vendor_id)->first();
+	
+	if(!$user)
+	{
+	   return response()->json(['message'=> 'User Not Found', 'status' => false]); 
+	}
+
+	try
+	{
+		$mobile=$request->country_code.$request->mobile_no;
 		
-            $vendor_id = User::getVendorIdApi($request->user_id);
-            $user = User::active()->where('pk_int_user_id', $vendor_id)->first();
-            
-			if(!$user)
+		if(!$request->has('bill_no'))
 			{
-               return response()->json(['message'=> 'User Not Found', 'status' => false]); 
+				$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
+				if($check_mob){
+					return response()->json(['msg' => "You already scratched with this mobile number. Please try with other.", 'status' => false]);
+				}
 			}
+			
+		if($request->has('bill_no'))
+		{
+			$check_bill = ScratchWebCustomer::where('bill_no', $request->bill_no)->where('user_id',$vendor_id)->first();
+			if($check_bill)
+			{
+				return response()->json(['msg' => "You already scratched with this bill number. Please try with other.", 'status' => false]);
+			}
+		}
 
-            try
-            {
-				$mobile=$request->country_code.$request->mobile_no;
+		do {
+			$uniqueId = 'GA' . strtoupper(substr(uniqid(), 8));
+			$unique_flag = ScratchWebCustomer::where('unique_id', $uniqueId)->exists();
+		} while ($unique_flag);
+		
+		$offer = ScratchOffer::find($request->campaign_id);
+		/*$offerlisting = ScratchOffersListing::where('fk_int_scratch_offers_id',$request->campaign_id)
+											->where('pk_int_scratch_offers_listing_id',$request->offer_listing_id)
+											->first();
+		*/
+
+		$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->campaign_id)
+				  ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
+				  ->inRandomOrder()->first();
+											
+		$bill_no=$email=$branch_id=null;
+		
+		if($request->has('bill_no'))
+			$bill_no=$request->vin_number;
+		
+		if($request->has('email'))
+			$email=$request->email;
+		
+		if($request->has('branch_id'))
+			$branch_id=$request->branch_id;
+
+		$cust_data=[
+				'user_id' => $vendor_id,
+				'unique_id' => $uniqueId,
+				'name' => $request->customer_name,
+				'country_code' => $request->country_code,
+				'mobile' => $request->mobile_no,
+				'vchr_mobile' => $mobile,
+				'email' => $email??null,
+				'branch_id' => $branch_id??null,
+				'bill_no' => $bill_no??null,
+				'offer_id' => $request->campaign_id,
+				'offer_list_id' => $offerlisting->pk_int_scratch_offers_listing_id,
+				'status' => 0,
+				'type_id' => $request->type_id,
+				'offer_text' => $offerlisting->txt_description,
+				'win_status'=>$offerlisting->int_winning_status,
+				'redeem'=>0,
+				'redeem_source'=>'app',
+				];
+
+		$customer=ScratchWebCustomer::create($cust_data);
+		
+		if($otp_verify_status=="Disabled")
+			$customer->otp_verify_status="Disabled";
+		else
+			$customer->otp_verify_status="Enabled";
+						
+		if($customer){
+			
+			//send data to crm -------------------------------
 				
-				if(!$request->has('bill_no'))
+				/*try{
+					$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$vendor_id)->first();
+					if($sdt)
 					{
-						$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
-						if($check_mob){
-							return response()->json(['msg' => "You already Scratched with this mobile number. Please try with other.", 'status' => false]);
+						if($sdt->vchr_settings_value!="" and $sdt->int_status==1)
+						{
+							$data=[
+							  'token'=>trim($sdt->vchr_settings_value),
+							  'name'=>$customer->name,
+							  'email'=>$customer->email,
+							  'country_code'=>$customer->country_code,
+							  'mobileno'=>$customer->mobile,
+							  'source'=>'Gl-Scratch',
+							  //'company_name'	=>$customer->company_name,
+							];
+							dispatch(new SentCrmServiceJob($data));
 						}
 					}
-					
-				if($request->has('bill_no'))
+												
+				}Catch(\Exception $e)
 				{
-					$check_bill = ScratchWebCustomer::where('bill_no', $request->bill_no)->where('user_id',$vendor_id)->first();
-					if($check_bill)
+					\Log::info($e->getMessage());
+				}
+				*/
+
+				//$offerlisting->int_scratch_offers_balance--;
+				//$offerlisting->save();
+
+				return response()->json(['data'=>$customer,'message'=> 'Customer details added successfully','status' =>true]);
+			}
+			else{
+				return response()->json(['message'=> 'Something wrong, Try later.!', 'status' => false]);
+			}  
+	}				
+	catch(\Exception $e){
+		Log::info("Scratch API Error");
+		Log::info($e->getMessage());
+		return response()->json(['message'=>$e->getMessage(), 'status' => false]);
+	}
+}
+	
+  /**
+	* to scratch the card.
+	* Method: POST
+	* Parms: customer_id (int)
+	* @return Response - customer offer details
+	*/	
+	
+public function getScratch(Request $request)
+{
+	
+	$customer = ScratchWebCustomer::find($request->customer_id);
+
+	if($customer)
+	{
+		if($customer->reedeem==1)
+		{
+			return response()->json(['msg' => "Sorry, Already redeemed this offer.!", 'status' => false]);
+			
+		}
+
+		$vendor_id = User::getVendorIdApi($customer->user_id);
+		
+		$customer->status = ScratchWebCustomer::SCRATCHED;
+		$uniqueId = $customer->unique_id;
+		$offetText = $customer->offer_text;
+
+		$offerListing = ScratchOffersListing::where('pk_int_scratch_offers_listing_id', $customer->offer_list_id)->where('int_scratch_offers_balance','>', '0')->first();
+		
+		if($offerListing){
+			$offerListing->int_scratch_offers_balance--;
+			$offerListing->save();
+			
+			/*$sl=ShortLink::where('code',$customer->short_code)->first();
+			if($sl->link_type=="Multiple")
+			{
+				$sl->status=0;
+				$sl->save();
+			}*/
+		}
+
+		$flag = $customer->save();
+		
+		//send data to crm -------------------------------
+					
+			/*try{
+				$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$vendor_id)->first();
+				if($sdt)
+				{
+					if($sdt->vchr_settings_value!="" and $sdt->int_status==1)
 					{
-						return response()->json(['msg' => "You already Scratched with this bill number. Please try with other.", 'status' => false]);
+						$data=[
+						  'token'=>trim($sdt->vchr_settings_value),
+						  'name'=>$customer->name,
+						  'email'=>$customer->email,
+						  'country_code'=>$customer->country_code,
+						  'mobileno'=>$customer->mobile,
+						  'source'=>'Gl-Scratch',
+						  //'company_name'	=>$customer->company_name,
+						];
+						dispatch(new SentCrmServiceJob($data));
 					}
 				}
+											
+			}Catch(\Exception $e)
+			{
+				\Log::info($e->getMessage());
+			}
+			*/
 
-				do {
-					$uniqueId = 'GA' . strtoupper(substr(uniqid(), 8));
-					$unique_flag = ScratchWebCustomer::where('unique_id', $uniqueId)->exists();
-				} while ($unique_flag);
+		$offerListing->customer_id = $customer->id;
+		$offerListing->unique_id = $uniqueId;
+		$offerListing->customer_name = $customer->name;
+		$offerListing['image'] = FileUpload::viewFile($offerListing->image,'local');
 				
-				$offer = ScratchOffer::find($request->campaign_id);
-				$offerlisting = ScratchOffersListing::where('fk_int_scratch_offers_id',$request->campaign_id)
-													->where('pk_int_scratch_offers_listing_id',$request->offer_listing_id)
-													->first();
-													
-				$bill_no=$email=$branch_id=null;
-				
-				if($request->has('bill_no'))
-					$bill_no=$request->vin_number;
-				
-				if($request->has('email'))
-					$email=$request->email;
-				
-				if($request->has('branch_id'))
-					$branch_id=$request->branch_id;
+		if ($flag) {
+			return response()->json(['msg' => "Success", 'offer' => $offerListing,'status' => true]);
+		}
+		return response()->json(['msg' => "Sorry Somthing Went Wrong .!! Try again", 'status' => false]);
+	}
+	else
+	{
+		return response()->json(['msg' => "Sorry, customer details were not found.!", 'status' => false]);
+	}
+}
 
-				$cust_data=[
-						'user_id' => $vendor_id,
-						'unique_id' => $uniqueId,
-						'name' => $request->customer_name,
-						'country_code' => $request->country_code,
-						'mobile' => $request->mobile_no,
-						'vchr_mobile' => $mobile,
-						'email' => $email??null,
-						'branch_id' => $branch_id??null,
-						'bill_no' => $bill_no??null,
-						'offer_id' => $request->campaign_id,
-						'offer_list_id' => $request->offer_listing_id,
-						'status' => 1,
-						'type_id' => $request->type_id,
-						'offer_text' => $offerlisting->txt_description,
-						'win_status'=>$offerlisting->int_winning_status,
-						'redeem'=>0,
-						'redeem_source'=>'app',
-						];
-				
-				$customer=ScratchWebCustomer::create($cust_data);
-				
-				if($customer){
-					
-					//send data to crm -------------------------------
-						
-						/*try{
-							$sdt=Settings::where('vchr_settings_type','crm_api_token')->where('fk_int_user_id',$vendor_id)->first();
-							if($sdt)
-							{
-								if($sdt->vchr_settings_value!="" and $sdt->int_status==1)
-								{
-									$data=[
-									  'token'=>trim($sdt->vchr_settings_value),
-									  'name'=>$customer->name,
-									  'email'=>$customer->email,
-									  'country_code'=>$customer->country_code,
-									  'mobileno'=>$customer->mobile,
-									  'source'=>'Gl-Scratch',
-									  //'company_name'	=>$customer->company_name,
-									];
-									dispatch(new SentCrmServiceJob($data));
-								}
-							}
-														
-						}Catch(\Exception $e)
-						{
-							\Log::info($e->getMessage());
-						}
-						*/
-
-						$offerlisting->int_scratch_offers_balance--;
-						$offerlisting->save();
-						return response()->json(['data'=>$customer,'message'=> 'Customer details added successfully','status' =>true]);
-					}
-					else{
-						return response()->json(['message'=> 'Something wrong, Try later.!', 'status' => false]);
-					}  
-			}				
-            catch(\Exception $e){
-                Log::info("Scratch API Error");
-                Log::info($e->getMessage());
-                return response()->json(['message'=>$e->getMessage(), 'status' => false]);
-            }
-    }
-    
+	
 }
