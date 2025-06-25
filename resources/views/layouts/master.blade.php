@@ -56,7 +56,7 @@
 <body class="pace-done">
 
   <!--start wrapper-->
-  <div class="wrapper">
+  <div class="wrapper toggled">
     <!--start top header-->
       <header class="top-header">        
         <nav class="navbar navbar-expand gap-3">
@@ -230,6 +230,16 @@
 @stack('scripts')
 
 <script>
+
+$(document).ready(function()
+{
+	$(".simplebar-wrapper").hover(function()
+		{
+		$(".wrapper").addClass("sidebar-hovered");
+		}, function(){
+		$(".wrapper").removeClass("sidebar-hovered");
+	});
+});
 
 //
 $("form#changePass").submit(function(e)
