@@ -34,13 +34,11 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-
 Route::controller(LoginController::class)->group(function() {
 	Route::get('/login', 'showLoginForm')->name('login');
 	Route::post('/login', 'userLogin')->name('user-login');
 	Route::post('/logout', 'logout')->name('logout');
 });
-
 
 
 Route::controller(ForgotPasswordController::class)->group(function() {
@@ -54,7 +52,6 @@ Route::get('change-user-password','changeUserPassword')->name('change-user-passw
 Route::post('update-user-password','updateUserPassword')->name('update-user-password');  
 
 });
-
 
 
 Route::group(['prefix'=>'shops','as'=>'shops.','middleware' => 'authware'], function()
@@ -78,7 +75,6 @@ Route::controller(CustomersHistoryController::class)->group(function() {
 });
 
 });
-
 
 
 Route::group(['prefix'=>'users','as'=>'users.','middleware' => 'authware'], function()

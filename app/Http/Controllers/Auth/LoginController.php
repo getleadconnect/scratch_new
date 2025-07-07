@@ -60,7 +60,9 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
+
         $ip = Common::getIp();
+		
         //$ip="144.25.10.2";
         if($ip){
             $data = \Location::get($ip);
@@ -71,7 +73,8 @@ class LoginController extends Controller
             } 
         }else{
         $countryCode = "IN";
-      }      
+      } 
+
     return view('onboarding.login', compact('countryCode'));
     }
 

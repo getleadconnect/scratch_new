@@ -77,7 +77,13 @@
               <div class="dropdown dropdown-user-setting">
                 <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                   <div class="user-setting d-flex align-items-center gap-2">
-                    <img src="{{url('assets/images/logos/gl-logo.svg')}}" class="user-img" alt="" >
+				  
+					@if(Auth::user()->vchr_logo!="")
+						<img src="{{url('uploads').Auth::user()->vchr_logo}}" class="user-img" alt="" >
+					@else
+						<img src="{{url('assets/images/logos/gl-logo.svg')}}" class="user-img" alt="" >
+					@endif
+					
                     <div class="d-none d-sm-block">
                        <p class="user-name mb-0">{{Auth::user()->vchr_user_name}}</p>
                     </div>
