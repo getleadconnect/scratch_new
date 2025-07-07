@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\ScratchWebCustomer;
 use App\Models\ScratchOffer;
+use App\Models\ScratchOffersListing;
 use App\Models\ScratchBranch;
 use App\Models\User;
 
@@ -243,8 +244,13 @@ public function getAppCustomers(Request $request)
 		}
 		
 		$cust=$cust1->first();
-		
-		return View('users.customers.redeem_customer_detail',compact('cust'));
+		$offer_pic="";
+		if(!empty($cust))
+		{
+			$offer_pic=ScratchOffersListing::where('pk_int_scratch_offers_listing_id',$cust->offer_list_id)->pluck('image')->first();
+		}
+
+		return View('users.customers.redeem_customer_detail',compact('cust','offer_pic'));
 		
 	}
 	

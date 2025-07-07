@@ -121,6 +121,7 @@ class DashboardController extends Controller
 	
 	$pie['tot_cust']=$tc_count;
 	
+	//check division by zero
 	if($twin_count!=0 and $tc_count!=0){	$pie['win_per']=($twin_count/$tc_count)*100; }else { $pie['win_per']=0;}
 	if($tlos_count!=0 and $tc_count!=0){	$pie['los_per']=($tlos_count/$tc_count)*100; }else { $pie['los_per']=0;}
 	
@@ -131,7 +132,6 @@ class DashboardController extends Controller
 	return view('users.dashboard',compact('tot_count','used_count','bal_count','sub','chart','sub_diff_days','pie'));
 	
   }	
-      
   
   public function shops()
   {

@@ -27,6 +27,9 @@
 
 		<div class="card-body ps-5">
 
+		<div class="row">
+		<div class="col-12 col-lg-8 col-xl-8 col-xxl-8">
+
 			<table class="tbl-dt mt-3" style="width:100%;">
 			<tr><td class="td-w">Campaign </td><td>:&nbsp;<label id="lbl_campaign">{{$cust->vchr_scratch_offers_name}}</label></td></tr>
 			<tr><td class="td-w">Name </td><td>:&nbsp;<label id="lbl_name">{{$cust->name}}</label></td></tr>
@@ -52,7 +55,13 @@
 			<tr><td></td><td><span class="text-green" id="success">&nbsp;<span></td></tr>
 			<tr><td colspan=2>&nbsp;</td></tr>
 			</table>
-
+			</div>
+			<div class="col-12 col-lg-4 col-xl-4 col-xxl-4">
+			@if($offer_pic!="")
+				<img src="{{url('uploads').'/'.$offer_pic}}" style="margin-top:50px;width:300px;">
+			@endif
+			</div>
+		</div>
 		</div>
 	  </div>
 
