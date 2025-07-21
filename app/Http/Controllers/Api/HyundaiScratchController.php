@@ -160,7 +160,7 @@ class HyundaiScratchController extends Controller
         $input=$request->all();
         $rule=[
             'user_id' => 'required',
-            'campaign_id' => 'required',
+            //'campaign_id' => 'required',
             'name' => 'required',
 			'country_code' => 'required',
             'mobile_no' => 'required|numeric|digits_between:8,14',
@@ -193,7 +193,11 @@ class HyundaiScratchController extends Controller
             return response()->json(['msg' => "You have already used up your chance.Please try with a different number", 'status' => false]);
         }
         
-        $offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', request('campaign_id'))
+		//only one offer/campaign ----		
+		$offer_id=ScratchOffer::where('int_status',1)->pluck('id')->first(); //newly added
+				
+        //$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', request('campaign_id'))
+		$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $offer_id)
                 ->where('int_scratch_offers_balance', '!=', '0')
                 ->where('int_status',1)
                 ->inRandomOrder()
