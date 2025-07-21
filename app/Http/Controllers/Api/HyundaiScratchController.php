@@ -357,13 +357,11 @@ public function getSlideImages()
 					$q['image']=FileUpload::viewFile($q['image_file'],'local');
 					return $q;
 				});
-			
+
 				if($images->isEmpty()){
 					return response()->json(['message'=> 'No images were found..','status' => false,'slides'=>$images]);
 				}
-				
-				$images['image'] = FileUpload::viewFile($images->image_file,'local');
-				
+
 				return response()->json(['message'=> 'Successfully listed','slides'=>$images,'status' => true]);
 			}catch(\Exception $e){
 				return response()->json(['message'=>$e->getMessage(), 'status' => false]);
