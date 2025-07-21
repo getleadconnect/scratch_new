@@ -329,7 +329,50 @@ public function getBranches(){
 			return response()->json(['message'=>$validator->messages(), 'status' => 'fail']);
 		}
 }
+
+
+/**
+    * Display a slide images .
+    * Method: POST
+	* Parms: user_id (int)
+    * @return \Illuminate\Http\Response
+    */	
 	
+	
+public function getSlideImages()
+{
+	$rule=[ 
+		'user_id' => 'required',
+		];
+
+		$validator = Validator::make(request()->all(),$rule);
+		if ($validator->passes()) 
+		{
+			$userid=User::getVendorIdApi(request('user_id'));
+			try
+			{
+				$images = SlideImage::where('user_id', $userid)->get()->map(function($q)
+				{
+					$q['image']=FileUpload::viewFile($q->image_file,'local');
+					return $q;
+				});
+			
+				if($images->isEmpty()){
+					return response()->json(['message'=> 'No images were found..','status' => false,'slides'=>$images]);
+				}
+				
+				$images['image'] = FileUpload::viewFile($images->image_file,'local');
+				
+				return response()->json(['message'=> 'Successfully listed','slides'=>$images,'status' => true]);
+			}catch(\Exception $e){
+				return response()->json(['message'=>$e->getMessage(), 'status' => false]);
+			}
+		}else{     
+			return response()->json(['message'=>$validator->messages(), 'status' => false]);
+		}
+}
+
+
 	
 /**
     * to set scratch customer details.
