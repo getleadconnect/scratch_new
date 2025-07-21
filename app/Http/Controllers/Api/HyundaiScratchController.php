@@ -354,7 +354,7 @@ public function getSlideImages()
 			{
 				$images = SlideImage::where('user_id', $userid)->get()->map(function($q)
 				{
-					$q['image']=FileUpload::viewFile($q->image_file,'local');
+					$q['image']=FileUpload::viewFile($q['image_file'],'local');
 					return $q;
 				});
 			
