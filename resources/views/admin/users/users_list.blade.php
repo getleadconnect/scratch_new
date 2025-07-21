@@ -103,7 +103,7 @@
                     </div>
                    </div><!--end row-->
                 </div>
-              </div>
+       </div>
 			  
 			
 	<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="add-user" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
@@ -115,6 +115,15 @@
 
 			<form id="formAddUser">
 			@csrf
+			
+			<div class="row mb-3" >
+				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					<input type="radio"   name="user_role" id="user_role1" value=1 style="width:20px;height:20px;vertical-align:middle;"><span> Is Admin</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio"  name="user_role" id="user_role2" value=2 style="width:20px;height:20px; vertical-align:middle;"><span> Is User</span> 
+				</div>
+			</div>
+						
+			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="user_name" class="form-label">Name<span class="required">*</span></label>
@@ -165,7 +174,18 @@
 					<textarea rows=3  class="form-control"  name="address" id="address" placeholder="Address" ></textarea>
 				</div>
 			</div>
-
+			
+			<div class="row mb-2" >
+				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					<label for="address" class="form-label">User Group<span class="required">*</span></label>
+					<select  class="form-control"  name="user_group" id="user_group" placeholder="Group Name" required>
+					<option value="" > Select Group </option>
+					<option value="Hyundai" > Hyundai </option>
+					<option value="Others" > Others </option>
+					</select>
+				</div>
+			</div>
+			
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">

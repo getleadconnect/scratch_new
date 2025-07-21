@@ -194,7 +194,7 @@ class HyundaiScratchController extends Controller
         }
         
 		//only one offer/campaign ----		
-		$offer_id=ScratchOffer::where('int_status',1)->pluck('pk_int_scratch_offers_id')->first(); //newly added
+		$offer_id=ScratchOffer::where('fk_int_user_id',$userid)->where('int_status',1)->pluck('pk_int_scratch_offers_id')->first(); //newly added
 				
         //$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', request('campaign_id'))
 		$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $offer_id)
@@ -416,8 +416,10 @@ public function scratchCustomer(Request $request)
 		if($request->has('email'))
 			$email=$request->email;
 		
-		if($request->has('branch_id'))
-			$branch_id=$request->branch_id;
+		//if($request->has('branch_id'))
+		//$branch_id=$request->branch_id;
+		
+		$branch_id=$vendor_id;
 		
 		$country_code=91;
 		if($request->has('country_code'))
@@ -446,7 +448,8 @@ public function scratchCustomer(Request $request)
 				];
 
 		$customer=ScratchWebCustomer::create($cust_data);
-		
+		$customer['image'] = FileUpload::viewFile($offerlisting->image,'local');
+				
 		if($otp_verify_status=="Disabled")
 			$customer->otp_verify_status="Disabled";
 		else
