@@ -11,6 +11,7 @@ use App\Models\ScratchWebCustomer;
 use App\Models\ScratchOffer;
 use App\Models\ScratchOffersListing;
 use App\Models\ScratchType;
+use App\Models\SlideImage;
 use App\Models\UserOtp;
 use App\Models\User;
 use App\Models\Settings;
