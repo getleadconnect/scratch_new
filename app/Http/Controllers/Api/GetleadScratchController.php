@@ -390,7 +390,7 @@ class GetleadScratchController extends Controller
 				
 				$offer = ScratchOffer::find($request->campaign_id);
 				$offerlisting = ScratchOffersListing::where('fk_int_scratch_offers_id',$request->campaign_id)
-													->where('pk_int_scratch_offers_listing_id',$request->offer_listing_id)
+													//->where('pk_int_scratch_offers_listing_id',$request->offer_listing_id)
 													->first();
 				$bill_no=$email=$branch_id=null;
 				

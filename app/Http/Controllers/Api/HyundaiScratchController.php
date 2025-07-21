@@ -202,7 +202,14 @@ class HyundaiScratchController extends Controller
         if(!$offerListing)
         return response()->json(['msg' => "Scratch offers corrently not available. Please try after sometimes.", 'status' => false]);
         
-        $mobile = $request->country_code . $request->mobile_no;
+		
+		$country_code=91;
+		if($request->has('country_code'))
+		{
+			$country_code=$request->country_code;
+		}
+				
+        $mobile = $country_code . $request->mobile_no;
         try {
             $number = $mobile;
             $otp = rand(1111, 9999);
@@ -407,12 +414,18 @@ public function scratchCustomer(Request $request)
 		
 		if($request->has('branch_id'))
 			$branch_id=$request->branch_id;
+		
+		$country_code=91;
+		if($request->has('country_code'))
+		{
+			$country_code=$request->country_code;
+		}
 
 		$cust_data=[
 				'user_id' => $vendor_id,
 				'unique_id' => $uniqueId,
 				'name' => $request->customer_name,
-				'country_code' => $request->country_code,
+				'country_code' => $country_code,
 				'mobile' => $request->mobile_no,
 				'vchr_mobile' => $mobile,
 				'email' => $email??null,
