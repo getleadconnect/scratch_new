@@ -393,7 +393,7 @@ public function scratchCustomer(Request $request)
 											->first();
 		*/
 
-		$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->campaign_id)
+		$offerlisting = ScratchOffersListing::where('fk_int_scratch_offers_id', $request->campaign_id)
 				  ->where('int_scratch_offers_balance', '>', '0')->where('int_status',1)
 				  ->inRandomOrder()->first();
 											
