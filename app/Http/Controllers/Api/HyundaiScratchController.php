@@ -194,7 +194,7 @@ class HyundaiScratchController extends Controller
         }
         
 		//only one offer/campaign ----		
-		$offer_id=ScratchOffer::where('int_status',1)->pluck('id')->first(); //newly added
+		$offer_id=ScratchOffer::where('int_status',1)->pluck('pk_int_scratch_offers_id')->first(); //newly added
 				
         //$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', request('campaign_id'))
 		$offerListing = ScratchOffersListing::where('fk_int_scratch_offers_id', $offer_id)
