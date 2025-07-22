@@ -18,6 +18,7 @@ use App\Http\Controllers\User\ScratchAdImageController;
 use App\Http\Controllers\User\ScratchBillController;
 use App\Http\Controllers\User\ScratchOfferBranchController;
 use App\Http\Controllers\User\ShopUsersController;
+use App\Http\Controllers\User\BranchUsersController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\GeneralSettingsController;
 use App\Http\Controllers\User\ForgotPasswordController;
@@ -236,7 +237,6 @@ Route::controller(ShopUsersController::class)->group(function() {
 	Route::post('/update-staff-user', 'updateStaffUser')->name('update-staff-user');
 	Route::get('/delete-staff-user/{id}', 'destroy')->name('delete-staff-user');
 	Route::get('/act-deact-staff-user/{op}/{id}', 'activateDeactivate')->name('act-deact-staff-user');	
-	
 });
 
 Route::controller(UserProfileController::class)->group(function() {
@@ -246,6 +246,15 @@ Route::controller(UserProfileController::class)->group(function() {
 	Route::post('/update-profile-image', 'uploadProfileImage')->name('update-profile-image');
 	Route::post('/change-password', 'changePassword')->name('change-password');
 });
+
+Route::controller(BranchUsersController::class)->group(function() {
+
+	Route::get('/branch-users', 'index')->name('branch-users');
+	Route::get('/view-branch-users', 'viewBranchUsers')->name('view-branch-users');
+	Route::get('/edit-branch-user/{id}', 'edit')->name('edit-branch-user');
+	Route::post('/update-branch-user', 'updateBranchUser')->name('update-branch-user');
+});
+
 
 Route::controller(GeneralSettingsController::class)->group(function() 
 {

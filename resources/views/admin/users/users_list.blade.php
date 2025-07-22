@@ -5,7 +5,7 @@
 .card-body{
 	padding-top:2px !important;
 }
-	
+
 </style>
 
 <link href="{{ asset('assets/intl-tel-input17.0.3/intlTelInput.min.css')}}" rel="stylesheet"/>
@@ -86,6 +86,7 @@
 									<th>Email</th>
 									<th>Company</th>
 									<th>Location</th>
+									<th>Parent</th>
 									<th>Created At</th>
 									<th>Subscription</th>
 									<th>Status</th>
@@ -104,7 +105,7 @@
                    </div><!--end row-->
                 </div>
        </div>
-			  
+			
 			
 	<div class="offcanvas offcanvas-end shadow border-start-0 p-2" id="add-user" style="width:25% !important" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-modal="true" role="dialog">
           <div class="offcanvas-header border-bottom">
@@ -115,15 +116,7 @@
 
 			<form id="formAddUser">
 			@csrf
-			
-			<div class="row mb-3" >
-				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<input type="radio"   name="user_role" id="user_role1" value=1 style="width:20px;height:20px;vertical-align:middle;"><span> Is Admin</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio"  name="user_role" id="user_role2" value=2 style="width:20px;height:20px; vertical-align:middle;"><span> Is User</span> 
-				</div>
-			</div>
-						
-			
+
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="user_name" class="form-label">Name<span class="required">*</span></label>
@@ -174,18 +167,6 @@
 					<textarea rows=3  class="form-control"  name="address" id="address" placeholder="Address" ></textarea>
 				</div>
 			</div>
-			
-			<div class="row mb-2" >
-				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label for="address" class="form-label">User Group<span class="required">*</span></label>
-					<select  class="form-control"  name="user_group" id="user_group" placeholder="Group Name" required>
-					<option value="" > Select Group </option>
-					<option value="Hyundai" > Hyundai </option>
-					<option value="Others" > Others </option>
-					</select>
-				</div>
-			</div>
-			
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -193,6 +174,31 @@
 					<input type="text" class="form-control"  name="password" id="password" value="123456" placeholder="Password" required>
 				</div>
 			</div>
+			
+			<div class="row mb-3" >
+				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					<label for="user_role" class="form-label">Select Role<span class="required">*</span></label>
+					<select  class="form-control"  name="user_role" id="user_role" placeholder="Role" required>
+					<option value="" > Select Role </option>
+					<option value="admin" > Admin </option>
+					<option value="user" > User </option>
+					<option value="child" > Child User </option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row mb-2 admin-user-list hide">
+				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					<label for="address" class="form-label">Select Admin User<span class="required">*</span></label>
+					<select  class="form-control"  name="admin_user_id" id="admin_user_id" placeholder="Admin user">
+					<option value="" > Select Group </option>
+					@foreach($ad_users as $row)
+					<option value="{{$row->pk_int_user_id}}" > {{$row->vchr_user_name}} </option>
+					@endforeach
+					</select>
+				</div>
+			</div>
+			
 			
 			<div class="row mb-2">
 				<div class="col-lg-12 col-xl-12 col-xxl-12 text-end">
@@ -335,6 +341,21 @@ else if(mes[0]=="danger")
 //---------------------------------------------------------------------------
 
 
+$(document).on('change','#user_role', function()
+{
+	if($(this).val()=="child")
+	{
+		$(".admin-user-list").removeClass('hide').addClass('show');
+		$(".admin_user_id").prop('required',true);
+	}
+	else
+	{
+		$(".admin-user-list").removeClass('show').addClass('hide');
+		$(".admin_user_id").prop('required',false);
+	}
+});
+
+
 var table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
@@ -363,6 +384,7 @@ var table = $('#datatable').DataTable({
 			{"data": "email" },
 			{"data": "company" },
 			{"data": "location" },
+			{"data": "pname" },
 			{"data": "cdate" },
 			{"data": "subscription" },
 			{"data": "status" },
