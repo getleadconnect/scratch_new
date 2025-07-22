@@ -105,7 +105,7 @@
                 </li>
 				 <!-- <li> <a href="{{url('users/staff-users')}}"><i class="fa fa-caret-right"></i>Staff Users</a>
                 </li> -->
-				@if(Auth::user()->int_role_id==2 and Auth::user()->admin_status==1)
+				@if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
 				<li> <a href="{{url('users/branch-users')}}"><i class="fa fa-caret-right"></i>Branch Users</a>
                 </li>
 				@endif
