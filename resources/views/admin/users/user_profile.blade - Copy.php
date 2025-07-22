@@ -14,12 +14,6 @@
 	font-size:18px;
 }
 
-#datatable_users td,tr,th
-{
-	line-height:17px;
-	font-size:13px;
-}
-
 </style>
 
 <link href="{{ asset('assets/intl-tel-input17.0.3/intlTelInput.min.css')}}" rel="stylesheet"/>
@@ -73,12 +67,6 @@
 					  
                       <div class="text-center mt-3 mb-3">
 						<p class="mb-0 text-secondary">[{{$usr->pk_int_user_id}}]</p>
-						
-						@if($usr->admin_status==1)
-							<p><span style="font-size:14px;color:red;"> (Admin User)</span></p>
-						@endif
-						
-						</p>
                         <h4 class="mb-1">{{ucfirst($usr->vchr_user_name)}}</h4>
                         <p class="mb-0 text-secondary">{{$usr->location}}</p>
                         <div class="mt-4"></div>
@@ -204,64 +192,44 @@
                 <div class="card shadow-sm border-0">
                   <div class="card-body">
 						<div class="row">
-							<h5 class="col-8 col-lg-8 col-xl-8 col-xxl-8 mb-2 mt-2">My Account </h5>
+							<h5 class="col-8 col-lg-8 col-xl-8 col-xxl-8 mb-2 mt-2">My Account</h5>
 							<div class="col-4 col-lg-4 col-xl-4 col-xxl-4 mb-2 mt-2 text-right"><a class="btn btn-primary btn-sm" href="{{url('admin/users-list')}}">
 							<i class="fa fa-arrow-left"></i> Back</a></div>
 					  </div>
 					  <hr>
-					  
-					  <div class="row">
-					  <div class="col-lg-5 col-xl-5 col-xxl-5">
-					  
+									   
 					  <div class="card shadow-none border">
                         <div class="card-header">
                           <h5 class="mb-0"><i class="bi bi-plus"></i>Add Subscription </h5>
                         </div>
 						
                         <div class="card-body">
-						
-						<div class="row">
-						<div class="col-12">
-						
 							<form id="formAddSubscription">
 								@csrf
 								<input type="hidden" name="user_id" id="user_id" value="{{$user_id}}">
 								
 								<div class="row mt-3 mb-2" >
-								<div class="col-12 col-lg-5 col-xl-5 col-xxl-5">
+								<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
 									<label >Start Date <span class="required">*</span></label>
 									<input type="date" class="form-control"  name="start_date" id="start_date" placeholder="date from" required>
 								</div>
-								<div class="col-12 col-lg-5 col-xl-5 col-xxl-5">
+								<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
 									<label >End Date <span class="required">*</span></label>
 									<input type="date" class="form-control"  name="end_date" id="end_date" placeholder="date to" required>
 								</div>
-								</div>
-								
-								<div class="row mt-3 mb-2" >
-									<div class="col-12 col-lg-8 col-xl-8 col-xxl-8">
-											<input type="checkbox" name="all_users" id="all_users" style="width:20px;height:20px;vertical-align:middle;"
-										@if($usr->admin_status!=1)
-											disabled
-										@endif
-										> Apply to all child users
-
-									</div>
-								<div class="col-12 col-lg-4 col-xl-4 col-xxl-4 text-right">
-										<button type="submit" class="btn btn-primary">Submit</button>
+								<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
+										<label style="width:100%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+										<button type="submit" class="btn btn-primary">Set</button>
 									</div>
 								</div>
-								
 							</form>
-						</div>
-						</div>
-	
+							
                         </div>
                       </div>
 					  
 
-					  <!--<div class="row">
-					  <div class="col-12 col-lg-12 col-xl-12 col-xxl-12"> -->
+					  <div class="row">
+					  <div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					  
 					  <div class="card shadow-none border">
                         <div class="card-header">
@@ -276,27 +244,14 @@
 								<fieldset  id="div_scratch_count" @if($subscription=="Expired"){{__('disabled')}}@endif>
 								<div class="row mt-3 mb-2">
 								
-									<label class="col-12 col-lg-4 col-xl-4 col-xxl-4 col-form-label">Scratch Count<span class="required">*</span></label>
-									<div class="col-12 col-lg-4 col-xl-4 col-xxl-4">
+									<label class="col-12 col-lg-2 col-xl-2 col-xxl-2 col-form-label">Scratch Count<span class="required">*</span></label>
+									<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
 										<input type="number" class="form-control"  name="scratch_count" id="scratch_count" placeholder="count" required>
 									</div>
-								</div>
-								
-								<div class="row mt-3 mb-2" >
-									<div class="col-12 col-lg-8 col-xl-8 col-xxl-8">
-										
-											<input type="checkbox" name="all_users_count" id="all_users_count" style="width:20px;height:20px;vertical-align:middle;"
-										@if($usr->admin_status!=1)
-											disabled
-										@endif
-										> Apply to all child users
-										
-									</div>
-								<div class="col-12 col-lg-4 col-xl-4 col-xxl-4 text-right">
+									<div class="col-12 col-lg-2 col-xl-2 col-xxl-2">
 										<button type="submit" class="btn btn-primary px-4">Add Scratch</button>
 									</div>
 								</div>
-
 								</fieldset>
 							</form>
 							
@@ -305,54 +260,6 @@
 					  
                       
 					  </div>
-					  
-					  <div class="col-12 col-lg-7 col-xl-7 col-xxl-7">
-					  
-					  <div class="card shadow-none border" style="height:380px !important;">
-                        <div class="card-header">
-                          <h5 class="mb-0"><i class="bi bi-plus"></i> Users ({{$data['ch_users']->count()}})</h5>
-                        </div>
-						
-                        <div class="card-body" style="overflow-y:scroll;">
-
-						 @if(!$data['ch_users']->isEmpty())
-
-						    <table id="datatable_users" class="table align-middle" style="width:100% !important;" >
-                               <thead class="thead-semi-dark">
-                                 <tr>
-									<th>SlNo</th>
-									<th>Unique_id</th>
-									<th>Name</th>
-									<th>Subscription</th>
-								</tr>
-                               </thead>
-                               <tbody>
-							   @foreach($data['ch_users'] as $key=>$row)
-							      <tr>
-									<td>{{++$key}}</td>
-									<td>{{$row->unique_id}}</td>
-									<td>{{$row->vchr_user_name}}</td>
-									<td style="width:120px;">{{$row->subscription_start_date}} => {{$row->subscription_end_date}}</td>
-								  </tr>
-							   @endforeach
-							   
-                               </tbody>
-                            </table>
-						  @else
-								<div class="row " style="margin:auto 0;vertical-align:middle;">
-								<div class="col-12 text-center" style="margin-top:75px;"> 
-									<p><i class="fa fa-users fa-3x" style="color:#c4c4c4;"></i><p>
-									<p style="color:#f15e5e;">No child users were found.!</p>
-								</div>
-								</div>
-                               
-						  @endif	
-							
-                        </div>
-                      </div>
-
-					  </div>
-					  
 					</div>
 					
 
@@ -440,7 +347,6 @@
 BASE_URL ={!! json_encode(url('/')) !!}
 
 var vid=$("#vendor_id").val();
-
 
 var table = $('#datatable').DataTable({
         processing: true,

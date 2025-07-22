@@ -31,11 +31,9 @@ class UserController extends Controller
   
   public function index()
   {
-	  
-			
-	 return view('admin.users.users_list');
+	 $ad_users=User::where('admin_status',1)->get();
+	return view('admin.users.users_list',compact('ad_users'));
   }	
-
     
   public function store(Request $request)
     {
@@ -53,7 +51,25 @@ class UserController extends Controller
 		{
             try
 			{
-				
+				if($request->user_role=='admin')
+				{
+					$role_id=1;
+					$admin_status=1;
+					$parent_id=null;
+				}
+				else if($request->user_role=='child')
+				{
+					$role_id=2;
+					$admin_status=0;
+					$parent_id=$request->admin_user_id;
+				}
+				else
+				{
+					$role_id=2;
+					$admin_status=0;
+					$parent_id=null;
+				}
+
 				$data=[
 					'vchr_user_name'=>$request->user_name,
 					'email'=>$request->email,
@@ -66,7 +82,9 @@ class UserController extends Controller
 					'password'=>Hash::make($request->password),
 					'address'=>$request->address,
 					'int_status'=>User::ACTIVATE,
-					'int_role_id'=>User::USERS
+					'int_role_id'=>$role_id,
+					'admin_status'=>$admin_status,
+					'parent_user_id'=>$parent_id,
 				];
 				
 				$result=User::create($data);
@@ -106,23 +124,48 @@ class UserController extends Controller
             }
         } 
     }
-    	
 	
  public function viewUsers()
     {
       $id=User::getVendorId();
 
-      $users = User::where('int_role_id','!=',1)->orderby('pk_int_user_id','Desc')->get();
-	
+      $users = User::select('tbl_users.*','A.unique_id as parent_unique_id')
+	  ->leftJoin('tbl_users as A','A.pk_int_user_id','=','tbl_users.parent_user_id')
+	  ->where('tbl_users.int_role_id','!=',0)->orderby('tbl_users.pk_int_user_id','Desc')->get()->map(function($q)
+	  {
+		  if($q->admin_status==1)
+		  {
+			  $ucount=User::where('parent_user_id',$q->pk_int_user_id)->count();
+			  $q['user_count']=$ucount;
+		  }
+		  else
+		  {
+			  $q['user_count']='';
+		  }
+		  return $q;
+	  });	  
+	  
         return Datatables::of($users)
 		->addIndexColumn()
 		->addColumn('name', function ($row) {
-			return '<a href="'.route('admin.user-profile',$row->pk_int_user_id).'" style="font-weight:500;">'.strtoupper($row->vchr_user_name).'</a>';
+			if($row->admin_status==1)
+			{
+			
+				$ust='<span class="badge bg-warning text-dark">'.$row->user_count.' users</span>';
+			}
+			else
+				$ust='';
+			$uname='<a href="'.route('admin.user-profile',$row->pk_int_user_id).'" style="font-weight:500;">'.strtoupper($row->vchr_user_name).'</a>'.$ust;
+			return $uname;
         })
 		
 		->addColumn('unique_id', function ($row) {
             
 			return $row->unique_id??"--";
+        })
+				
+		->addColumn('pname', function ($row) {
+			return $row->parent_unique_id;
         })
 		
 		->addColumn('status', function ($row) {
@@ -206,8 +249,10 @@ class UserController extends Controller
 
 public function addSubscription(Request $request)
 {
+
 	try
 	{
+		
 		$user_id=$request->user_id;
 		$start_date=$request->start_date;
 		$end_date=$request->end_date;
@@ -233,7 +278,45 @@ public function addSubscription(Request $request)
 				];
 				$res=ScratchCount::create($dat);	
 			}
+		
+		//to add child users subscription date----------------------------------------------
+		if($request->has('all_users') and $request->all_users=="on")
+		{
+			
+			$users=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+			if(!empty($users))
+			{
+				foreach($users as $userid)
+				{
+					
+					$data=['subscription_start_date'=>$start_date,'subscription_end_date'=>$end_date];
+					$result=User::where('pk_int_user_id',$userid)->update($data);
+					
+						$sc=ScratchCount::where('fk_int_user_id',$userid)->first();
+						if($sc)
+						{
+							$sc->total_count=0;
+							$sc->used_count=0;
+							$sc->balance_count=0;
+							$sc->save();
+						}
+						else
+						{
+							$dat=[
+								'fk_int_user_id'=>$userid,
+								'total_count'=>0,
+								'used_count'=>0,
+								'balance_count'=>0,
+							];
+							$res=ScratchCount::create($dat);	
+						}
+					
+				}
 				
+			}	
+		
+		}
+
 		if($result)
 		{   
 			return response()->json(['msg'=>'User subscription updated.','status'=>true]);
@@ -307,7 +390,6 @@ public function edit($id)
 
 public function destroy($id)
 {
-	
 	try
 	{
 		$users=User::where('pk_int_user_id',$id)->first();
@@ -390,44 +472,45 @@ public function userProfile($user_id)
 	$data['tot_count']=ScratchCount::getTotalScratchCount($user_id);
 	$data['used_count']=ScratchCount::getUsedScratchCount($user_id);
 	$data['bal_count']=ScratchCount::getBalanceScratchCount($user_id);
-
+	
+	$data['ch_users']=User::where('parent_user_id',$user_id)->get();
+	
 	return view('admin.users.user_profile',compact('user_id','usr','data','subscription'));
 }
 
-
 public function viewScratchHistory($id)
-    {
-	
-      $data = PurchaseScratch::where('fk_int_user_id',$id)->orderby('id','ASC')->get();
-	
-        return Datatables::of($data)
-		->addIndexColumn()
-		->addColumn('narration', function ($row) {
-			return $row->narration;
-        })
-		
-		->addColumn('cdate', function ($row) {
-			return date_create($row->created_at)->format('d-m-Y');
-        })
-				
-        ->addColumn('action', function ($row)
-        {
-			$btn='';
-			if($row->status==1)
-				$btn='<a class="link-delete" href="javascript:void(0)" id="'.$row->id.'" data-userid="'.$row->fk_int_user_id.'" title="delete" ><i class="lni lni-trash"></i></a>';
-						
-			return $btn;
-        })
-        ->rawColumns(['action','status'])
-        ->make(true);
+{
 
-}
+  $data = PurchaseScratch::where('fk_int_user_id',$id)->orderby('id','ASC')->get();
+
+	return Datatables::of($data)
+	->addIndexColumn()
+	->addColumn('narration', function ($row) {
+		return $row->narration;
+	})
 	
+	->addColumn('cdate', function ($row) {
+		return date_create($row->created_at)->format('d-m-Y');
+	})
+			
+	->addColumn('action', function ($row)
+	{
+		$btn='';
+		if($row->status==1)
+			$btn='<a class="link-delete" href="javascript:void(0)" id="'.$row->id.'" data-userid="'.$row->fk_int_user_id.'" title="delete" ><i class="lni lni-trash"></i></a>';
+					
+		return $btn;
+	})
+	->rawColumns(['action','status'])
+	->make(true);
+}
+
 
 public function addScratchCount(Request $request)
 {
 	
 	$validator=validator::make($request->all(), ['scratch_count'=>'required']);
+	
         if ($validator->fails()) 
 		{
 			return response()->json(['msg'=>"Scratch count missing.",'status'=>false]);
@@ -436,7 +519,6 @@ public function addScratchCount(Request $request)
 		{
 			DB::beginTransaction();
 			try{
-				
 				$user_id=$request->user_id;
 				
 				$sc=PurchaseScratch::where('fk_int_user_id',$user_id)->latest()->first();
@@ -484,8 +566,61 @@ public function addScratchCount(Request $request)
 					$response=['msg'=>'Something wrong, try again.','status'=>false];
         		}
 				
-				DB::commit();
 				
+				//to add child users credit count----------------------------------------------
+				if($request->has('all_users_count') and $request->all_users_count=="on")
+				{
+					
+					$users=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+					if(!empty($users))
+					{
+						foreach($users as $userid)
+						{
+							
+							$sc=PurchaseScratch::where('fk_int_user_id',$userid)->latest()->first();
+							
+							if($sc)
+							{
+								$sc->status=0;
+								$sc->save();
+							}
+									
+							$data=[
+								'fk_int_user_id'=>$userid,
+								'narration'=>"To purchase ". $request->scratch_count. " scratch count dated on ".date('d-m-Y'),
+								'scratch_count'=>$request->scratch_count,
+								'status'=>1
+							];
+							
+							$result=PurchaseScratch::create($data);
+											
+							if($result)
+							{   
+								$scnt=ScratchCount::where('fk_int_user_id',$userid)->first();
+								if($scnt)
+								{
+									$scnt->total_count=$scnt->total_count+$request->scratch_count;
+									$scnt->balance_count=$scnt->balance_count+$request->scratch_count;
+									$scnt->save();
+								}
+								else
+								{
+									
+									$dat=[
+										'fk_int_user_id'=>$userid,
+										'total_count'=>$request->scratch_count,
+										'balance_count'=>$request->scratch_count,
+									];
+									$scnt=ScratchCount::create($dat);
+								}
+							}
+										
+						}
+					}
+				}
+
+				DB::commit();
+
 				return response()->json($response);
 				
             }
@@ -567,7 +702,6 @@ public function changeUserPassword(Request $request)
             }
       
     }
-
 
 
 }

@@ -145,9 +145,13 @@ class LoginController extends Controller
 				if ($user->int_status == Variables::ACTIVE)
 				{
 					
-					if ($user->int_role_id == Variables::ROLE_ADMIN) 
+					if ($user->int_role_id ==Variables::ROLE_SUPERADMIN) 
 					{
 						return redirect('admin/dashboard');
+					}
+					else if ($user->int_role_id == Variables::ROLE_ADMIN) 
+					{
+						return redirect('users/dashboard');
 					}
 					else if($user->int_role_id == Variables::USER)
 					{

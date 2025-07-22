@@ -14,7 +14,8 @@ use Auth;
 
 class Variables
 {
-    const ROLE_ADMIN = 1;
+    const ROLE_SUPERADMIN = 0;
+	const ROLE_ADMIN = 1;
     const USER = 2;
     const SHOPS = 3;
 

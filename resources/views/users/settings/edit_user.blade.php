@@ -65,7 +65,7 @@ var addValidator=$('#formUpdateUser').validate({
 		$("#country_code_edit").val(code);
 		
 		$.ajax({
-		url: "{{ url('users/update-staff-user') }}",
+		url: "{{ url('users/update-branch-user') }}",
 		method: 'post',
 		data: $('#formUpdateUser').serialize(),
 		success: function(result){
