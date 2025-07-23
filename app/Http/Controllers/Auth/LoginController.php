@@ -151,7 +151,7 @@ class LoginController extends Controller
 					}
 					else if ($user->int_role_id == Variables::ROLE_ADMIN) 
 					{
-						return redirect('users/dashboard');
+						return redirect('users/admin-dashboard');
 					}
 					else if($user->int_role_id == Variables::USER)
 					{

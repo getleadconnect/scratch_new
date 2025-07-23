@@ -13,7 +13,16 @@
           </div>
           <!--navigation-->
           <ul class="metismenu" id="menu">
-		  
+		  		  
+		  @if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
+			<li>
+              <a href="{{url('users/admin-dashboard')}}" title="Dashboard">
+                <div class="parent-icon"><img src="{{asset('assets/images/icons/people-roof.png')}}" style="width:20px;">
+                </div>
+                <div class="menu-title">Dashboard</div>
+              </a>
+            </li>
+			@else
 			<li>
               <a href="{{url('users/dashboard')}}" title="Dashboard">
                 <div class="parent-icon"><img src="{{asset('assets/images/icons/people-roof.png')}}" style="width:20px;">
@@ -21,7 +30,7 @@
                 <div class="menu-title">Dashboard</div>
               </a>
             </li>
-
+		  @endif
 			
 			<li>
               <a href="{{url('users/campaigns')}}" title="Campaigns">
@@ -81,6 +90,16 @@
             </li>
 			
 			<li>
+              <a href="{{url('users/slide-images')}}" title="App Slide Images">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/gallery1.png')}}" style="width:20px;">
+                </div>
+                <div class="menu-title">App Slide Images</div>
+              </a>
+            </li> 
+						
+			
+			<li>
               <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/gallery.png')}}" style="width:20px;">
@@ -114,7 +133,6 @@
                 
               </ul>
             </li>
-					
 
           </ul>
           <!--end navigation-->

@@ -173,6 +173,7 @@ class User extends Authenticatable implements JWTSubject
      * @param $id
      * @return mixed
      */
+	 
     public static function getVendorIdApi($userId)
     {
         $user = User::select('pk_int_user_id','int_role_id','parent_user_id')->find($userId);

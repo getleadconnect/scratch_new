@@ -24,5 +24,16 @@ class SlideImage extends Model
         'image_file',
         'created_by',
     ];
+	
+  public static $ruleImage = [
+      'image_file'=> 'required',
+      'image_file.*' => 'image|mimes:jpeg,png,jpg'
+    ];
 
+    public static $messageImage = [
+        'image_file.required'=>'Image is required',
+        'image_file.mimes'=>'Unsupported image file',
+       
+     ];
+	 
 }

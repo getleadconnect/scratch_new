@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use User;
+use App\Models\User;
 
 class ScratchCount extends Model
 {
@@ -36,5 +36,13 @@ public static function getBalanceScratchCount($user_id)
 	$b_count=self::where('fk_int_user_id',$user_id)->pluck('balance_count')->first();
 	return $b_count;
 }
+
+public function users()
+{
+	return $this->belongsTo(User::class,'fk_int_user_id')->select('pk_int_user_id','vchr_user_name');
+}
+
+
+
 
 }
