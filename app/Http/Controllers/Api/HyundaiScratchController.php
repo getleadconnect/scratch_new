@@ -349,7 +349,16 @@ public function getSlideImages()
 		$validator = Validator::make(request()->all(),$rule);
 		if ($validator->passes()) 
 		{
-			$userid=User::getVendorIdApi(request('user_id'));
+			$userid=$request->user_id;
+			$user=User::where('pk_int_user_id',$request->user_id)->first();
+			if($user)
+			{
+				if($user->parent_user_id!=null)
+					$userid=$user->parent_user_id;
+			}
+			
+			//$userid=User::getVendorIdApi(request('user_id'));
+			
 			try
 			{
 				$images = SlideImage::where('user_id', $userid)->get()->map(function($q)

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\AdminDashboardController;
 
 use App\Http\Controllers\User\CampaignController;
 use App\Http\Controllers\User\CampaignDetailController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\User\ScratchHistoryController;
 use App\Http\Controllers\User\GlShortLinksController;
 use App\Http\Controllers\User\ScratchWebController;
 use App\Http\Controllers\User\ScratchAdImageController;
+use App\Http\Controllers\User\SlideImageController;
 use App\Http\Controllers\User\ScratchBillController;
 use App\Http\Controllers\User\ScratchOfferBranchController;
 use App\Http\Controllers\User\ShopUsersController;
@@ -88,6 +90,11 @@ Route::controller(DashboardController::class)->group(function() {
 		Route::get('/dashboard', 'index')->name('dashboard');
 		Route::get('/shop-dashboard', 'shops')->name('shop-dashboard');
 	//});
+});
+
+
+Route::controller(AdminDashboardController::class)->group(function() {
+		Route::get('/admin-dashboard', 'index')->name('admin-dashboard');
 });
 
 Route::controller(CampaignController::class)->group(function() {
@@ -201,6 +208,14 @@ Route::controller(ScratchAdImageController::class)->group(function() {
 	Route::get('/delete-ad-image/{id}', 'destroy')->name('delete-ad-image');
 	Route::get('/act-deact-ads-image/{op}/{id}', 'activateDeactivate')->name('act-deact-ads-image');	
 	
+});
+
+
+Route::controller(SlideImageController::class)->group(function() {
+	Route::get('/slide-images', 'index')->name('slide-images');
+	Route::post('/save-slide-image', 'store')->name('save-slide-image');
+	Route::get('/get-slide-images', 'getSlideImages')->name('get-slide-images');
+	Route::get('/delete-slide-image/{id}', 'destroy')->name('delete-slide-image');
 });
 
 
