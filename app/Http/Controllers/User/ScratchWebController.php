@@ -162,7 +162,7 @@ public function getAppCustomers(Request $request)
             })
 
 			->addColumn('status', function ($row) {
-                if($row->status==1)
+                if($row->win_status==1)
 					$win="<span class='text-green'>Win</span>";
 				else
 					$win="<span class='text-danger'>loss</span>";
