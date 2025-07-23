@@ -351,7 +351,7 @@ public function getSlideImages()
 		$validator = Validator::make(request()->all(),$rule);
 		if ($validator->passes()) 
 		{
-			$user=User::where('pk_int_user_id',$request->user_id)->first();
+			$user=User::where('pk_int_user_id',$userid)->first();
 			if($user)
 			{
 				if($user->parent_user_id!=null)
