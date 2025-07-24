@@ -144,53 +144,26 @@
 		  </div>
 		</div>
 	   </div>
-   
-  </div><!--end row-->
-  
-
-<div class="row">
-<div class="col-12 col-lg-5 col-xl-5 col-xxl-5 d-flex">
-	<div class="card radius-10 w-100">
+	
+	<div class="col">
+	<div class="card radius-10">
 	  <div class="card-body">
 		<div class="d-flex align-items-center">
-		  <h6 class="mb-0">User Credits</h6>
+		  <div class="">
+			<h6 class="mb-1">Options</h6>
+			<h4 class="mb-0 text-info">0</h4>
+		  </div>
+		  <div class="ms-auto fs-2 text-info">
+			<i class="bx bx-receipt"></i>
+		  </div>
 		</div>
-		<hr/>
-
-<table id="datatable" class="table align-middle" style="width:100% !important;" >
-   <thead class="thead-semi-dark">
-	 <tr>
-		<th>User Id</th>
-		<th>Name</th>
-		<th>Total</th>
-		<th>Used</th>
-		<th>Balance</th>
-	</tr>
-   </thead>
-   <tbody>
-   
-   @foreach($data['users_credit'] as $key=>$row)
-   
-    <tr>
-		<td>{{$row->users->pk_int_user_id}}</td>
-		<td>{{$row->users->vchr_user_name}}</td>
-		<td>{{$row->total_count}}</td>
-		<td>{{$row->used_count}}</td>
-		<td>{{$row->balance_count}}</td>
-	</tr>
-   
-   @endforeach
-	  
-   </tbody>
- </table>
-
-
 	  </div>
 	</div>
-  </div>
-
-
-  <div class="col-12 col-lg-7 col-xl-7 col-xxl-7 d-flex">
+   </div>
+   
+  </div><!--end row-->
+  <div class="row mt-3">
+ <div class="col-12 col-lg-7 col-xl-7 col-xxl-7 d-flex">
 	<div class="card radius-10 w-100">
 	  <div class="card-body">
 		<div class="d-flex align-items-center">
@@ -209,6 +182,18 @@
 						</div>
 					</div>
 				</div>
+	  </div>
+	</div>
+</div>
+  <div class="col-12 col-lg-5 col-xl-5 col-xxl-5 d-flex">
+	<div class="card radius-10 w-100">
+	  <div class="card-body">
+		<div class="d-flex align-items-center">
+		  <h6 class="mb-0">Options</h6>
+		</div>
+		<hr/>
+
+				
 	  </div>
 	</div>
   </div>
