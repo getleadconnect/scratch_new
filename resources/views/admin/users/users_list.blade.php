@@ -141,19 +141,16 @@
 			</div>
 			
 			<div class="row mb-2" >
-				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+				<div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
 					<label for="location" class="form-label">Location</label>
 					<input type="text" class="form-control"  name="location" id="location" placeholder="Location">
 				</div>
-			</div>
-			
-			<div class="row mb-2" >
-				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label for="email" class="form-label">Company/Shop Name</label>
-					<input type="text" class="form-control"  name="company" id="company" placeholder="Company/Shop Name" >
+				<div class="col-12 col-lg-6 col-xl-6 col-xxl-6">
+					<label for="location" class="form-label">Company/Shop Name</label>
+					<input type="text" class="form-control"  name="location" id="location" placeholder="Location">
 				</div>
 			</div>
-			
+						
 			<!--<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="email" class="form-label">Desgination</label>
@@ -164,7 +161,7 @@
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="address" class="form-label">Address</label>
-					<textarea rows=3  class="form-control"  name="address" id="address" placeholder="Address" ></textarea>
+					<textarea rows=2  class="form-control"  name="address" id="address" placeholder="Address" ></textarea>
 				</div>
 			</div>
 
@@ -191,7 +188,7 @@
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
 					<label for="address" class="form-label">Select Admin User<span class="required">*</span></label>
 					<select  class="form-control"  name="admin_user_id" id="admin_user_id" placeholder="Admin user">
-					<option value="" > Select Group </option>
+					<option value="" > Select User </option>
 					@foreach($ad_users as $row)
 					<option value="{{$row->pk_int_user_id}}" > {{$row->vchr_user_name}} </option>
 					@endforeach

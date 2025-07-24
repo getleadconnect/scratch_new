@@ -28,24 +28,24 @@
 			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label class="form-label">Compnay/Shop Name<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="company_edit" id="company_edit" value="{{$usr->company_name}}" placeholder="Company/shop Name" required>
+					<label class="form-label">Location</label>
+					<input type="text" class="form-control"  name="location_edit" id="location_edit" value="{{$usr->location}}" placeholder="Location" >
 				</div>
 			</div>
 			
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label class="form-label">Designation<span class="required">*</span></label>
+					<label class="form-label">Compnay/Shop Name</label>
+					<input type="text" class="form-control"  name="company_edit" id="company_edit" value="{{$usr->company_name}}" placeholder="Company/shop Name" >
+				</div>
+			</div>
+			
+			<!--<div class="row mb-2" >
+				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
+					<label class="form-label">Designation</label>
 					<input type="text" class="form-control"  name="designation_edit" id="designation_edit" value="{{$usr->designation_id}}" placeholder="Designation" required>
 				</div>
-			</div>
-
-			<div class="row mb-2" >
-				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
-					<label class="form-label">Location<span class="required">*</span></label>
-					<input type="text" class="form-control"  name="location_edit" id="location_edit" value="{{$usr->location}}" placeholder="Location" required>
-				</div>
-			</div>
+			</div>-->
 
 			<div class="row mb-2" >
 				<div class="col-12 col-lg-12 col-xl-12 col-xxl-12">
