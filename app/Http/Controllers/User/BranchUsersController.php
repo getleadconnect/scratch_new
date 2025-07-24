@@ -95,11 +95,8 @@ public function edit($id)
 
 public function updateBranchUser(Request $request)
     {
-
         $validator=validator::make($request->all(), User::$shopEditRule, User::$shopEditMessage);
-		
-		
-		
+
         if ($validator->fails()) 
 		{
 			return response()->json(['msg'=>$validator->messages()->first(),'status'=>false]);
@@ -141,7 +138,6 @@ public function updateBranchUser(Request $request)
             }
         } 
     }
-
 
 public function destroy($id)
 {
