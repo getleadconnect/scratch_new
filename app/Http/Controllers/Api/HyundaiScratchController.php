@@ -426,7 +426,8 @@ public function scratchCustomer(Request $request)
 		
 		if($request->has('mobile_no'))
 		  {
-			$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
+			//$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
+			$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->first();
 			if($check_mob){
 		  	   return response()->json(['msg' => "You already scratched with this mobile number. Please try with other.", 'status' => false]);
 			}
