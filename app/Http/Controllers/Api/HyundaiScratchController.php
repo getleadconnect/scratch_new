@@ -424,13 +424,13 @@ public function scratchCustomer(Request $request)
 	{
 		$mobile=$request->country_code.$request->mobile_no;
 		
-		if(!$request->has('bill_no'))
-			{
-				$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
-				if($check_mob){
-					return response()->json(['msg' => "You already scratched with this mobile number. Please try with other.", 'status' => false]);
-				}
+		if($request->has('mobile_no'))
+		  {
+			$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
+			if($check_mob){
+		  	   return response()->json(['msg' => "You already scratched with this mobile number. Please try with other.", 'status' => false]);
 			}
+		  }
 			
 		if($request->has('bill_no'))
 		{
