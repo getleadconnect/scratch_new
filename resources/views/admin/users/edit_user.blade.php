@@ -101,6 +101,7 @@ var addValidator=$('#formUpdateUser').validate({
 				toastr.success(result.msg);
 				$('#formUpdateUser')[0].reset();
 				$('#mobile_edit').val('');
+				$('.btn-offcanvas-close').trigger('click');
 			}
 			else
 			{
