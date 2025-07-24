@@ -51,6 +51,13 @@ class UserController extends Controller
 		{
             try
 			{
+				$mob=User::where('mobile',$request->mobile)->first();
+				if($mob)
+				{
+					return response()->json(['msg'=>'Mobile number already exisits, try again.','status'=>false]);
+				}
+
+				
 				if($request->user_role=='admin')
 				{
 					$role_id=1;
@@ -362,7 +369,7 @@ public function edit($id)
 					'countrycode'=>$request->country_code_edit,
 					'mobile'=>trim($request->mobile_edit),
 					'vchr_user_mobile'=>$request->country_code_edit.trim($request->mobile_edit),
-					'designation_id'=>$request->designation_edit,
+					//'designation_id'=>$request->designation_edit,
 					'company_name'=>$request->company_edit,
 					'location'=>$request->location_edit,
 					'address'=>$request->address_edit,

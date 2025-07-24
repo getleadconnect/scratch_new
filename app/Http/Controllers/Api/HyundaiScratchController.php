@@ -53,7 +53,7 @@ class HyundaiScratchController extends Controller
         {
             try
             {
-                $user = User::active()->where('email', $request->username)->orWhere('vchr_user_mobile', $request->username)->first();
+                $user = User::active()->where('email', $request->username)->orWhere('mobile', $request->username)->first();
                 if ($user && Hash::check($request->password,$user->password)) {
                     $vendor_id = User::getVendorIdApi($user->pk_int_user_id );
 
