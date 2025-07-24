@@ -107,7 +107,16 @@
                 <div class="menu-title">Ads Images</div>
               </a>
             </li> 
-
+			@if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
+				<li>
+				  <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
+					<div class="parent-icon">
+					<img src="{{asset('assets/images/icons/reports.png')}}" style="width:20px;">
+					</div>
+					<div class="menu-title">Reports</div>
+				  </a>
+				</li> 
+			@endif
             <li>
               <a href="javascript:;" class="has-arrow" title="Options">
                 <div class="parent-icon">

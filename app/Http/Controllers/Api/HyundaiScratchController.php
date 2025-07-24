@@ -331,14 +331,12 @@ public function getBranches(){
 		}
 }
 
-
 /**
     * Display a slide images .
     * Method: POST
 	* Parms: user_id (int)
     * @return \Illuminate\Http\Response
     */	
-	
 	
 public function getSlideImages()
 {
@@ -442,6 +440,15 @@ public function scratchCustomer(Request $request)
 				return response()->json(['msg' => "You already scratched with this bill number. Please try with other.", 'status' => false]);
 			}
 		}
+		
+		if($request->has('vin_number'))
+		{
+			$check_bill = ScratchWebCustomer::where('bill_no', $request->vin_number)->where('user_id',$vendor_id)->first();
+			if($check_bill)
+			{
+				return response()->json(['msg' => "You already scratched with this vin number. Please try with other.", 'status' => false]);
+			}
+		}
 
 		do {
 			$uniqueId = 'GA' . strtoupper(substr(uniqid(), 8));
@@ -486,7 +493,7 @@ public function scratchCustomer(Request $request)
 				'vchr_mobile' => $mobile,
 				'email' => $email??null,
 				'branch_id' => $branch_id??null,
-				'bill_no' => $bill_no??null,
+				'bill_no' => $request->vin_number,
 				'offer_id' => $request->campaign_id,
 				'offer_list_id' => $offerlisting->pk_int_scratch_offers_listing_id,
 				'status' => 0,
@@ -635,5 +642,5 @@ public function getScratch(Request $request)
 	}
 }
 
-	
+
 }
