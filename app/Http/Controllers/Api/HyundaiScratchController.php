@@ -422,17 +422,7 @@ public function scratchCustomer(Request $request)
 
 	try
 	{
-		$mobile=$request->country_code.$request->mobile_no;
 		
-		if($request->has('mobile_no'))
-		  {
-			//$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
-			$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->first();
-			if($check_mob){
-		  	   return response()->json(['msg' => "You already scratched with this mobile number. Please try with other.", 'status' => false]);
-			}
-		  }
-			
 		if($request->has('bill_no'))
 		{
 			$check_bill = ScratchWebCustomer::where('bill_no', $request->bill_no)->where('user_id',$vendor_id)->first();
@@ -450,6 +440,19 @@ public function scratchCustomer(Request $request)
 				return response()->json(['msg' => "You already scratched with this vin number. Please try with other.", 'status' => false]);
 			}
 		}
+		
+		$mobile=$request->country_code.$request->mobile_no;
+		
+		if($request->has('mobile_no'))
+		  {
+			//$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->whereDate('created_at',date('Y-m-d'))->first();
+			$check_mob = ScratchWebCustomer::where('vchr_mobile', $mobile)->where('user_id',$vendor_id)->first();
+			if($check_mob){
+		  	   return response()->json(['msg' => "You already scratched with this mobile number. Please try with other.", 'status' => false]);
+			}
+		  }
+			
+		
 
 		do {
 			$uniqueId = 'GA' . strtoupper(substr(uniqid(), 8));
