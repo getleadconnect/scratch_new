@@ -44,16 +44,15 @@ class AdminDashboardController extends Controller
 		$total_credit+=$tot_count;
 		$used_credit+=$used_count;
 		$bal_credit+=$bal_count;
+
 		
-		$users_credit[$userid]=ScratchCount::with('users')->where('fk_int_user_id',$userid)->first();
 	}
-	
-	
+
 	$data['total_credit']=$total_credit;
 	$data['used_credit']=$used_credit;
 	$data['bal_credit']=$bal_credit;
-	$data['users_credit']=$users_credit;
-		
+	
+	
 	
 	$user=User::where('pk_int_user_id',$user_id)->first();
 	
