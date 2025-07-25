@@ -27,9 +27,21 @@ class ScratchWebController extends Controller
      */
     public function index()
     {
+		
         $branches=ScratchBranch::where('vendor_id',User::getVendorId())->get();
 		$offers=ScratchOffer::where('fk_int_user_id',User::getVendorId())->get();
-		return view('users.customers.scratch_web_customers',compact('branches','offers'));
+		
+		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			$user_id=User::getVendorId();
+			$branches=User::select('pk_int_user_id','vchr_user_name',)->where('parent_user_id',$user_id)->get();
+			return view('users.customers.scratch_web_customers_hyundai',compact('branches','offers'));
+		}
+		else
+		{
+			return view('users.customers.scratch_web_customers',compact('branches','offers'));
+		}
+		
     }
 
     public function getWebCustomers(Request $request)
@@ -114,10 +126,43 @@ public function getAppCustomers(Request $request)
 			
         $user_id = User::getVendorId();
 		
-        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent_name','scratch_branches.branch_name')
+		
+		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			
+			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+
+			$query= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id');
+	
+			if($request->branch_user!="")
+			{
+				$userid=$request->branch_user;
+				$customers=$query->where('user_id',$userid)->orderby('id','Desc')->get();
+				
+			}
+			else
+			{
+				$customers=collect();
+				
+				foreach($userids as $userid)
+				{
+					
+					$customers1= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+							->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
+							->where('user_id', $userid)->orderBy('id', 'Desc')->get();
+					
+					$customers=$customers->merge($customers1);
+				}
+			}
+		}
+		else
+		{
+		  $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent_name','scratch_branches.branch_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
             ->where('user_id', $user_id)->where('redeem_source','app')
+				
 		    ->where(function($where)use($request){
 				if($request->branch)
 					$where->where('scratch_web_customers.branch_id',$request->branch);
@@ -129,6 +174,30 @@ public function getAppCustomers(Request $request)
 					   ->whereDate('scratch_web_customers.created_at','<=',$request->end_date);
 				}  
 			   })->orderBy('id', 'Desc')->get();
+		
+		}
+
+		
+		/*
+		
+        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent_name','scratch_branches.branch_name')
+			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
+			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
+            ->where('user_id', $user_id)->where('redeem_source','app')
+				
+		    ->where(function($where)use($request){
+				if($request->branch)
+					$where->where('scratch_web_customers.branch_id',$request->branch);
+				if($request->campaign)
+					$where->where('scratch_web_customers.offer_id',$request->campaign);
+				if($request->start_date &&  $request->end_date)  
+				{
+					$where->whereDate('scratch_web_customers.created_at','>=',$request->start_date)
+					   ->whereDate('scratch_web_customers.created_at','<=',$request->end_date);
+				}  
+			   })->orderBy('id', 'Desc')->get();
+		
+		*/
 		
         return DataTables::of($customers)
 			->addIndexColumn()

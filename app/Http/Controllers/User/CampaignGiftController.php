@@ -38,6 +38,9 @@ class CampaignGiftController extends Controller
   
   public function index()
   {
+	  
+	  
+	  
   }
  
  
@@ -211,11 +214,33 @@ public function addGifts($id)
     {
       $id=User::getVendorId();
 	  $offer_id=$request->campaign_id;
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 		
       $offers = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name')
 	  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
 	  ->where('fk_int_user_id',$id)->where('fk_int_scratch_offers_id',$offer_id)
 	  ->orderby('pk_int_scratch_offers_listing_id','Desc')->get();
+	
+	
+	
 	
         return Datatables::of($offers)
 		->addIndexColumn()
@@ -331,26 +356,76 @@ public function deleteGift($id)
   {
 	 $user_id=User::getVendorId();
 	 $offers=ScratchOffer::where('fk_int_user_id',$user_id)->get();
-	 return view('users.campaign.view_gifts_list',compact('offers'));
+
+	 if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			$branches=User::select('pk_int_user_id','vchr_user_name',)->where('parent_user_id',$user_id)->get();
+			return view('users.campaign.view_gifts_list_hyundai',compact('branches'));
+		}
+		else
+		{
+			return view('users.campaign.view_gifts_list',compact('offers'));
+		}
+
   }	
   
 	
  public function viewGiftListings(Request $request)
     {
 	  $user_id=User::getVendorId();
-      $offer = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name','tbl_users.vchr_user_name','tbl_scratch_offers.vchr_scratch_offers_name')
-	  ->leftJoin('tbl_scratch_offers','tbl_scratch_offers_listing.fk_int_scratch_offers_id','=','tbl_scratch_offers.pk_int_scratch_offers_id')
-	  ->leftJoin('tbl_users','tbl_scratch_offers_listing.fk_int_user_id','=','tbl_users.pk_int_user_id')
-	  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
-	  ->where('tbl_scratch_offers_listing.fk_int_user_id',$user_id);
 	  
-	  if($request->offer_id!="")
-	  {
-		  $offer->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id',$request->offer_id);
-	  }
+	  if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			
+			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+
+			$query = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name','tbl_users.vchr_user_name','tbl_scratch_offers.vchr_scratch_offers_name')
+			  ->leftJoin('tbl_scratch_offers','tbl_scratch_offers_listing.fk_int_scratch_offers_id','=','tbl_scratch_offers.pk_int_scratch_offers_id')
+			  ->leftJoin('tbl_users','tbl_scratch_offers_listing.fk_int_user_id','=','tbl_users.pk_int_user_id')
+			  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id');
+			 	
+			if($request->branch_user!="")
+			{
+				$userid=$request->branch_user;
+				$offers=$query->where('tbl_scratch_offers_listing.fk_int_user_id',$userid)->orderby('id','Desc')->get();
+				
+			}
+			else
+			{
+				$offers=collect();
+				
+				foreach($userids as $userid)
+				{
+					
+				$offer1 = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name','tbl_users.vchr_user_name','tbl_scratch_offers.vchr_scratch_offers_name')
+				  ->leftJoin('tbl_scratch_offers','tbl_scratch_offers_listing.fk_int_scratch_offers_id','=','tbl_scratch_offers.pk_int_scratch_offers_id')
+				  ->leftJoin('tbl_users','tbl_scratch_offers_listing.fk_int_user_id','=','tbl_users.pk_int_user_id')
+				  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
+				  ->where('tbl_scratch_offers_listing.fk_int_user_id',$userid)->orderby('id','Desc')->get();
+					
+					$offers=$offers->merge($offer1);
+				}
+			}
+		}
+		else
+		{
+			
+			 $offer = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name','tbl_users.vchr_user_name','tbl_scratch_offers.vchr_scratch_offers_name')
+			  ->leftJoin('tbl_scratch_offers','tbl_scratch_offers_listing.fk_int_scratch_offers_id','=','tbl_scratch_offers.pk_int_scratch_offers_id')
+			  ->leftJoin('tbl_users','tbl_scratch_offers_listing.fk_int_user_id','=','tbl_users.pk_int_user_id')
+			  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
+			  ->where('tbl_scratch_offers_listing.fk_int_user_id',$user_id);
+			  
+			  if($request->offer_id!="")
+			  {
+				  $offer->where('tbl_scratch_offers_listing.fk_int_scratch_offers_id',$request->offer_id);
+			  }
+			  
+			  $offers=$offer->orderby('pk_int_scratch_offers_listing_id','Desc')->get();
+
+		}
 	  
-	  $offers=$offer->orderby('pk_int_scratch_offers_listing_id','Desc')->get();
-	
+     
         return Datatables::of($offers)
 		->addIndexColumn()
         		
