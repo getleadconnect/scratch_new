@@ -511,7 +511,7 @@ public function scratchCustomer(Request $request)
 
 		$customer=ScratchWebCustomer::create($cust_data);
 		$customer['image'] = FileUpload::viewFile($offerlisting->image,'local');
-				
+		
 		if($otp_verify_status=="Disabled")
 			$customer->otp_verify_status="Disabled";
 		else
@@ -549,7 +549,11 @@ public function scratchCustomer(Request $request)
 				//$offerlisting->int_scratch_offers_balance--;
 				//$offerlisting->save();
 
-				return response()->json(['data'=>$customer,'message'=> 'Customer details added successfully','status' =>true]);
+				$data1=[
+				   'customer_id' => $customer->id,
+				];				
+
+				return response()->json(['data'=>$data1,'message'=> 'Customer details added successfully','status' =>true]);
 			}
 			else{
 				return response()->json(['message'=> 'Something wrong, Try later.!', 'status' => false]);
@@ -635,7 +639,7 @@ public function getScratch(Request $request)
 		$offerListing->unique_id = $uniqueId;
 		$offerListing->customer_name = $customer->name;
 		$offerListing['image'] = FileUpload::viewFile($offerListing->image,'local');
-				
+		
 		if ($flag) {
 
 			// ----- to send whats app message ------------------------------------------
@@ -677,6 +681,5 @@ public function getScratch(Request $request)
 		return response()->json(['msg' => "Sorry, customer details were not found.!", 'status' => false]);
 	}
 }
-
 
 }

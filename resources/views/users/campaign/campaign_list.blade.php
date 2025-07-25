@@ -41,21 +41,17 @@
               <div class="card">
                 <div class="card-header p-y-3">
 				<div class="row">
-				<div class="col-lg-9 col-xl-9 col-xxl-9 col-9">
-                  <h6 class="mb-0 pt5">&nbsp;</h6>
-				  
-				  <div class="row">
-				  <label class="col-12 col-lg-4 col-xxl-4 col-xxl-4">Filter Branch:</label>
-				  <div class="col-12 col-lg-4 col-xxl-4 col-xxl-4">
-				  <select name="flt_branch" class="form-control">
-				  <option value="">select<option>
-				  <option value="">select<option>
-				  <option value="">select<option>
-				  <option value="">select<option>
-				  <option value="">select<option>
+				<div class="col-lg-9 col-xl-9 col-xxl-9 col-9 d-flex">
+				  <label class="mt-2" style="width:120px;font-weight:500;">Filter Branch:</label>
+				  <select name="flt_branch" id="flt_branch" class="form-control" style="float:right;width:250px;">
+				  <option value="">select</option>
+				  @if($sub_users)
+					  @foreach($sub_users as $row)
+						<option value="{{$row->pk_int_user_id}}">{{$row->vchr_user_name}}</option>
+					  @endforeach
+				  @endif
 				  </select>
-				  </div>
-				  				  
+		
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
 				  @if($subscription)
@@ -105,6 +101,7 @@
                                <thead class="table-semi-dark">
                                  <tr>
 									<th>SlNo</th>
+									<th>Branch Id</th>
 									<th>Created At</th>
 									<th>Campaign Name</th>
 									<th>Type</th>
@@ -235,12 +232,14 @@ var table = $('#datatable').DataTable({
 			url:BASE_URL+"/users/view-offers",
 			data: function (data) 
 		    {
-               //data.search = $('input[type="search"]').val();
+               //data.branch_user = $('input[type="search"]').val();
+			   data.branch_user = $("#flt_branch").val();
 		    },
         },
 
         columns: [
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
+			{"data": "fk_int_user_id" },
 			{"data": "created" },
 			{"data": "name" },
 			{"data": "type" },
@@ -252,6 +251,16 @@ var table = $('#datatable').DataTable({
         ],
 
 });
+
+$("#flt_branch").change(function()
+{
+	$('#datatable').DataTable().ajax.reload(null, false);
+});
+
+
+
+
+
 
 $('#datatable tbody').on('click','.offer-delete',function()
 {
