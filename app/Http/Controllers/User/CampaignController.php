@@ -134,10 +134,32 @@ class CampaignController extends Controller
  public function viewOffers()
     {
       $id=User::getVendorId();
-
-      $offers = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
+	
+	/*if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
+	{
+		$offers=collect();
+		$userids=User::where('parent_user_id',$id)->pluck('pk_int_user_id')->toArray();
+		foreach($userids as $userid)
+		{
+			 $offers1 = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
+				->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
+				->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
+				->where('fk_int_user_id',$userid)->orderby('pk_int_scratch_offers_id','Desc')->get();
+			
+			$offers=$offers->merge($offers1);
+		}
+	}
+	else
+	{
+	  $offers = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 	  ->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
 	  ->where('fk_int_user_id',$id)->orderby('pk_int_scratch_offers_id','Desc')->get();
+	}*/
+	
+	 $offers = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
+	  ->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
+	  ->where('fk_int_user_id',$id)->orderby('pk_int_scratch_offers_id','Desc')->get();
+
 	
         return Datatables::of($offers)
 		->addIndexColumn()

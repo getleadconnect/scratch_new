@@ -60,6 +60,7 @@
                                <thead class="thead-semi-dark">
                                  <tr>
 									<th>SlNo</th>
+									<th>ID</th>
 									<th>Name</th>
 									<th>Country</th>
 									<th>Mobile</th>
@@ -149,6 +150,7 @@ var table = $('#datatable').DataTable({
 
         columns: [
             {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
+			{"data": "pk_int_user_id" },
 			{"data": "name" },
 			{"data": "countrycode" },
 			{"data": "mobile" },
