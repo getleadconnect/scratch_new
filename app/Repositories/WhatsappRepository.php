@@ -85,4 +85,89 @@ class WhatsappRepository
     }
 	
 	
+//send whats app confirm message
+	
+	
+	public function sendWhatsappConfirmMessage($data)
+    {
+        // Send the message
+        $params = [
+            "messaging_product" => "whatsapp",
+            "to" => $data['mobile_no'],
+            "type" => "template"
+        ];
+        $params['template'] = [
+            "name" => "scratch_confim",
+            "language" => [
+                "code" => "en"
+            ]
+        ];
+	
+		
+        $components['components'] = [
+            [
+                "type" => "body",
+				"parameters" => [
+									[
+										"type" => "text",
+										"text" => $data['customer']
+									],
+									[
+										"type" => "text",
+										"text" => $data['gift_name']
+									],
+									[
+										"type" => "text",
+										"text" => $data['campaign']
+									],
+									
+									[
+										"type" => "text",
+										"text" => $data['reference_id']
+									],
+									
+                            ]
+                ],
+ 
+            ];
+        $params['template']["components"] = $components['components'];
+		
+		try {
+           
+		   $headers = [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$this->token
+            ];
+
+			//SentServiceJob::dispatch($this->url, $params,$headers);
+			
+			$client = new Client();
+            $response = $client->request('POST', $this->url, [
+                'json' => $params,
+                'headers' => $headers,
+            ]);
+            
+			$result=json_decode($response->getBody(), true);
+			//return $result['messages'][0]['message_status'];  //will return 'accepted'
+			return $result;
+
+        } catch (\Exception $e) {
+            Log::info('Sent service job failed: ' . $e->getMessage());
+            \Log::info($e->getMessage());			
+			return $e->getMessage();
+		}
+
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

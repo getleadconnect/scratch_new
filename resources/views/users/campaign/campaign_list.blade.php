@@ -43,6 +43,19 @@
 				<div class="row">
 				<div class="col-lg-9 col-xl-9 col-xxl-9 col-9">
                   <h6 class="mb-0 pt5">&nbsp;</h6>
+				  
+				  <div class="row">
+				  <label class="col-12 col-lg-4 col-xxl-4 col-xxl-4">Filter Branch:</label>
+				  <div class="col-12 col-lg-4 col-xxl-4 col-xxl-4">
+				  <select name="flt_branch" class="form-control">
+				  <option value="">select<option>
+				  <option value="">select<option>
+				  <option value="">select<option>
+				  <option value="">select<option>
+				  <option value="">select<option>
+				  </select>
+				  </div>
+				  				  
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
 				  @if($subscription)
