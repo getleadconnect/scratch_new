@@ -19,8 +19,9 @@ use App\Models\Settings;
 use App\Common\Variables;
 use App\Common\WhatsappSend;
 use App\Services\WhatsappService;
+use App\Services\WhatsappGiftConfirmMsgService;
+use App\Notification\WhatsappGiftConfirmSend;
 
-//use App\Services\CrmApiService;
 use App\Jobs\SentCrmServiceJob;
 
 
@@ -220,7 +221,6 @@ class HyundaiScratchController extends Controller
             $otp = rand(1111, 9999);
             $matchThese = ['user_id' => $userid, 'otp_type' => 'scratch_api'];
             UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
-            
 			
 			$otp_enabled=Variables::getScratchBypass($userid);
 			
@@ -246,6 +246,7 @@ class HyundaiScratchController extends Controller
             return $e->getMessage();
         }
     }
+	
 	
 	/**
     * to verify the customer mobile no.
@@ -636,9 +637,40 @@ public function getScratch(Request $request)
 		$offerListing['image'] = FileUpload::viewFile($offerListing->image,'local');
 				
 		if ($flag) {
-			return response()->json(['msg' => "Success", 'offer' => $offerListing,'status' => true]);
+
+			// ----- to send whats app message ------------------------------------------
+			
+			try
+			{
+
+				$mobile=$customer->country_code.$customer->mobile;
+				$campaign_name=ScratchOffer::where('pk_int_scratch_offers_id',$customer->offer_id)->pluck('vchr_scratch_offers_name')->first();
+				
+				$dataSend = [
+						'customer'=>ucfirst($customer->name),
+						'mobile_no'=>$mobile,
+						'gift_name'=>$customer->offer_text,
+						'campaign'=>$campaign_name,
+						'reference_id'=>$customer->unique_id,
+					];
+		
+				$msg_result=(new WhatsappGiftConfirmSend(resolve(WhatsappGiftConfirmMsgService::class)))->giftConfirmMessageSendToWhatsapp($dataSend);
+				\Log::info($msg_result);
+			}
+			catch(\Exception $e)
+			{
+				\Log::info($e->getMessage());
+			}
+		
+		//-------------------------------------------------------------------------
+		
+		return response()->json(['msg' => "Success", 'offer' => $offerListing,'status' => true]);
+
 		}
-		return response()->json(['msg' => "Sorry Somthing Went Wrong .!! Try again", 'status' => false]);
+		else
+		{
+			return response()->json(['msg' => "Sorry Somthing Went Wrong .!! Try again", 'status' => false]);
+		}
 	}
 	else
 	{
