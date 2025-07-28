@@ -67,7 +67,7 @@
 							@csrf  -->
 						  
 						   <div class="row" style="padding:10px 10px 10px 10px;" >
-														
+							@if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)							
 							<div class="col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex">
 								<label class="mt-2" style="width:150px;font-weight:500;">Filter Branch</label>
 								<select id="branch_user" name="branch_user" class="form-control" >
@@ -77,7 +77,19 @@
 								  @endforeach
 								</select>
 							</div>
+							@else
+								
+							<div class="col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex">
+								<label class="mt-2" style="width:150px;font-weight:500;">Filter Branch</label>
+								<select id="branch_user" name="branch_user" class="form-control" >
+                                 <option value="">Select Branch</option>
+								  @foreach($branches as $row)
+									<option value="{{ $row->id}}">{{ $row->branch_name }}</option>
+								  @endforeach
+								</select>
+							</div>
 							
+							@endif
 							<!--<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:22px;">
 							<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
 							<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
