@@ -91,7 +91,9 @@
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                   
+				
+					<li style="margin:0px;padding:0px;line-height:20px;"><span style="margin-left:10px;font-size:13px;">Id: {{Auth::user()->pk_int_user_id}}</span> </li>
+                   <hr style="margin:0px 0px 5px 0px;">
                     <li>
                       <a class="dropdown-item" href="javacript:void(0)" data-bs-toggle="modal" data-bs-target="#CPassModal">
                          <div class="d-flex align-items-center">
