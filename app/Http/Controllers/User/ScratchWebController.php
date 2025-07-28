@@ -49,6 +49,7 @@ class ScratchWebController extends Controller
 			
         $user_id = User::getVendorId();
 		
+		
 		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
 		{
 			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
@@ -58,6 +59,7 @@ class ScratchWebController extends Controller
 					
 			if($request->branch_user!="")
 			{
+				
 				$userid=$request->branch_user;
 				$customers=$query->where('user_id',$userid)->orderby('id','Desc')->get();
 			}
@@ -75,8 +77,8 @@ class ScratchWebController extends Controller
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
             ->where('user_id', $user_id)
 		    ->where(function($where)use($request){
-				if($request->branch)
-					$where->where('scratch_web_customers.branch_id',$request->branch);
+				if($request->branch_user)
+					$where->where('scratch_web_customers.branch_id',$request->branch_user);
 				if($request->campaign)
 					$where->where('scratch_web_customers.offer_id',$request->campaign);
 				if($request->start_date &&  $request->end_date)  

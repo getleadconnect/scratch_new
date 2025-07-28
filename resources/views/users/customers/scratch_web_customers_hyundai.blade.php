@@ -96,8 +96,7 @@
 				<!---  filer end ----------------------------------------->
 				<div class="row mt-3">
                      <div class="col-12 col-lg-12  text-right">
-					 <label>Web Total : <span style="font-weight:600;" id="web_count"></span></label>
-					 &nbsp;|&nbsp;<label class="ms-1">App Total : <span style="font-weight:600;" id="app_count"></span></label>
+					 <label class="ms-1">Total : <span style="font-weight:600;" id="app_count"></span></label>
 					 </div>
 				</div>
 	
