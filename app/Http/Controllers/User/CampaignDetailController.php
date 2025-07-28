@@ -41,7 +41,7 @@ class CampaignDetailController extends Controller
   
   public function getCampaign($id)
   {
-	    
+	   
 	  $offer = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 	  ->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
 	  ->where('tbl_scratch_offers.pk_int_scratch_offers_id',$id)->first();
@@ -65,11 +65,8 @@ class CampaignDetailController extends Controller
 	  $counts['total_count']=$cnt->total_count;
 	  $counts['bal_count']=$cnt->balance_count;
 	  
-	  $usd_cnt = ScratchWebCustomer::select(DB::raw("COUNT(*) as used_count"))
-	  ->where('offer_id',$id)->first();
-	  
-	  $counts['used_count']=$usd_cnt->used_count;
-	
+	  $counts['used_count'] = ($cnt->total_count)-($cnt->balance_count);
+
 	
 		$dealer_name="";
 	  if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
