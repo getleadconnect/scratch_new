@@ -61,24 +61,29 @@
               </a>
             </li>
 			
-			<li>
-              <a href="{{url('users/redeemed-customers')}}" title="Campaigns">
-                <div class="parent-icon">
-				<img src="{{asset('assets/images/icons/list.png')}}" style="width:18px;">
-				
-                </div>
-                <div class="menu-title">Redeemed Customers</div>
-              </a>
-            </li>
+			 @if(Auth::user()->int_role_id!=1)
+				<li>
+				  <a href="{{url('users/redeemed-customers')}}" title="Campaigns">
+					<div class="parent-icon">
+					<img src="{{asset('assets/images/icons/list.png')}}" style="width:18px;">
+					
+					</div>
+					<div class="menu-title">Redeemed Customers</div>
+				  </a>
+				</li>
+			@endif
 			
+			@if(Auth::user()->parent_user_id=="" and Auth::user()->int_role_id!=1)		
 			<li>
               <a href="{{url('users/gl-links')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/link.png')}}" style="width:20px;">
                 </div>
-                <div class="menu-title">Web Scratch Links</div>
+                <div class="menu-title">Web Scratch Links </div>
               </a>
             </li>
+			@endif
+
 			
 			<li>
               <a href="{{url('users/gifts-list')}}" title="Campaigns">
@@ -109,7 +114,7 @@
             </li> 
 			@if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
 				<li>
-				  <a href="{{url('users/scratch-ads-image')}}" title="Campaigns">
+				  <a href="{{url('users/reports')}}" title="Campaigns">
 					<div class="parent-icon">
 					<img src="{{asset('assets/images/icons/reports.png')}}" style="width:20px;">
 					</div>

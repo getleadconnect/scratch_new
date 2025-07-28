@@ -69,7 +69,7 @@
 		<div class="d-flex align-items-center">
 		  <div class="">
 			<h6 class="mb-1">Total Users</h6>
-			<h4 class="mb-0 text-pink">5</h4>
+			<h4 class="mb-0 text-pink">{{$data['total_users']}}</h4>
 		  </div>
 		  <div class="ms-auto fs-2 text-pink">
 			<i class="bx bx-receipt"></i>

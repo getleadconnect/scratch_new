@@ -63,6 +63,7 @@
           <div class="mobile-toggle-icon fs-3 d-flex d-lg-none">
               <i class="bi bi-list"></i>
             </div> 
+		  
 			<h4>GL-SCRATCH</h4>
             <!--<form class="searchbar">
                 <div class="position-absolute top-50 translate-middle-y search-icon ms-3"><i class="bi bi-search"></i></div>
@@ -130,7 +131,7 @@
 	@endif
        <!--start content-->
           <main class="page-content">
-              
+		  
             @yield('contents')
 			
           </main>
