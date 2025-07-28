@@ -41,6 +41,7 @@ class CampaignDetailController extends Controller
   
   public function getCampaign($id)
   {
+	    
 	  $offer = ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 	  ->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
 	  ->where('tbl_scratch_offers.pk_int_scratch_offers_id',$id)->first();
@@ -69,22 +70,33 @@ class CampaignDetailController extends Controller
 	  
 	  $counts['used_count']=$usd_cnt->used_count;
 	
+	
+		$dealer_name="";
+	  if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			$dealer_name=User::where('pk_int_user_id',ScratchOffer::where('pk_int_scratch_offers_id',$id)->pluck('fk_int_user_id')->first())->pluck('vchr_user_name')->first();
+		}
 	  
-	 return view('users.campaign.view_campaign_details',compact('offer','diff_days','counts',));
+	 return view('users.campaign.view_campaign_details_new',compact('dealer_name','offer','diff_days','counts',));
   }	
   
-  
 
-	public function viewWebCustomers(Request $request)
-	{
+  public function viewWebCustomers(Request $request)
+  {
 			
         $user_id = User::getVendorId();
 		
 		$camp_id=$request->campaign_id;
 		
+		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			$user_id=ScratchOffer::where('pk_int_scratch_offers_id',$camp_id)->pluck('fk_int_user_id')->first();
+		}
+		
         $customers = ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
 		->leftJoin('scratch_branches','scratch_web_customers.branch_id','=','scratch_branches.id')
-		->where('user_id', $user_id)->where('offer_id',$camp_id)->where('redeem_source','web')->orderBy('id', 'Desc')->get();	
+		->where('user_id', $user_id)->where('offer_id',$camp_id)->orderBy('id', 'Desc')->get();
+		//->where('redeem_source','web')	
   
         return DataTables::of($customers)
 			->addIndexColumn()
@@ -117,12 +129,21 @@ class CampaignDetailController extends Controller
             })
 			
 			->editColumn('redeem', function ($row) {
-                if($row->redeem==1 && $row->status==1) 
-				$red="<span class='text-green'>Redeemed</span>";
-				else if($row->status==0) 
-				$red="<span class='text-danger'>--</span>";
+                if((Auth::user()->int_role_id==1 and Auth::user()->admin_status==1) or (Auth::user()->parent_user_id!=NULL))
+				{
+					$red="<span class='text-green'>Redeemed</span>";
+					if($row->status==0) 
+						$red="<span class='text-green'>--</span>";
+				}
 				else
-				$red="<span class='text-danger'>Pending</span>";
+				{
+					if($row->redeem==1 && $row->status==1) 
+						$red="<span class='text-green'>Redeemed</span>";
+					else if($row->status==0) 
+						$red="<span class='text-danger'>--</span>";
+					else
+						$red="<span class='text-danger'>Pending</span>";
+				}
 						
 			return $red;
             })
@@ -135,8 +156,8 @@ class CampaignDetailController extends Controller
             ->tojson(true);
     }
 	
-	//app scratch customers list
 	
+	//app scratch customers list
 		
 	public function viewAppCustomers(Request $request)
 	{
@@ -145,9 +166,20 @@ class CampaignDetailController extends Controller
 		
 		$camp_id=$request->campaign_id;
 		
-        $customers = ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
-		->leftJoin('scratch_branches','scratch_web_customers.branch_id','=','scratch_branches.id')
-		->where('user_id', $user_id)->where('offer_id',$camp_id)->where('redeem_source','app')->orderBy('id', 'Desc')->get();	
+		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			$user_id=ScratchOffer::where('pk_int_scratch_offers_id',$camp_id)->pluck('fk_int_user_id')->first();
+
+			$customers = ScratchWebCustomer::select('scratch_web_customers.*','tbl_users.vchr_user_name as branch_name')
+			->leftJoin('tbl_users','scratch_web_customers.branch_id','=','tbl_users.pk_int_user_id')
+			->where('user_id', $user_id)->where('offer_id',$camp_id)->where('redeem_source','app')->orderBy('id', 'Desc')->get();
+		}
+		else
+		{
+			$customers = ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
+			->leftJoin('scratch_branches','scratch_web_customers.branch_id','=','scratch_branches.id')
+			->where('user_id', $user_id)->where('offer_id',$camp_id)->where('redeem_source','app')->orderBy('id', 'Desc')->get();	
+		}
   
         return DataTables::of($customers)
 			->addIndexColumn()
@@ -180,12 +212,22 @@ class CampaignDetailController extends Controller
             })
 			
 			->editColumn('redeem', function ($row) {
-                if($row->redeem==1 && $row->status==1) 
+				
+				if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
+				{
 					$red="<span class='text-green'>Redeemed</span>";
-				else if($row->status==0) 
-					$red="<span class='text-danger'>--</span>";
+					if($row->status==0) 
+						$red="<span class='text-green'>--</span>";
+				}
 				else
-					$red="<span class='text-danger'>Pending</span>";
+				{
+					if($row->redeem==1 && $row->status==1) 
+						$red="<span class='text-green'>Redeemed</span>";
+					else if($row->status==0) 
+						$red="<span class='text-danger'>--</span>";
+					else
+						$red="<span class='text-danger'>Pending</span>";
+				}
 			return $red;
             })
 			
@@ -199,3 +241,5 @@ class CampaignDetailController extends Controller
 	
 
 }
+
+

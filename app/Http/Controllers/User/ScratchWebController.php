@@ -39,7 +39,7 @@ class ScratchWebController extends Controller
 		}
 		else
 		{
-			return view('users.customers.scratch_web_customers',compact('branches','offers'));
+			return view('users.customers.scratch_web_customers_new',compact('branches','offers'));
 		}
 		
     }
@@ -49,10 +49,31 @@ class ScratchWebController extends Controller
 			
         $user_id = User::getVendorId();
 		
-        $customers= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as redeemed_agent_name','scratch_branches.branch_name')
-			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
+		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
+		{
+			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+			
+				$query=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id');
+					
+			if($request->branch_user!="")
+			{
+				$userid=$request->branch_user;
+				$customers=$query->where('user_id',$userid)->orderby('id','Desc')->get();
+			}
+			else
+			{
+				$customers=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
+				->whereIn('user_id', $userids)->orderby('id','Desc')->get();
+			}
+		}
+		else
+		{
+		   $customers= ScratchWebCustomer::select('scratch_web_customers.*','tbl_users.vchr_user_name as redeem_agent_name','scratch_branches.branch_name')
+		   ->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
-            ->where('user_id', $user_id)->where('redeem_source','web')
+            ->where('user_id', $user_id)
 		    ->where(function($where)use($request){
 				if($request->branch)
 					$where->where('scratch_web_customers.branch_id',$request->branch);
@@ -65,6 +86,7 @@ class ScratchWebController extends Controller
 				}  
 			   })->orderBy('id', 'Desc')->get();
 
+		}
 
         return DataTables::of($customers)
 			->addIndexColumn()
@@ -72,9 +94,10 @@ class ScratchWebController extends Controller
                 return date('d-m-Y h:i A', strtotime($row->created_at));
             })
             ->editColumn('branch', function ($row) {
-                if($row->branch_name!="")
+				if($row->branch_name!="")
 					return $row->branch_name;
-					return "---";
+				else 
+					return $row->redeem_agent_name;
             })
 			->addColumn('billno', function ($row) {
                 if($row->bill_no!="")
@@ -90,6 +113,7 @@ class ScratchWebController extends Controller
                 $mob="+".$row->country_code." ".$row->mobile;
 				return $mob;
             })
+			
 			->addColumn('agent', function ($row) {
                 if ($row->redeemed_agent!=null)
 					return $row->redeemed_agent_name;
@@ -103,21 +127,33 @@ class ScratchWebController extends Controller
 					$win="<span class='text-danger'>loss</span>";
 				return $win;
             })
-			
-			->addColumn('show', function ($row) {
-                if($row->redeem==1 && $row->win_status==1) 
-					$red="<span class='text-green'>Redeemed</span>";
-				else if($row->win_status==0) 
-					$red="<span class='text-danger'>--</span>";
-				else
-					$red="<span class='text-danger'>Pending</span>";
+
+			->editColumn('show', function ($row) {
 				
-                return $red;
+				if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
+				{
+					$red="<span class='text-green'>Redeemed</span>";
+					
+					if($row->win_status==0 ) 
+						$red="<span class='text-green'>--</span>";
+				}
+				else
+				{
+					if(Auth::user()->parent_user_id!=NULL)
+						$red="<span class='text-green'>Redeemed</span>";
+					elseif($row->redeem==1 && $row->status==1) 
+						$red="<span class='text-green'>Redeemed</span>";
+					elseif($row->win_status==0) 
+						$red="<span class='text-danger'>--</span>";
+					else
+						$red="<span class='text-danger'>Pending</span>";
+				}
+			return $red;
             })
-			
             ->rawColumns(['show','status'])
             ->tojson(true);
     }
+
 	
 //app scratch cutomers 
 
@@ -253,6 +289,8 @@ public function getAppCustomers(Request $request)
             ->rawColumns(['show','status'])
             ->tojson(true);
     }
+
+
 
     public function redeem($id)
     {

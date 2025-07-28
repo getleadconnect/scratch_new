@@ -32,28 +32,32 @@ class AdminDashboardController extends Controller
 	
 	$user_id=User::getVendorId();
 	
-	$users=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+	$users=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id');
 	
+	//$scounts=ScratchCount::select(DB::raw('SUM(total_count) as total_count'),DB::raw('SUM(used_count) as used_count'),DB::raw('SUM(balance_count) as balance_count'))
+	//->where('parent_user_id',$user_id)->get();
+    
 	$total_credit=$used_credit=$bal_credit=0;
 	
-	foreach($users as $userid)
+	
+	
+	
+	
+	foreach($users as $key=>$userid)
 	{
-		$tot_count=ScratchCount::getTotalScratchCount($user_id);
-		$used_count=ScratchCount::getUsedScratchCount($user_id);
-		$bal_count=ScratchCount::getBalanceScratchCount($user_id);
+		$tot_count=ScratchCount::getTotalScratchCount($userid);
+		$used_count=ScratchCount::getUsedScratchCount($userid);
+		$bal_count=ScratchCount::getBalanceScratchCount($userid);
 		$total_credit+=$tot_count;
 		$used_credit+=$used_count;
 		$bal_credit+=$bal_count;
-
-		
 	}
-
+		
 	$data['total_credit']=$total_credit;
 	$data['used_credit']=$used_credit;
 	$data['bal_credit']=$bal_credit;
-	
-	
-	
+	$data['total_users']=count($users);
+		
 	$user=User::where('pk_int_user_id',$user_id)->first();
 	
 		$sub['subscription']='Active';

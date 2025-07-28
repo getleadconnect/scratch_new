@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
 use App\Facades\FileUpload;
 
 use App\Models\ScratchOffer;
@@ -136,12 +137,13 @@ class CampaignController extends Controller
  public function viewOffers(Request $request)
     {
       $id=User::getVendorId();
+	  
 	
 		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
 		{
 			
 			$userids=User::where('parent_user_id',$id)->pluck('pk_int_user_id')->toArray();
-
+			
 			$query=ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 					->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id');
 					
@@ -153,16 +155,10 @@ class CampaignController extends Controller
 			}
 			else
 			{
-				$offers=collect();
 				
-				foreach($userids as $userid)
-				{
-					
-					$offers1=ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
+				$offers=ScratchOffer::select('tbl_scratch_offers.*','scratch_type.type')
 					->leftJoin('scratch_type','tbl_scratch_offers.type_id','=','scratch_type.id')
-					->where('fk_int_user_id',$userid)->orderby('pk_int_scratch_offers_id','Desc')->get();
-					$offers=$offers->merge($offers1);
-				}
+					->whereIn('tbl_scratch_offers.fk_int_user_id',$userids)->orderby('pk_int_scratch_offers_id','Desc')->get();
 			}
 		}
 		else

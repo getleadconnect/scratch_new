@@ -50,7 +50,11 @@
                     <div class="d-flex align-items-center">
                       <div class="">
 						<h4 class="mb-1 mt-2 text-primary">Campaign: {{$offer->vchr_scratch_offers_name}}</h4>
-                        <p class="mb-1">Type: {{$offer->type}}</p>
+                        @if(Auth::user()->admin_status==1)
+							<h6>Dealer Code : {{$dealer_name}}</h6>
+						@endif
+						
+						<p class="mb-1">Type: {{$offer->type}}</p>
 						
 						<p class="mb-1">Expiry Date : 
 							@if($offer->end_date!="")
@@ -139,9 +143,8 @@
 					
 					<div class="col-lg-4 col-xl-4 col-xxl-4 col-4 text-right">
 
-					 <label>Web Total : <span style="font-weight:600;" id="web_count"></span></label>
-					 &nbsp;|&nbsp;<label class="ms-1">App Total : <span style="font-weight:600;" id="app_count"></span></label>
-
+					 <label>Total : <span style="font-weight:600;" id="web_count"></span></label>
+					 
 					</div>
 				  
 				</div>
@@ -152,28 +155,11 @@
 
 								<ul class="nav nav-tabs nav-primary mt-3" role="tablist">
 									<li class="nav-item" role="presentation">
-										<a class="nav-link 
-										@if(Auth::user()->parent_user_id==NULL)
-											active
-										@endif
-											" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="false" tabindex="-1">
+										<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="false" tabindex="-1">
 											<div class="d-flex align-items-center">
 												<div class="tab-icon"><i class="bx bx-user-pin font-18 me-1"></i>
 												</div>
-												<div class="tab-title">Web Customers</div>
-											</div>
-										</a>
-									</li>
-									<li class="nav-item" role="presentation">
-										<a class="nav-link 
-										@if(Auth::user()->parent_user_id!=NULL)
-											active
-										@endif
-										" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
-											<div class="d-flex align-items-center">
-												<div class="tab-icon"><i class="bx bx-user-pin font-18 me-1"></i>
-												</div>
-												<div class="tab-title">App Customers</div>
+												<div class="tab-title">Customers</div>
 											</div>
 										</a>
 									</li>
@@ -213,40 +199,7 @@
 									   </div><!--end row-->
 									
 									</div>
-									
-									<!-- tab page-2 ------------------------>
-									<div class="tab-pane fade" id="primaryprofile" role="tabpanel">
-										<div class="row mt-2">
-										 <div class="col-12 col-lg-12 d-flex">
-										  <div class="card  shadow-none w-100">
-										  
-												<div class="table-responsive">
-													<table class="table" id="datatable_app" style="width:100% !important;">
-														<thead class="thead-semi-dark">
-														  <tr>
-															<th>SlNo</th>
-															<th>Name</th>
-															<th>Mobile</th>
-															<th>Email</th>
-															<th>Created At</th>
-															<th>Branch</th>
-															<th>Offer</th>
-															<th>Status</th>
-															<th>Redeem</th>
-															  </tr>
-														</thead>
-														<tbody>
-																								
-														</tbody>
-													</table>
-												</div>
-									
-										   <!-- </div>-->
-										  </div> 
-										</div>
-									   </div><!--end row-->
-									</div>
-							
+
 								</div>
                 </div>
         </div>
@@ -338,46 +291,6 @@ BASE_URL ={!! json_encode(url('/')) !!}
 		$("#web_count").html(total);
 		},
     });
-	
-	
-	
-var table2 = $('#datatable_app').DataTable({
-        processing: true,
-        serverSide: true,
-		stateSave:true,
-		paging : true,
-        pageLength :50,
-
-		'pagingType':"simple_numbers",
-        'lengthChange': true,
-
-		ajax:
-		{
-			url:BASE_URL+"/users/view-campaign-app-customers",
-			data: function (data) 
-		    {
-               data.campaign_id = $('#campaign_id').val();
-		    },
-        },
-
-        columns: [
-            {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
-			{"data": "name" },
-			{"data": "mobile" },
-			{"data": "email" },
-			{"data": "created" },
-			{"data": "branch" },
-			{"data": "offer" },
-			{"data": "status" },
-			{"data": "redeem" },
-        ],
-		
-		initComplete: function (settings, json) {
-        var total=table2.page.info().recordsTotal;
-		$("#app_count").html(total);
-		},
-    });
-
 
 $(document).on('click','.link-add',function()
 {

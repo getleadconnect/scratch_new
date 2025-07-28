@@ -24,6 +24,7 @@ use App\Http\Controllers\User\BranchUsersController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\GeneralSettingsController;
 use App\Http\Controllers\User\ForgotPasswordController;
+use App\Http\Controllers\User\ReportController;
 
 use App\Http\Controllers\Shortener\ShortenerController;
 use App\Http\Controllers\Shortener\GlScratchWebController;
@@ -279,6 +280,29 @@ Route::controller(GeneralSettingsController::class)->group(function()
 	Route::post('/save-crmapi-token', 'saveCrmApiToken')->name('save-crmapi-token');
 	Route::post('/set-crm-api-status', 'setCrmApiStatus')->name('setCrmApiStatus');
 });
+
+
+Route::controller(GeneralSettingsController::class)->group(function() 
+{
+	Route::get('/general-settings', 'index')->name('general-settings');
+	Route::post('/set-scratch-otp-enabled', 'setScratchOtpEnabled')->name('set-scratch-otp-enabled');
+	Route::get('/send-otp', 'sendWhatsappOtp')->name('send-top');
+	Route::post('/save-crmapi-token', 'saveCrmApiToken')->name('save-crmapi-token');
+	Route::post('/set-crm-api-status', 'setCrmApiStatus')->name('setCrmApiStatus');
+});
+
+Route::controller(ReportController::class)->group(function() 
+{
+	Route::get('/reports', 'index')->name('reports');
+	
+});
+
+
+
+
+
+
+
 
 });
 

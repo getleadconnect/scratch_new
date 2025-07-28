@@ -27,7 +27,7 @@
 </style>
 
 		<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-              <div class="breadcrumb-title pe-3">Scratch Web Customers(H)</div>
+              <div class="breadcrumb-title pe-3">Scratch Customers</div>
  
              <!-- <div class="ms-auto">
                 <div class="btn-group">
@@ -96,8 +96,8 @@
 				<!---  filer end ----------------------------------------->
 				<div class="row mt-3">
                      <div class="col-12 col-lg-12  text-right">
-					 <label>Web Total : <span style="font-weight:600;" id="web_count"></span></label>
-					 &nbsp;|&nbsp;<label class="ms-1">App Total : <span style="font-weight:600;" id="app_count"></span></label>
+					 <label>Total : <span style="font-weight:600;" id="web_count"></span></label>
+					 
 					 </div>
 				</div>
 	
@@ -122,7 +122,7 @@
 
 						  <div class="table-responsive">
 	
-                             <table id="datatable_app" class="table align-middle" style="width:100% !important;" >
+                             <table id="datatable" class="table align-middle" style="width:100% !important;" >
                                <thead class="thead-semi-dark" >
 								<tr>
 									<th>Sl No</th>
@@ -183,7 +183,7 @@ $("#branch").select2();
 $("#campaign").select2();
 
 
-var table2 = $('#datatable_app').DataTable({
+var table2 = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
 		stateSave:true,
@@ -210,7 +210,7 @@ var table2 = $('#datatable_app').DataTable({
 		   {data: 'mobile', name: 'mobile'},
 		   {data: 'email', name: 'email'},
 		   {data: 'billno', name: 'bill_no'},
-		   {data: 'user_name', name: 'user_name'},
+		   {data: 'branch', name: 'branch'},
 		   {data: 'offer_text', name: 'offer_text'},
 		   {data: 'status', name: 'status'},
 		   {data: 'show', name: 'show', orderable: false, searchable: false}
@@ -226,26 +226,19 @@ var table2 = $('#datatable_app').DataTable({
 
 $("#branch_user").change(function()
 {
-	$('#datatable_app').DataTable().ajax.reload(function (json) {
+	$('#datatable').DataTable().ajax.reload(function (json) {
 		$("#app_count").html(json.recordsTotal);
 	});
 	
 });
-
-
 
 $("#btn-filter").click(function()
 {
 	$('#datatable').DataTable().ajax.reload(function (json) {
 		$("#web_count").html(json.recordsTotal);
 	});
-	
-	$('#datatable_app').DataTable().ajax.reload(function (json) {
-		$("#app_count").html(json.recordsTotal);
-	});
 
 });
-
 
 
 $('#datatable').on('click', '.scratch-web-redeem', function (event) {
