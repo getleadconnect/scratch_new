@@ -113,14 +113,26 @@
               </a>
             </li> 
 			@if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
-				<li>
-				  <a href="{{url('users/reports')}}" title="Campaigns">
-					<div class="parent-icon">
-					<img src="{{asset('assets/images/icons/reports.png')}}" style="width:20px;">
-					</div>
-					<div class="menu-title">Reports</div>
-				  </a>
-				</li> 
+
+				
+			<li>
+              <a href="javascript:;" class="has-arrow" title="Options">
+                <div class="parent-icon">
+				<img src="{{asset('assets/images/icons/reports.png')}}" style="width:20px;">
+                </div>
+                <div class="menu-title">Reports</div>
+              </a>
+              <ul>
+			   <!--<li> <a href="{{url('users/scratch-bills')}}"><i class="fa fa-caret-right"></i>Bills</a> </li>-->
+				<li> <a href="{{url('users/reports')}}"><i class="fa fa-caret-right"></i>Analytics Report</a>
+                </li>
+                <li> <a href="{{url('users/branch-reports')}}"><i class="fa fa-caret-right"></i>Branch wise report</a>
+                </li>
+				
+                
+              </ul>
+            </li>
+	
 			@endif
             <li>
               <a href="javascript:;" class="has-arrow" title="Options">
@@ -130,8 +142,7 @@
                 <div class="menu-title">Settings</div>
               </a>
               <ul>
-			   <!--<li> <a href="{{url('users/scratch-bills')}}"><i class="fa fa-caret-right"></i>Bills</a>-->
-                </li>
+			   <!--<li> <a href="{{url('users/scratch-bills')}}"><i class="fa fa-caret-right"></i>Bills</a> </li>-->
 				<li> <a href="{{url('users/scratch-branches')}}"><i class="fa fa-caret-right"></i>Branches</a>
                 </li>
                 <li> <a href="{{url('users/user-profile')}}"><i class="fa fa-caret-right"></i>My Profile</a>

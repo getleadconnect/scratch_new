@@ -16,7 +16,7 @@
 </style>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-              <div class="breadcrumb-title pe-3">Scratch Ads Images</div>
+              <div class="breadcrumb-title pe-3">Analytics Report</div>
  
              <!-- <div class="ms-auto">
                 <div class="btn-group">
@@ -37,10 +37,10 @@
                 <div class="card-header p-y-3">
 				<div class="row">
 				<div class="col-lg-9 col-xl-9 col-xxl-9 col-9">
-				   <h6 class="mb-0 pt5 mt-2"> &nbsp;</h6>
+				   <h6 class="mb-0 pt5 mt-2">Gift Analytics &nbsp;</h6>
 				  </div>
 				  <div class="col-lg-3 col-xl-3 col-xxl-3 col-3 text-right">
-				     <!--<a href="javascript:;" class="btn btn-gl-primary" ><i class="lni lni-upload"></i>&nbsp;Export</a>-->
+				     <a href="{{url('users/export-analytics-report')}}" class="btn btn-gl-primary"><i class="lni lni-upload"></i>&nbsp;Export to Excel</a>
 				  </div>
 				  </div>
                 </div>
@@ -50,26 +50,26 @@
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100 mt-2">
 					  
-					  <div class="row">
-					  <div class="col-lg-5 col-xl-5 col-xxl-5">
-					  
-					  
-					  
-							 
-					  </div>
-					  
-					  <div class="col-lg-7 col-xl-7 col-xxl-7">
-
-                        <!--<div class="card-body">-->
+	                    <!--<div class="card-body">-->
                           <div class="table-responsive">
 	
-	
-	
+							<table id="datatable" class="table align-middle" style="width:100% !important;" >
+                               <thead class="thead-semi-dark">
+								<tr>
+									<th>Sl No</th>
+									<th>User Id</th>
+									<th>Delear Code</th>
+									<th>Mobile</th>
+									<th>Total Gift</th>
+									<th>Total Used</th>
+									<th>Balance</th>
+								</tr>
+                               </thead>
+                               <tbody>
+                                  
+                               </tbody>
+                             </table>
 
-
-                          </div>
-						  
-						  </div>
 						  </div>
                        <!-- </div>-->
                       </div> 
@@ -98,6 +98,40 @@
 
 BASE_URL ={!! json_encode(url('/')) !!}
 
+var table1 = $('#datatable').DataTable({
+        processing: true,
+        serverSide: true,
+		stateSave:true,
+		paging     : true,
+        pageLength :50,
+				
+		'pagingType':"simple_numbers",
+        'lengthChange': true,
+				
+		ajax:
+		{
+			url:BASE_URL+"/users/view-gift-analytics",
+			data: function (data) 
+		    {
+               //data.start_date = $('#start_date').val();
+ 		    },
+        },
+		columns: [
+		   {"data": 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false  },
+		   {data: 'user_id', name: 'user_id'},
+		   {data: 'name', name: 'name'},
+		   {data: 'mobile', name: 'mobile'},
+		   {data: 'total_gift_count', name: 'total_gift_count'},
+		   {data: 'used_gift', name: 'used_gift'},
+		   {data: 'total_gift_balance', name: 'total_gift_balance'},
+	   ],
+	   
+	  /* initComplete: function (settings, json) {
+        var total=table1.page.info().recordsTotal;
+		$("#web_count").html(total);
+	  }
+		*/
+});
 
 
 </script>
