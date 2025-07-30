@@ -294,7 +294,13 @@ Route::controller(GeneralSettingsController::class)->group(function()
 Route::controller(ReportController::class)->group(function() 
 {
 	Route::get('/reports', 'index')->name('reports');
+	Route::get('/view-gift-analytics', 'viewGiftAnalytics')->name('view-gift-analytics');
+	Route::get('/export-analytics-report', 'exportAnalyticsReport')->name('export-analytics-report');
 	
+	Route::get('/branch-reports', 'branchGiftReport')->name('branch-reports');
+	Route::get('/view-branch-gift-report', 'viewBranchWiseGiftReport')->name('view-branch-gift-report');
+	//Route::get('/export-analytics-report', 'exportAnalyticsReport')->name('export-analytics-report');
+
 });
 
 
