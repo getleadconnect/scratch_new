@@ -56,8 +56,9 @@ class ScratchWebController extends Controller
 			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
 			
 				$query=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
-				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id');
-			
+				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
+				->whereIn('user_id', $userids);
+
 			if($request->branch_user!="")
 			{
 				
@@ -478,15 +479,19 @@ public function getAppCustomers(Request $request)
 
 public function exportHyundaiCustomersList(Request $request)
 	{
-		
+		$sdate="";
+		$edate="";
+		$branch="";
 		if($request->start_date!="")
 			$sdate=date_create($request->start_date)->format('Y-m-d');
 		
 		if($request->end_date!="")
 			$edate=date_create($request->end_date)->format('Y-m-d');
+		if($request->branch_user!="")
+			$branch=$request->branch_user;
 
 		 //return Excel::download($export, 'test.xlsx');
-        return Excel::download(new HyundaiWebCustomersList($sdate,$edate), 'Hyundai_customers_list'.'_'.date('Y-m-d').'.'.'xlsx');
+        return Excel::download(new HyundaiWebCustomersList($sdate,$edate,$branch), 'customers_list'.'_'.date('Y-m-d').'.'.'xlsx');
     }
 
 

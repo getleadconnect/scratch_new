@@ -63,12 +63,12 @@
 						 <!-- <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>-->
 						  
 						  
-						  <!--<form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
-							@csrf  -->
+						 <form method="POST" id="exportCustomer"  action="{{url('users/export-hyundai-customers-list')}}" enctype="multipart/form-data" >
+								@csrf 
 						  
-						   <div class="row" style="padding:10px 10px 10px 10px;" >
+						   <div class="row" style="padding:0px 10px 10px 10px;" >
 														
-							<div class="col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex">
+							<div class="col-12 col-lg-3 col-xl-3 col-xxl-3">
 								<label class="mt-2" style="width:150px;font-weight:500;">Filter Branch</label>
 								<select id="branch_user" name="branch_user" class="form-control" >
                                  <option value="">Select Branch</option>
@@ -77,12 +77,29 @@
 								  @endforeach
 								</select>
 							</div>
+							<div class="col-12 col-lg-9 col-xl-9 col-xxl-9" style="padding:5px 10px 10px 10px;">
+
+									<div class="row" style="padding:3px 10px 10px 10px;" >
+									<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+										<label>Start Date</label>
+										<input type="date" id="start_date" name="start_date" style="content:attr(placeholder)! important;" class="form-control" placeholder="strting date" required>
+									</div>
+									
+									<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+										<label>End Date</label>
+										<input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date" required>
+									</div>
+
+									<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:22px;">
+									<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
+									<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
+									<button type="button" class="btn btn-secondary btn-xs"  id="btn_download" > <i class="lni lni-download"></i> Download</button>
+									</div>
+									</div>
+
+							</div>
 							
-							<!--<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:22px;">
-							<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
-							<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
-							<button type="submit" class="btn btn-secondary btn-xs"  > <i class="lni lni-download"></i> Download</button>
-							</div> -->
+							</form>
 
 						   </div>
 
@@ -198,6 +215,8 @@ var table2 = $('#datatable_app').DataTable({
 			data: function (data) 
 		    {
                data.branch_user = $('#branch_user').val();
+			   data.start_date = $('#start_date').val();
+			   data.end_date = $('#end_date').val();
 		    },
         },
 		columns: [
@@ -235,9 +254,9 @@ $("#branch_user").change(function()
 
 $("#btn-filter").click(function()
 {
-	$('#datatable').DataTable().ajax.reload(function (json) {
-		$("#web_count").html(json.recordsTotal);
-	});
+	//$('#datatable').DataTable().ajax.reload(function (json) {
+	//	$("#web_count").html(json.recordsTotal);
+	//});
 	
 	$('#datatable_app').DataTable().ajax.reload(function (json) {
 		$("#app_count").html(json.recordsTotal);
@@ -245,7 +264,25 @@ $("#btn-filter").click(function()
 
 });
 
+$("#btn_download").click(function()
+{
+	var brna=$("#branch_user").val();
+	var sdt=$("#start_date").val();
+	var edt=$("#end_date").val();
+	if(brna!="")
+	{
+		$("form#exportCustomer").submit();
+	}	
+	else if(sdt!="" && edt!="")
+	{
+		$("form#exportCustomer").submit();
+	}
+	else
+	{
+		alert("Please set branch or start & end dates.!")
+	}
 
+});
 
 $('#datatable').on('click', '.scratch-web-redeem', function (event) {
            event.preventDefault();
@@ -292,10 +329,7 @@ $('#datatable').on('click', '.scratch-web-redeem', function (event) {
 
 $(document).on('click','#btn-clear-filter',function()
 {
-	
 	location.reload();
-
-
 });
 
 
