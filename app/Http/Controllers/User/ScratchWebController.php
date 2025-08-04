@@ -28,7 +28,6 @@ class ScratchWebController extends Controller
      */
     public function index()
     {
-		
         $branches=ScratchBranch::where('vendor_id',User::getVendorId())->get();
 		$offers=ScratchOffer::where('fk_int_user_id',User::getVendorId())->get();
 		
@@ -42,15 +41,13 @@ class ScratchWebController extends Controller
 		{
 			return view('users.customers.scratch_web_customers_new',compact('branches','offers'));
 		}
-		
     }
 
     public function getWebCustomers(Request $request)
     {
 			
         $user_id = User::getVendorId();
-		
-		
+				
 		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
 		{
 			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
@@ -67,9 +64,9 @@ class ScratchWebController extends Controller
 			}
 			else
 			{
-				$customers=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
-				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
-				->whereIn('user_id', $userids)->orderby('id','Desc')->get();
+					$customers=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+					->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
+					->whereIn('user_id', $userids)->orderby('id','Desc')->get();
 			}
 
 			if($request->start_date &&  $request->end_date)  
@@ -321,8 +318,8 @@ public function getAppCustomers(Request $request)
 	public function exportWebCustomersList(Request $request)
 	{
 		$sdate="";
-		$edt="";
-		$branch=$request->branch;
+		$edate="";
+		$branch=$request->branch_user;
 		$campaign=$request->campaign;
 		
 		if($request->start_date!="")
@@ -463,7 +460,7 @@ public function getAppCustomers(Request $request)
 	public function exportRedeemedCustomersList(Request $request)
 	{
 		$sdate="";
-		$edt="";
+		$edate="";
 		$branch=$request->branch;
 		$campaign=$request->campaign;
 		
