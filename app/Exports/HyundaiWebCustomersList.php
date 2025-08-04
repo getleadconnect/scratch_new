@@ -20,11 +20,11 @@ class HyundaiWebCustomersList implements FromCollection,WithHeadings
 	protected $branch=null;
 	protected $campaign=null;
 	
-	function __construct($sdate,$edate)
+	function __construct($sdate,$edate,$branch)
 	{
 		$this->sDate=$sdate;
 		$this->eDate=$edate;
-		$this->branch="";
+		$this->branch=$branch;
 	}
 
     /**
@@ -55,16 +55,23 @@ class HyundaiWebCustomersList implements FromCollection,WithHeadings
 		$edate=$this->eDate;
 		$branch=$this->branch;
 		
-        if(Auth::user()->int_role_id==2 and Auth::user()->parent_user_id!="")
+        if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)
         {
             $userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
-		    $scdt=ScratchWebCustomer::select('scratch_web_customers.*')->whereIn('user_id',$userids);
+            $scdt=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
+				->whereIn('user_id', $userids);
         }
 		else
         {
-            $scdt=ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name')
-		    ->where('user_id',$user_id);
+            
+            $scdt= ScratchWebCustomer::select('scratch_web_customers.*','scratch_branches.branch_name','tbl_users.vchr_user_name as user_name')
+            ->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
+		    ->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
+            ->where('user_id',$user_id);
+
         }
+
 		if($sdate!=""){
 			$scdt->whereDate('scratch_web_customers.created_at','>=',$sdate);
 		}
@@ -92,7 +99,7 @@ class HyundaiWebCustomersList implements FromCollection,WithHeadings
 					$uData['ccode'] =$r->country_code;
 					$uData['mobile'] =$r->mobile;
 					$uData['email'] =$r->email;
-					$uData['branch'] =$r->branch_name??"--";
+					$uData['branch'] =$r->user_name??$r->branch_id;
 					$uData['offer'] =$r->offer_text??"--";
 					$uData['redeem'] ="Redeemed";
 			    $data[] = $uData;

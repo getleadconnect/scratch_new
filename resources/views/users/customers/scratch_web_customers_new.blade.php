@@ -63,10 +63,6 @@
                         <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" >
                          <div class="accordion-body">
 						 <!-- <label style="font-weight:500;padding:5px 10px;" > Filter By: </label>-->
-						  
-
-
-
 
 						  
 						  <!--<form method="POST" id="export_redeem_history"  action="{{url('users/export-web-customers-list')}}" enctype="multipart/form-data" >
@@ -236,6 +232,8 @@ var table2 = $('#datatable').DataTable({
 			data: function (data) 
 		    {
                data.branch_user = $('#branch_user').val();
+			   data.start_date = $('#start_date').val();
+			   data.end_date = $('#end_date').val();
 		    },
         },
 		columns: [
