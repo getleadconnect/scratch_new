@@ -47,15 +47,14 @@ class ScratchWebController extends Controller
     {
 			
         $user_id = User::getVendorId();
+
+		$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
 				
 		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
 		{
-			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
-			
 				$query=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
-				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
-				->whereIn('user_id', $userids);
-
+				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id');
+	
 			if($request->branch_user!="")
 			{
 				
@@ -64,9 +63,9 @@ class ScratchWebController extends Controller
 			}
 			else
 			{
-					$customers=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+					$query=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
 					->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
-					->whereIn('user_id', $userids)->orderby('id','Desc')->get();
+					->whereIn('user_id', $userids);
 			}
 
 			if($request->start_date &&  $request->end_date)  
@@ -76,7 +75,7 @@ class ScratchWebController extends Controller
 				}  
 
 			   $customers=$query->orderBy('id', 'Desc')->get();
-
+			   dd($customers);
 		}
 		else
 		{
@@ -172,12 +171,10 @@ public function getAppCustomers(Request $request)
 			
         $user_id = User::getVendorId();
 		
-		
+		$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
+
 		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
 		{
-			
-			$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
-
 			$query= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
 			->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id');
 	
@@ -189,17 +186,10 @@ public function getAppCustomers(Request $request)
 			}
 			else
 			{
-				$customers=collect();
-				
-				foreach($userids as $userid)
-				{
-					
-					$customers1= ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
-							->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
-							->where('user_id', $userid)->orderBy('id', 'Desc')->get();
-					
-					$customers=$customers->merge($customers1);
-				}
+
+            	$customers=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id')
+				->whereIn('user_id', $userids)->orderBy('scratch_web_customers.id','ASC')->get();
 			}
 		}
 		else
