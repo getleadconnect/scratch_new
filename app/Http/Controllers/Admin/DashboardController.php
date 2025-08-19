@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
-
+use App\Traits\TelegramNotificationTrait;
+use App\Models\ScratchWebCustomer;
+use App\Models\ScratchOffer;
 
 use App\Models\User;
 
@@ -18,11 +20,50 @@ use DB;
 
 class DashboardController extends Controller
 {
+
+  use TelegramNotificationTrait;
   public function __construct()
   {
      //$this->middleware('admin');
   }
   
+/*public function test_telegram($id)
+{
+ 
+	try
+	{
+
+		$customer = ScratchWebCustomer::find($id);
+		$usr=User::where('pk_int_user_id',$customer->user_id)->first();
+
+		$mobile=$customer->country_code.$customer->mobile;
+		$campaign_name=ScratchOffer::where('pk_int_scratch_offers_id',$customer->offer_id)->pluck('vchr_scratch_offers_name')->first();
+
+		$dataSend = [
+						'branch'=>"#".$usr->pk_int_user_id.":".$usr->vchr_user_name,
+						'customer'=>ucfirst($customer->name),
+						'mobile_no'=>$mobile,
+						'gift_name'=>$customer->offer_text,
+						'campaign'=>$campaign_name,
+						'reference_id'=>$customer->unique_id,
+					];
+
+		$msg_result=$this->send_telegram_notification($dataSend);
+		\Log::info($msg_result);
+		\log::info($dataSend);
+	}
+	catch(\Exception $e)
+	{
+		\Log::info($e->getMessage());
+	}
+
+}
+*/
+
+
+
+
+
   public function index()
   {
 	  

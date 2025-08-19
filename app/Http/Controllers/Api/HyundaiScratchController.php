@@ -21,9 +21,9 @@ use App\Common\WhatsappSend;
 use App\Services\WhatsappService;
 use App\Services\WhatsappGiftConfirmMsgService;
 use App\Notification\WhatsappGiftConfirmSend;
+use App\Traits\TelegramNotificationTrait;
 
 use App\Jobs\SentCrmServiceJob;
-
 
 use Carbon\Carbon;
 use Hash;
@@ -34,6 +34,7 @@ use Log;
 
 class HyundaiScratchController extends Controller
 {
+	use TelegramNotificationTrait;
     //use CrmApiService;
 	
 	/**
@@ -378,7 +379,6 @@ public function getSlideImages()
 		}
 }
 
-
 	
 /**
     * to set scratch customer details.
@@ -518,7 +518,13 @@ public function scratchCustomer(Request $request)
 			$customer->otp_verify_status="Enabled";
 						
 		if($customer){
-			
+
+
+
+
+
+
+
 			//send data to crm -------------------------------
 				
 				/*try{
@@ -572,7 +578,8 @@ public function scratchCustomer(Request $request)
 	* Parms: customer_id (int)
 	* @return Response - customer offer details
 	*/	
-	
+
+
 public function getScratch(Request $request)
 {
 	
@@ -642,14 +649,35 @@ public function getScratch(Request $request)
 		
 		if ($flag) {
 
+		// ----- to send whats app message ------------------------------------------
+			$mobile=$customer->country_code.$customer->mobile;
+			$campaign_name=ScratchOffer::where('pk_int_scratch_offers_id',$customer->offer_id)->pluck('vchr_scratch_offers_name')->first();
+			$usr=User::where('pk_int_user_id',$customer->user_id)->first();
+
+			try
+			{
+					$tel_data = [
+						'branch'=>"#".$usr->pk_int_user_id.":".$usr->vchr_user_name,
+						'customer'=>ucfirst($customer->name),
+						'mobile_no'=>$mobile,
+						'gift_name'=>$customer->offer_text,
+						'campaign'=>$campaign_name,
+						'reference_id'=>$customer->unique_id,
+					];
+
+				$msg_result=$this->send_telegram_notification($tel_data);
+				\Log::info($msg_result);
+				\log::info($dataSend);
+			}
+			catch(\Exception $e)
+			{
+				\Log::info($e->getMessage());
+			}
+
 			// ----- to send whats app message ------------------------------------------
 			
 			try
 			{
-
-				$mobile=$customer->country_code.$customer->mobile;
-				$campaign_name=ScratchOffer::where('pk_int_scratch_offers_id',$customer->offer_id)->pluck('vchr_scratch_offers_name')->first();
-				
 				$dataSend = [
 						'customer'=>ucfirst($customer->name),
 						'mobile_no'=>$mobile,
@@ -657,7 +685,6 @@ public function getScratch(Request $request)
 						'campaign'=>$campaign_name,
 						'reference_id'=>$customer->unique_id,
 					];
-		
 				$msg_result=(new WhatsappGiftConfirmSend(resolve(WhatsappGiftConfirmMsgService::class)))->giftConfirmMessageSendToWhatsapp($dataSend);
 				\Log::info($msg_result);
 			}
