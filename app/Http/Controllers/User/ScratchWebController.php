@@ -75,7 +75,6 @@ class ScratchWebController extends Controller
 				}  
 
 			   $customers=$query->orderBy('id', 'Desc')->get();
-			   dd($customers);
 		}
 		else
 		{
