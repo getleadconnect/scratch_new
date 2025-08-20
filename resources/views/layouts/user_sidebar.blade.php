@@ -82,7 +82,7 @@
                 <div class="menu-title">Web Scratch Links </div>
               </a>
             </li>
-
+      @endif
 			<li>
               <a href="{{url('users/gifts-list')}}" title="Campaigns">
                 <div class="parent-icon">
@@ -91,7 +91,7 @@
                 <div class="menu-title">Gifts List</div>
               </a>
             </li>
-			@endif
+			
 
 			<li>
               <a href="{{url('users/slide-images')}}" title="App Slide Images">
