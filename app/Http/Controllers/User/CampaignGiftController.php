@@ -214,34 +214,12 @@ public function addGifts($id)
     {
       $id=User::getVendorId();
 	  $offer_id=$request->campaign_id;
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 		
       $offers = ScratchOffersListing::select('tbl_scratch_offers_listing.*','scratch_type.type as type_name')
 	  ->leftJoin('scratch_type','tbl_scratch_offers_listing.type_id','=','scratch_type.id')
 	  ->where('fk_int_user_id',$id)->where('fk_int_scratch_offers_id',$offer_id)
 	  ->orderby('pk_int_scratch_offers_listing_id','Desc')->get();
-	
-	
-	
-	
+
         return Datatables::of($offers)
 		->addIndexColumn()
         		
@@ -279,10 +257,17 @@ public function addGifts($id)
 		
         ->addColumn('action', function ($row)
         {
-			
-			return '<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light edit-gift" data-bs-toggle="offcanvas" data-bs-target="#edit_gift"><i class="fa fa-pencil-alt" style="font-size:14px;color:#5779f1;"></i></a>
+			if(Auth::user()->parent_user_id!="")
+			{
+				$btn="";
+			}
+			else
+			{
+			$btn='<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light edit-gift" data-bs-toggle="offcanvas" data-bs-target="#edit_gift"><i class="fa fa-pencil-alt" style="font-size:14px;color:#5779f1;"></i></a>
 					<a href="#" id="'.$row->pk_int_scratch_offers_listing_id.'" class="btn btn-sm btn-outline-light delete-gift" aria-expanded="false"><i class="fa fa-trash" style="font-size:14px;color:#eb4e4e;"></i></a>';
-            
+			}
+            return $btn;
+			
         })
         ->rawColumns(['action','image','win_status','status'])
         ->make(true);
@@ -479,21 +464,27 @@ public function deleteGift($id)
 		
 		->addColumn('action', function ($row)
 		{
-			if ($row->int_status == 1)
+			$btn="";
+			$btn1="";
+			if(Auth::user()->parent_user_id=="")
 			{
-				$btn='<li><a class="dropdown-item act-deact-gift" href="javascript:;" data-option=0 id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-close"></i> Deactivate</a></li>';
-			}
-			else
-			{
-				$btn='<li><a class="dropdown-item act-deact-gift" href="javascript:;" data-option=1 id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="fa fa-check"></i> Activate</a></li>';
+				$btn1='<li><a class="dropdown-item edit-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-gift" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
+                       <li><a class="dropdown-item delete-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-trash"></i> Delete</a></li>';
+				
+				if ($row->int_status == 1) 
+				{
+					$btn='<li><a class="dropdown-item act-deact-gift" href="javascript:;" data-option=0 id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-close"></i> Deactivate</a></li>';
+				}
+				else
+				{
+					$btn='<li><a class="dropdown-item act-deact-gift" href="javascript:;" data-option=1 id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="fa fa-check"></i> Activate</a></li>';
+				}
 			}
 
-			$action='<div class="fs-5 ms-auto dropdown">
+				$action='<div class="fs-5 ms-auto dropdown">
                           <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="fadeIn animated bx bx-dots-vertical"></i></div>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item edit-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'" data-bs-toggle="offcanvas" data-bs-target="#edit-gift" ><i class="lni lni-pencil-alt"></i> Edit</a></li>
-                              <li><a class="dropdown-item delete-gift" href="javascript:;" id="'.$row->pk_int_scratch_offers_listing_id.'"><i class="lni lni-trash"></i> Delete</a></li>
-							  '.$btn.'
+                              '.$btn1.$btn.'
 							  </ul>
                         </div>';
 			return $action;
