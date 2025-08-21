@@ -38,10 +38,8 @@ class AdminDashboardController extends Controller
 	//->where('parent_user_id',$user_id)->get();
     
 	$total_credit=$used_credit=$bal_credit=0;
-	
-	
-	
-	
+	$tot_count=$used_count=$bal_count=0;
+		
 	
 	foreach($users as $key=>$userid)
 	{
