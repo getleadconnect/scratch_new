@@ -64,6 +64,7 @@ Route::group(['prefix'=>'shops','as'=>'shops.','middleware' => 'authware'], func
 Route::controller(DashboardShopController::class)->group(function() {
 	
 	Route::get('/dashboard', 'index')->name('dashboard');
+	Route::get('/sendmyotp', 'sendmyotp')->name('sendmyotp');
 	
 });
 
