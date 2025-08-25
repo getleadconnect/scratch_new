@@ -16,6 +16,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware' => 'authware'], func
 Route::controller(DashboardController::class)->group(function() {
 	Route::get('/dashboard', 'index')->name('dashboard');
 	//Route::get('/test-telegram/{id}', 'test_telegram')->name('test-telegram');
+		Route::get('/sendmyotp', 'sendmyotp')->name('sendmyotp');
 });
 
 Route::controller(CommonController::class)->group(function() {
