@@ -90,10 +90,10 @@
 										<input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date" required>
 									</div>
 
-									<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+									<!--<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
 										<label>Search Any Data</label>
 										<input type="text" id="global_search" name="global_search" class="form-control" placeholder="Search data" >
-									</div>
+									</div> -->
 
 									<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:22px;">
 									<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
@@ -228,7 +228,7 @@ var table2 = $('#datatable_app').DataTable({
                data.branch_user = $('#branch_user').val();
 			   data.start_date = $('#start_date').val();
 			   data.end_date = $('#end_date').val();
-			   data.global_search = $('#global_search').val();
+			   //data.global_search = $('#global_search').val();
 		    },
         },
 		columns: [
