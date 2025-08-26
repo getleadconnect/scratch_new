@@ -73,7 +73,6 @@
 				</li>
 			@endif
 			
-			@if(Auth::user()->parent_user_id=="" and Auth::user()->int_role_id!=1)		
 			<li>
               <a href="{{url('users/gl-links')}}" title="Campaigns">
                 <div class="parent-icon">
@@ -82,8 +81,7 @@
                 <div class="menu-title">Web Scratch Links </div>
               </a>
             </li>
-      @endif
-			<li>
+      <li>
               <a href="{{url('users/gifts-list')}}" title="Campaigns">
                 <div class="parent-icon">
 				<img src="{{asset('assets/images/icons/trophy-star.png')}}" style="width:18px;">
