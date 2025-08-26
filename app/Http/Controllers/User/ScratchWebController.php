@@ -18,6 +18,7 @@ use App\Exports\HyundaiWebCustomersList;
 use Auth;
 use DataTables;
 use Session;
+use Carbon\Carbon;
 
 class ScratchWebController extends Controller
 {
@@ -48,11 +49,20 @@ class ScratchWebController extends Controller
 			
         $user_id = User::getVendorId();
 
+		$sdate=$request->start_date;
+		$edate=$request->end_date;
+
+		if($sdate=="" &&  $edate=="")
+		{
+			$sdate=Carbon::parse(date('Y-m-d'))->subMonths(3)->format('Y-m-d');
+			$edate=Carbon::now()->format('Y-m-d');
+		}
+
 		$userids=User::where('parent_user_id',$user_id)->pluck('pk_int_user_id')->toArray();
 				
 		if(Auth::user()->int_role_id==1 and Auth::user()->admin_status==1)  //for hyundai
 		{
-				$query=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
+			$query=ScratchWebCustomer::select('scratch_web_customers.*', 'tbl_users.vchr_user_name as user_name')
 				->leftjoin('tbl_users', 'scratch_web_customers.branch_id', 'tbl_users.pk_int_user_id');
 	
 			if($request->branch_user!="")
@@ -68,31 +78,66 @@ class ScratchWebController extends Controller
 					->whereIn('user_id', $userids);
 			}
 
-			if($request->start_date &&  $request->end_date)  
+			if($sdate!="" &&  $edate!="")  
 				{
-					$query->whereDate('scratch_web_customers.created_at','>=',$request->start_date)
-					   ->whereDate('scratch_web_customers.created_at','<=',$request->end_date);
+					$query->whereDate('scratch_web_customers.created_at','>=',$sdate)
+					   ->whereDate('scratch_web_customers.created_at','<=',$edate);
 				}  
+
+			if($request->global_search!="")
+				{
+
+					$query->where('scratch_web_customers.user_id','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.user_id','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.unique_id','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.name','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.mobile','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.email','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.offer_text','like','%'.$request->global_search.'%')					
+					->orWhere('scratch_web_customers.bill_no','like','%'.$request->global_search.'%')
+					->orWhere('tbl_users.vchr_user_name','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.created_at','like','%'.$request->global_search.'%');
+				}
+
 
 			   $customers=$query->orderBy('id', 'Desc')->get();
 		}
 		else
 		{
-		   $customers= ScratchWebCustomer::select('scratch_web_customers.*','tbl_users.vchr_user_name as redeem_agent_name','scratch_branches.branch_name')
+		   $query= ScratchWebCustomer::select('scratch_web_customers.*','tbl_users.vchr_user_name as redeem_agent_name','scratch_branches.branch_name')
 		   ->leftjoin('tbl_users', 'scratch_web_customers.user_id', 'tbl_users.pk_int_user_id')
 			->leftjoin('scratch_branches', 'scratch_web_customers.branch_id', 'scratch_branches.id')
-            ->where('user_id', $user_id)
-		    ->where(function($where)use($request){
-				if($request->branch_user)
-					$where->where('scratch_web_customers.branch_id',$request->branch_user);
+            ->where('user_id', $user_id);
+
+
+		    	if($request->branch_user!="")
+					$query->where('scratch_web_customers.branch_id',$request->branch_user);
+
 				if($request->campaign)
-					$where->where('scratch_web_customers.offer_id',$request->campaign);
-				if($request->start_date &&  $request->end_date)  
+					$query->where('scratch_web_customers.offer_id',$request->campaign);
+				
+				if($sdate!="" &&  $edate!="")  
 				{
-					$where->whereDate('scratch_web_customers.created_at','>=',$request->start_date)
-					   ->whereDate('scratch_web_customers.created_at','<=',$request->end_date);
-				}  
-			   })->orderBy('id', 'Desc')->get();
+					$query->whereDate('scratch_web_customers.created_at','>=',$sdate)
+					   ->whereDate('scratch_web_customers.created_at','<=',$edate);
+				} 
+
+				if($request->global_search!="")
+				{
+
+					$query->where('scratch_web_customers.user_id','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.user_id','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.unique_id','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.name','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.mobile','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.email','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.offer_text','like','%'.$request->global_search.'%')					
+					->orWhere('scratch_web_customers.bill_no','like','%'.$request->global_search.'%')
+					->orWhere('scratch_branches.branch_name','like','%'.$request->global_search.'%')
+					->orWhere('scratch_web_customers.created_at','like','%'.$request->global_search.'%');
+				}
+
+			$customers=$query->orderBy('id', 'Desc')->get();
 
 		}
 
