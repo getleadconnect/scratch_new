@@ -51,7 +51,6 @@ Route::controller(CampaignGiftController::class)->group(function() {
 });
 
 Route::controller(ScratchWebController::class)->group(function() {
-
 	Route::get('/scratch-customers', 'index')->name('scratch-customers');
 	Route::get('/get-scratch-web-customers', 'getWebCustomers')->name('get-scratch-web-customers');
 	Route::get('/get-scratch-app-customers', 'getAppCustomers')->name('get-scratch-app-customers');
@@ -60,7 +59,6 @@ Route::controller(ScratchWebController::class)->group(function() {
 	Route::get('/scratch-web-redeem/{id}', 'redeem')->name('scratch-web-redeem');
 	Route::post('/sractch-web-history-download', 'downloadHistory')->name('sractch-web-history-download');	
 	Route::post('/export-customers-list', 'exportCustomersList')->name('export-customers-list');
-	
 });
 
 });

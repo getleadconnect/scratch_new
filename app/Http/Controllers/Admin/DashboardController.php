@@ -28,7 +28,7 @@ class DashboardController extends Controller
      //$this->middleware('admin');
   }
 
-public function sendmyotp()
+/*public function sendmyotp()
 {
 
 	$otp = rand(1111, 9999);
@@ -94,7 +94,7 @@ public function sendmyotp()
 		}
 
 }
-
+*/
   
 /*public function test_telegram($id)
 {
