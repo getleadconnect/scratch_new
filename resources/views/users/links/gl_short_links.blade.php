@@ -123,7 +123,7 @@
                      <div class="col-12 col-lg-12 d-flex">
                       <div class="card  shadow-none w-100">
                         <!--<div class="card-body">-->
-                          <div class="table-responsive">
+                          <div class="table-responsive" style="min-height:250px !important;">
 	
                              <table id="datatable" class="table align-middle" style="width:100% !important;" >
                                <thead class="thead-semi-dark">
