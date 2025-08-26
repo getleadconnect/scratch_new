@@ -33,6 +33,8 @@ use App\Jobs\SentCrmServiceJob;
 
 use Carbon\Carbon;
 use Jenssegers\Agent\Agent;
+
+
 use Flash;
 use Log;
 use Mail;
@@ -213,28 +215,61 @@ class GlScratchWebController extends Controller
 		
         try {
 
-            $otp = rand(1111, 9999);
+        //NIKKOY HONDA SEND OTP -----------------------------------------------------------------
 
-            $matchThese = ['number' => $request->mobile, 'user_id' => $request->vendor_id,'otp_type' => 'scratch_web'];
-            UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
-						
-			Session::put('number',$request->mobile);
-			
-            try {
-                $dataSend = [
-                    'mobile_no' => $mobile,
-                    'otp' => $otp
-                ];
-				
-                (new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
-				
-            } catch (\Exception $e) {
-                Log::info($e->getMessage());
+            if(request('vendor_id')==1678)
+            {
+
+                $otp = rand(1111, 9999);
+
+                $matchThese = ['number' => $request->mobile, 'user_id' => $request->vendor_id,'otp_type' => 'scratch_web'];
+                UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
+
+                try {
+                    $dataSend = [
+                        'mobile_no' => $mobile,
+                        'otp' => $otp
+                    ];
+                    
+                   $res=$this->nikkoyHondaSendOtp($dataSend);
+                    
+                } catch (\Exception $e) {
+                    Log::info($e->getMessage());
+                }
+
+                $code = basename(parse_url($request->link, PHP_URL_PATH));
+                $link = ShortLink::where('code',$code)->first();
+                return response()->json(['msg' => "Please Wait For Your Otp", 'status' => true,'slink'=>$link,'code'=>$code]);
+
+            }
+        
+        else {
+
+                $otp = rand(1111, 9999);
+
+                $matchThese = ['number' => $request->mobile, 'user_id' => $request->vendor_id,'otp_type' => 'scratch_web'];
+                UserOtp::updateOrCreate($matchThese, ['otp' => $otp]);
+                            
+                Session::put('number',$request->mobile);
+                
+                try {
+                    $dataSend = [
+                        'mobile_no' => $mobile,
+                        'otp' => $otp
+                    ];
+                    
+                    (new WhatsappSend(resolve(WhatsappService::class)))->sendWhatsappOtp($dataSend);
+                    
+                } catch (\Exception $e) {
+                    Log::info($e->getMessage());
+                }
+
+                $code = basename(parse_url($request->link, PHP_URL_PATH));
+                $link = ShortLink::where('code',$code)->first();
+                return response()->json(['msg' => "Please Wait For Your Otp", 'status' => true,'slink'=>$link,'code'=>$code]);
+            
             }
 
-             $code = basename(parse_url($request->link, PHP_URL_PATH));
-             $link = ShortLink::where('code',$code)->first();
-            return response()->json(['msg' => "Please Wait For Your Otp", 'status' => true,'slink'=>$link,'code'=>$code]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return $e->getMessage();
@@ -271,6 +306,73 @@ class GlScratchWebController extends Controller
         }
     }
 	
+
+public function nikkoyHondaSendOtp($data)
+{
+        try
+        {
+            $phoneid = 589291010945154;
+                $otp_url = "https://api.msg.bonvoice.com/v3/".$phoneid."/messages";
+                        
+                $params=[
+                    "messaging_product"=> "whatsapp",
+                    "recipient_type"=> "individual",
+                    "to"=> $data['mobile_no'],
+                    "type"=> "template",
+                    "template"=> [
+                        "name"=> "auth_test_template",
+                        "language"=> [
+                            "code"=> "en"
+                        ],
+                        "components"=> [
+                                [
+                                    "type"=> "body",
+                                    "parameters"=> [
+                                        [
+                                            "type"=> "text",
+                                            "text"=> $data['otp']
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    "type"=> "button",
+                                    "sub_type"=> "url",
+                                    "index"=> "0",
+                                    "parameters"=> [
+                                        [
+                                            "type"=> "payload",
+                                            "payload"=> ""
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ];
+
+                    $headers = [
+                        'apikey' => 'f08d3ea7-3fa1-11f0-98fc-02c8a5e042bd',
+                        'Content-Type' => 'application/json',
+                    ];
+
+                    $client = new Client();
+                    $response = $client->request('POST', $otp_url, [
+                        'json' => $params,
+                        'headers' => $headers,
+                    ]);
+                    
+                    $result=json_decode($response->getBody(), true);
+                    \Log::info($result);
+                    return $result;
+        }
+        catch(\Exception $e)
+        {
+            \Log::info($e->getMessage());
+            return $e->getMessage();
+        }
+ }
+
+
+
 
     public function scratchCustomer(Request $request)
     {
@@ -532,7 +634,6 @@ class GlScratchWebController extends Controller
                 
         return response()->json([ 'status' => 'success','data' => $branches]);
     }
-
 
     
 }

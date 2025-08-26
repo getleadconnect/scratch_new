@@ -39,38 +39,38 @@ public function sendmyotp()
 				
 		try {
 
-			$params=[ 
-				"messaging_product"=> "whatsapp", 
-				"recipient_type"=> "individual", 
-				"to"=> "919995338385", 
-				"type"=> "template", 
-				"template"=> [ 
-					"name"=> "zero_tap_ttt_vk_fff", 
-					"language"=> [ 
-					"code"=> "en_US" 
-					],
-				"components"=> [ 
-					[ 
-						"type"=> "body", 
-						"parameters"=> [ 
-							[ 
-							"type"=> "text", 
-							"text"=> "84984519" 
-							] 
-						] 
-					], 
-					[ 
-						"type"=> "button", 
-						"sub_type"=> "url", 
-						"index"=> "0", 
-						"parameters"=> [ 
-							[ 
-							"type"=> "text", 
-							"text"=> "8498" 
-							] 
-						] 
-					] 
-				] 
+		$params=[
+			"messaging_product"=> "whatsapp",
+			"recipient_type"=> "individual",
+			"to"=> "919995338385",
+			"type"=> "template",
+			"template"=> [
+				"name"=> "auth_test_template",
+				"language"=> [
+					"code"=> "en"
+				],
+				"components"=> [
+						[
+							"type"=> "body",
+							"parameters"=> [
+								[
+									"type"=> "text",
+									"text"=> "1234"
+								]
+							]
+						],
+						[
+							"type"=> "button",
+							"sub_type"=> "url",
+							"index"=> "0",
+							"parameters"=> [
+								[
+									"type"=> "payload",
+									"payload"=> ""
+								]
+							]
+						]
+					]
 				]
 			];
 
@@ -94,6 +94,7 @@ public function sendmyotp()
 		}
 
 }
+
   
 /*public function test_telegram($id)
 {
