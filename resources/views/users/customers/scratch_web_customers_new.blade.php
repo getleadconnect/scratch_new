@@ -106,6 +106,11 @@
 										<input type="date" id="end_date" name="end_date" class="form-control" placeholder="End Date" >
 									</div>
 
+									<div class="col-2 col-lg-2 col-xl-2 col-xxl-2">
+										<label>Search Any Data</label>
+										<input type="text" id="global_search" name="global_search" class="form-control" placeholder="Search data" >
+									</div>
+
 									<div class="col-3 col-lg-3 col-xl-3 col-xxl-3" style="padding-top:22px;">
 									<button type="button" class="btn btn-primary btn-xs" id="btn-filter" > <i class="lni lni-funnel"></i> Filter</button>&nbsp;&nbsp;
 									<button type="button" class="btn btn-secondary btn-xs me-2" id="btn-clear-filter" > Clear</button>&nbsp;&nbsp;
@@ -125,7 +130,10 @@
 				
 				<!---  filer end ----------------------------------------->
 				<div class="row mt-3">
-                     <div class="col-12 col-lg-12  text-right">
+					 <div class="col-12 col-lg-8 col-xl-8 col-xxl-8">
+						<p style="color:blue;">To display last 3 months data only. You can display custom range of data, use filters.</p>
+					 </div>
+                     <div class="col-12 col-lg-4 col-xl-4 col-xxl-4 text-right">
 					 <label>Total : <span style="font-weight:600;" id="web_count"></span></label>
 					 
 					 </div>
@@ -231,6 +239,7 @@ var table2 = $('#datatable').DataTable({
                data.branch_user = $('#branch_user').val();
 			   data.start_date = $('#start_date').val();
 			   data.end_date = $('#end_date').val();
+			   data.global_search = $('#global_search').val();
 		    },
         },
 		columns: [
